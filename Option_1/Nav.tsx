@@ -1,32 +1,30 @@
 import { NavLink } from 'react-router-dom';
-import {
-  LayoutDashboard,
-  Wrench,
-  Users,
-  CalendarDays,
-  FileText,
-  Receipt,
-  BarChart2,
-  Settings,
-} from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import HandymanIcon from '@mui/icons-material/Handyman';
+import GroupIcon from '@mui/icons-material/Group';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import DescriptionIcon from '@mui/icons-material/Description';
+import ReceiptIcon from '@mui/icons-material/Receipt';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import SettingsIcon from '@mui/icons-material/Settings';
+import type { SvgIconComponent } from '@mui/icons-material';
 import styles from './nav.module.css';
 
 interface NavItem {
-  icon: LucideIcon;
+  icon: SvgIconComponent;
   label: string;
   to: string;
 }
 
 const navItems: NavItem[] = [
-  { icon: LayoutDashboard, label: 'Dashboard', to: '/' },
-  { icon: Wrench,          label: 'Jobs',       to: '/jobs' },
-  { icon: Users,           label: 'Customers',  to: '/customers' },
-  { icon: CalendarDays,    label: 'Scheduling', to: '/scheduling' },
-  { icon: FileText,        label: 'Estimates',  to: '/estimates' },
-  { icon: Receipt,         label: 'Invoices',   to: '/invoices' },
-  { icon: BarChart2,       label: 'Reports',    to: '/reports' },
-  { icon: Settings,        label: 'Settings',   to: '/settings' },
+  { icon: DashboardIcon,      label: 'Dashboard',  to: '/' },
+  { icon: HandymanIcon,       label: 'Jobs',        to: '/jobs' },
+  { icon: GroupIcon,          label: 'Customers',   to: '/customers' },
+  { icon: CalendarMonthIcon,  label: 'Scheduling',  to: '/scheduling' },
+  { icon: DescriptionIcon,    label: 'Estimates',   to: '/estimates' },
+  { icon: ReceiptIcon,        label: 'Invoices',    to: '/invoices' },
+  { icon: BarChartIcon,       label: 'Reports',     to: '/reports' },
+  { icon: SettingsIcon,       label: 'Settings',    to: '/settings' },
 ];
 
 export function Nav() {
@@ -47,7 +45,7 @@ export function Nav() {
                     `${styles.navLink} ${isActive ? styles.navLinkActive : ''}`
                   }
                 >
-                  <Icon size={16} aria-hidden="true" />
+                  <Icon style={{ fontSize: 18 }} aria-hidden="true" />
                   <span>{label}</span>
                 </NavLink>
               </li>

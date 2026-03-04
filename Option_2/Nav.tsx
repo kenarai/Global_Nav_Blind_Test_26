@@ -1,41 +1,39 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import {
-  Gauge,
-  Phone,
-  CalendarDays,
-  Truck,
-  ClipboardList,
-  Layers,
-  Flag,
-  BarChart2,
-  Megaphone,
-  BookOpen,
-  FolderOpen,
-  ChevronDown,
-  Menu,
-} from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
+import SpeedIcon from '@mui/icons-material/Speed';
+import PhoneIcon from '@mui/icons-material/Phone';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import LayersIcon from '@mui/icons-material/Layers';
+import FlagIcon from '@mui/icons-material/Flag';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import CampaignIcon from '@mui/icons-material/Campaign';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
+import FolderOpenIcon from '@mui/icons-material/FolderOpen';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import MenuIcon from '@mui/icons-material/Menu';
+import type { SvgIconComponent } from '@mui/icons-material';
 import styles from './nav.module.css';
 
 interface NavItemDef {
-  icon: LucideIcon;
+  icon: SvgIconComponent;
   label: string;
   pages: string[] | null;
 }
 
 const navItems: NavItemDef[] = [
-  { icon: Gauge,        label: 'Dashboard',  pages: null },
-  { icon: Phone,        label: 'Calls',      pages: ['Calls', 'Bookings', 'Second Chance Leads'] },
-  { icon: CalendarDays, label: 'Schedule',   pages: ['Calendar', 'Open Capacity', 'Technician Shifts', 'Capacity Planning', 'Capacity Reporting'] },
-  { icon: Truck,        label: 'Dispatch',   pages: null },
-  { icon: ClipboardList,label: 'Accounting', pages: ['Batch Export Transactions', 'AR Management', 'Invoices', 'Customer Payments', 'Bank Deposits', 'Bills', 'Accounting Audit Trail'] },
-  { icon: Layers,       label: 'Inventory',  pages: ['Install', 'Replenishment', 'Purchase Orders', 'Receipts', 'Returns'] },
-  { icon: Flag,         label: 'Follow Up',  pages: ['Unsold Estimates', 'Sold Estimates', 'Surveys', 'Recurring Service Events', 'Expiring Memberships', 'Expiring Credit Cards', 'Leads'] },
-  { icon: BarChart2,    label: 'Reports',    pages: ['All Reports', 'Scheduled', 'Bookmarks', 'Recommended'] },
-  { icon: Megaphone,    label: 'Marketing',  pages: ['Marketing Overview', 'SMS', 'Ads', 'Attributed Leads', 'Email', 'Direct Mail', 'Ads Optimizer', 'Pro Campaigns', 'Email Templates', 'Audience', 'Reputation'] },
-  { icon: BookOpen,     label: 'Pricebook',  pages: ['Services', 'Products'] },
-  { icon: FolderOpen,   label: 'Projects',   pages: ['Active Projects', 'Archived Projects'] },
+  { icon: SpeedIcon,        label: 'Dashboard',  pages: null },
+  { icon: PhoneIcon,        label: 'Calls',      pages: ['Calls', 'Bookings', 'Second Chance Leads'] },
+  { icon: CalendarMonthIcon,label: 'Schedule',   pages: ['Calendar', 'Open Capacity', 'Technician Shifts', 'Capacity Planning', 'Capacity Reporting'] },
+  { icon: LocalShippingIcon,label: 'Dispatch',   pages: null },
+  { icon: AssignmentIcon,   label: 'Accounting', pages: ['Batch Export Transactions', 'AR Management', 'Invoices', 'Customer Payments', 'Bank Deposits', 'Bills', 'Accounting Audit Trail'] },
+  { icon: LayersIcon,       label: 'Inventory',  pages: ['Install', 'Replenishment', 'Purchase Orders', 'Receipts', 'Returns'] },
+  { icon: FlagIcon,         label: 'Follow Up',  pages: ['Unsold Estimates', 'Sold Estimates', 'Surveys', 'Recurring Service Events', 'Expiring Memberships', 'Expiring Credit Cards', 'Leads'] },
+  { icon: BarChartIcon,     label: 'Reports',    pages: ['All Reports', 'Scheduled', 'Bookmarks', 'Recommended'] },
+  { icon: CampaignIcon,     label: 'Marketing',  pages: ['Marketing Overview', 'SMS', 'Ads', 'Attributed Leads', 'Email', 'Direct Mail', 'Ads Optimizer', 'Pro Campaigns', 'Email Templates', 'Audience', 'Reputation'] },
+  { icon: MenuBookIcon,     label: 'Pricebook',  pages: ['Services', 'Products'] },
+  { icon: FolderOpenIcon,   label: 'Projects',   pages: ['Active Projects', 'Archived Projects'] },
 ];
 
 const slugify = (str: string) =>
@@ -117,7 +115,7 @@ function NavItem({ icon: Icon, label, pages, isPrimaryExpanded }: NavItemProps) 
               onClick={handleNavItemClick}
             >
               <span className={styles.icon}>
-                <Icon size={20} color="#ffffff" aria-hidden="true" />
+                <Icon style={{ fontSize: 20, color: '#ffffff' }} aria-hidden="true" />
               </span>
               <span className={isPrimaryExpanded ? styles.label : styles.el}>
                 {label}
@@ -131,7 +129,7 @@ function NavItem({ icon: Icon, label, pages, isPrimaryExpanded }: NavItemProps) 
                     transition: 'transform 0.3s ease',
                   }}
                 >
-                  <ChevronDown size={16} color="#ffffff" />
+                  <ExpandMoreIcon style={{ fontSize: 16, color: '#ffffff' }} />
                 </span>
               )}
             </li>
@@ -203,10 +201,10 @@ export function Nav() {
         tabIndex={0}
         onKeyDown={e => e.key === 'Enter' && setPrimaryExpanded(prev => !prev)}
       >
-        <Menu
-          size={24}
-          color="#ffffff"
+        <MenuIcon
           style={{
+            fontSize: 24,
+            color: '#ffffff',
             transform: isPrimaryExpanded ? 'rotate(0deg)' : 'rotate(180deg)',
             transition: 'transform 0.3s ease',
           }}

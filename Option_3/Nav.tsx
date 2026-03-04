@@ -1,31 +1,27 @@
 import { useState, useRef, useId } from 'react';
 import { createPortal } from 'react-dom';
-import { NavLink, useNavigate } from 'react-router-dom';
-import {
-  Menu,
-  LayoutDashboard,
-  Wrench,
-  CalendarDays,
-  Truck,
-  Users,
-  ContactRound,
-  FileText,
-  Receipt,
-  CreditCard,
-  BarChart2,
-  Settings,
-  ChevronDown,
-  Plus,
-  Pencil,
-  MoreVertical,
-} from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
+import MenuIcon from '@mui/icons-material/Menu';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import HandymanIcon from '@mui/icons-material/Handyman';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import GroupIcon from '@mui/icons-material/Group';
+import ContactsIcon from '@mui/icons-material/Contacts';
+import DescriptionIcon from '@mui/icons-material/Description';
+import ReceiptIcon from '@mui/icons-material/Receipt';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import SettingsIcon from '@mui/icons-material/Settings';
+import EditIcon from '@mui/icons-material/Edit';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import type { SvgIconComponent } from '@mui/icons-material';
 import styles from './nav.module.css';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 interface NavItemDef {
-  icon: LucideIcon;
+  icon: SvgIconComponent;
   label: string;
   to: string;
   badge?: number;
@@ -38,7 +34,6 @@ const slugify = (str: string) =>
 interface Section {
   title: string | null;
   items: NavItemDef[];
-  defaultOpen: boolean;
 }
 
 // ─── Nav data ─────────────────────────────────────────────────────────────────
@@ -46,48 +41,43 @@ interface Section {
 const sections: Section[] = [
   {
     title: null,
-    defaultOpen: true,
     items: [
-      { icon: LayoutDashboard, label: 'Dashboard', to: '/', badge: 4 },
+      { icon: DashboardIcon, label: 'Dashboard', to: '/', badge: 4 },
     ],
   },
   {
     title: 'Work',
-    defaultOpen: true,
     items: [
-      { icon: Wrench,       label: 'Jobs',       to: '/jobs',       badge: 12,
+      { icon: HandymanIcon,      label: 'Jobs',       to: '/jobs',       badge: 12,
         pages: ['All Jobs', 'Active', 'Scheduled', 'Completed', 'Cancelled'] },
-      { icon: CalendarDays, label: 'Scheduling', to: '/scheduling',
+      { icon: CalendarMonthIcon, label: 'Scheduling', to: '/scheduling',
         pages: ['Calendar', 'Open Capacity', 'Technician Shifts'] },
-      { icon: Truck,        label: 'Dispatch',   to: '/dispatch' },
+      { icon: LocalShippingIcon, label: 'Dispatch',   to: '/dispatch' },
     ],
   },
   {
     title: 'People',
-    defaultOpen: true,
     items: [
-      { icon: Users,        label: 'Customers', to: '/customers',
+      { icon: GroupIcon,    label: 'Customers', to: '/customers',
         pages: ['All Customers', 'Companies', 'Leads'] },
-      { icon: ContactRound, label: 'Contacts',  to: '/contacts' },
+      { icon: ContactsIcon, label: 'Contacts',  to: '/contacts' },
     ],
   },
   {
     title: 'Finance',
-    defaultOpen: false,
     items: [
-      { icon: FileText,   label: 'Estimates', to: '/estimates' },
-      { icon: Receipt,    label: 'Invoices',  to: '/invoices', badge: 3,
+      { icon: DescriptionIcon, label: 'Estimates', to: '/estimates' },
+      { icon: ReceiptIcon,     label: 'Invoices',  to: '/invoices', badge: 3,
         pages: ['All Invoices', 'Overdue', 'Draft'] },
-      { icon: CreditCard, label: 'Payments',  to: '/payments' },
+      { icon: CreditCardIcon,  label: 'Payments',  to: '/payments' },
     ],
   },
   {
     title: 'Admin',
-    defaultOpen: false,
     items: [
-      { icon: BarChart2, label: 'Reports',  to: '/reports',
+      { icon: BarChartIcon,  label: 'Reports',  to: '/reports',
         pages: ['All Reports', 'Scheduled', 'Bookmarks'] },
-      { icon: Settings,  label: 'Settings', to: '/settings' },
+      { icon: SettingsIcon,  label: 'Settings', to: '/settings' },
     ],
   },
 ];
@@ -175,6 +165,12 @@ function NavItem({ item, isCollapsed }: NavItemProps) {
   const wrapperRef = useRef<HTMLLIElement>(null);
   const tooltipId = useId();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+
+  // Auto-expand sub-pages when this module is the active route
+  const isModuleActive = to === '/'
+    ? pathname === '/'
+    : pathname.startsWith(to);
 
   const handleMouseEnter = () => {
     clearTimeout(leaveTimerRef.current);
@@ -213,7 +209,6 @@ function NavItem({ item, isCollapsed }: NavItemProps) {
       <NavLink
         to={to}
         end={to === '/'}
-        aria-label={isCollapsed ? label : undefined}
         aria-describedby={isCollapsed && !item.pages && showTooltip ? tooltipId : undefined}
         className={({ isActive }) =>
           [
@@ -225,9 +220,9 @@ function NavItem({ item, isCollapsed }: NavItemProps) {
             .join(' ')
         }
       >
-        {/* Icon + optional dot badge when collapsed */}
+        {/* Icon + optional dot badge (dot only in collapsed) */}
         <span className={styles.iconWrap}>
-          <Icon size={20} aria-hidden="true" />
+          <Icon style={{ fontSize: 20 }} aria-hidden="true" />
           {badge !== undefined && (
             <span
               className={`${styles.badgeDot} ${isCollapsed ? styles.badgeDotVisible : ''}`}
@@ -236,7 +231,7 @@ function NavItem({ item, isCollapsed }: NavItemProps) {
           )}
         </span>
 
-        {/* Label + pill badge — fades out when collapsing */}
+        {/* Label + pill badge — in expanded: below icon; in collapsed: hidden (iconLabel replaces it) */}
         <span className={`${styles.labelRow} ${isCollapsed ? styles.labelRowHidden : ''}`}>
           <span className={styles.itemLabel}>{label}</span>
           {badge !== undefined && (
@@ -245,16 +240,39 @@ function NavItem({ item, isCollapsed }: NavItemProps) {
             </span>
           )}
         </span>
+
+        {/* Small label below icon — collapsed state only */}
+        {isCollapsed && (
+          <span className={styles.iconLabel}>{label}</span>
+        )}
       </NavLink>
 
-      {/* More options button — only in expanded + hovered */}
+      {/* Sub-page list — expanded state, active module with sub-pages only */}
+      {!isCollapsed && isModuleActive && item.pages && (
+        <ul className={styles.subPageList} role="list">
+          {item.pages.map(page => (
+            <li key={page}>
+              <NavLink
+                to={`${to}/${slugify(page)}`}
+                className={({ isActive }) =>
+                  `${styles.subPageItem} ${isActive ? styles.subPageItemActive : ''}`
+                }
+              >
+                {page}
+              </NavLink>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {/* More options button — expanded + hovered only */}
       {isHovered && !isCollapsed && (
         <button
           className={styles.moreBtn}
           aria-label={`More options for ${label}`}
           onClick={e => e.preventDefault()}
         >
-          <MoreVertical size={16} aria-hidden="true" />
+          <MoreVertIcon style={{ fontSize: 16 }} aria-hidden="true" />
         </button>
       )}
 
@@ -285,36 +303,14 @@ interface SectionGroupProps {
 }
 
 function SectionGroup({ section, isCollapsed }: SectionGroupProps) {
-  const [isOpen, setIsOpen] = useState(section.defaultOpen);
-  const sectionId = useId();
-
   return (
     <div className={styles.section}>
       {section.title && (
-        <button
-          className={`${styles.sectionHeader} ${isCollapsed ? styles.sectionHeaderHidden : ''}`}
-          onClick={() => setIsOpen(prev => !prev)}
-          aria-expanded={isOpen}
-          aria-controls={sectionId}
-        >
+        <div className={`${styles.sectionHeader} ${isCollapsed ? styles.sectionHeaderHidden : ''}`}>
           <span className={styles.sectionTitle}>{section.title}</span>
-          <ChevronDown
-            size={16}
-            aria-hidden="true"
-            className={`${styles.sectionChevron} ${isOpen ? styles.chevronOpen : ''}`}
-          />
-        </button>
+        </div>
       )}
-
-      {/* Always rendered — visibility controlled by max-height CSS transition */}
-      <ul
-        id={sectionId}
-        role="list"
-        className={`${styles.accordionBody} ${
-          isOpen || isCollapsed || !section.title ? styles.accordionBodyOpen : ''
-        }`}
-        aria-hidden={!isOpen && !isCollapsed && !!section.title}
-      >
+      <ul role="list" className={styles.sectionItems}>
         {section.items.map(item => (
           <NavItem key={item.to} item={item} isCollapsed={isCollapsed} />
         ))}
@@ -341,18 +337,15 @@ export function Nav() {
           aria-label={isCollapsed ? 'Expand navigation' : 'Collapse navigation'}
           aria-expanded={!isCollapsed}
         >
-          <Menu size={20} aria-hidden="true" />
+          <MenuIcon style={{ fontSize: 20 }} aria-hidden="true" />
         </button>
       </div>
 
-      {/* New Job / Compose-style CTA */}
+      {/* New Job CTA */}
       <div className={styles.composeArea}>
-        <button
-          className={`${styles.composeBtn} ${isCollapsed ? styles.composeBtnCollapsed : ''}`}
-          aria-label="New Job"
-        >
+        <button className={styles.composeBtn} aria-label="New Job">
           <span className={styles.composeIcon}>
-            {isCollapsed ? <Plus size={22} aria-hidden="true" /> : <Pencil size={18} aria-hidden="true" />}
+            <EditIcon style={{ fontSize: 18 }} aria-hidden="true" />
           </span>
           <span className={`${styles.composeLabel} ${isCollapsed ? styles.composeLabelHidden : ''}`}>
             New Job
