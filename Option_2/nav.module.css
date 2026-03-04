@@ -3,7 +3,7 @@
 .primaryContainer {
   position: relative;
   background-color: #0f1d26;
-  height: 100vh;
+  height: calc(100vh - 40px);
   flex-shrink: 0;
   overflow: hidden;
   display: flex;

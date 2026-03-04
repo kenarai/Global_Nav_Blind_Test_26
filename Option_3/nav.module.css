@@ -3,7 +3,7 @@
 /* ─── Sidebar shell ─────────────────────────────────────────────────────────── */
 
 .sidebar {
-  height: 100vh;
+  height: calc(100vh - 40px);
   background-color: var(--color-white);
   display: flex;
   flex-direction: row;

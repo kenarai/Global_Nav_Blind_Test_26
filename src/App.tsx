@@ -10,34 +10,40 @@ const isSideNav = __ACTIVE_OPTION__ !== '1';
 export default function App() {
   if (isSideNav) {
     return (
-      <div className={styles.layoutSide}>
-        <a href="#main-content" className="skip-link">
-          Skip to main content
-        </a>
-        <Nav />
-        <main id="main-content" className={styles.mainSide}>
-          <Routes>
-            <Route path="*" element={<GenericPage />} />
-          </Routes>
-        </main>
-      </div>
+      <>
+        <div style={{ position: 'relative', width: '100vw', height: '40px', backgroundColor: '#d14233' }} />
+        <div className={styles.layoutSide}>
+          <a href="#main-content" className="skip-link">
+            Skip to main content
+          </a>
+          <Nav />
+          <main id="main-content" className={styles.mainSide}>
+            <Routes>
+              <Route path="*" element={<GenericPage />} />
+            </Routes>
+          </main>
+        </div>
+      </>
     );
   }
 
   return (
-    <div className={styles.layout}>
-      <a href="#main-content" className="skip-link">
-        Skip to main content
-      </a>
-      <Nav />
-      <div className={styles.layoutBody}>
-        <Sidebar />
-        <main id="main-content" className={styles.main}>
-          <Routes>
-            <Route path="*" element={<GenericPage />} />
-          </Routes>
-        </main>
+    <>
+      <div style={{ position: 'relative', width: '100vw', height: '40px', backgroundColor: '#d14233' }} />
+      <div className={styles.layout}>
+        <a href="#main-content" className="skip-link">
+          Skip to main content
+        </a>
+        <Nav />
+        <div className={styles.layoutBody}>
+          <Sidebar />
+          <main id="main-content" className={styles.main}>
+            <Routes>
+              <Route path="*" element={<GenericPage />} />
+            </Routes>
+          </main>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

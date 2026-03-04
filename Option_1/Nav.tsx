@@ -41,7 +41,7 @@ export function Nav() {
     <header className={styles.header} role="banner">
       <div className={styles.inner}>
         {/* Wordmark — no logo, no branding color */}
-        <span className={styles.wordmark} aria-label="Application">App</span>
+        <span className={styles.wordmark} aria-label="Application">Lorem App</span>
 
         <nav className={styles.nav} aria-label="Global navigation">
           <ul className={styles.navList} role="list">
