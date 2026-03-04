@@ -165,12 +165,6 @@ function NavItem({ item, isCollapsed }: NavItemProps) {
   const wrapperRef = useRef<HTMLLIElement>(null);
   const tooltipId = useId();
   const navigate = useNavigate();
-  const { pathname } = useLocation();
-
-  // Auto-expand sub-pages when this module is the active route
-  const isModuleActive = to === '/'
-    ? pathname === '/'
-    : pathname.startsWith(to);
 
   const handleMouseEnter = () => {
     clearTimeout(leaveTimerRef.current);
@@ -214,58 +208,28 @@ function NavItem({ item, isCollapsed }: NavItemProps) {
           [
             styles.navItem,
             isActive ? styles.navItemActive : '',
-            isCollapsed ? styles.navItemCollapsed : '',
+            styles.navItemCollapsed,
           ]
             .filter(Boolean)
             .join(' ')
         }
       >
-        {/* Icon + optional dot badge (dot only in collapsed) */}
+        {/* Icon + dot badge */}
         <span className={styles.iconWrap}>
           <Icon style={{ fontSize: 20 }} aria-hidden="true" />
           {badge !== undefined && (
             <span
-              className={`${styles.badgeDot} ${isCollapsed ? styles.badgeDotVisible : ''}`}
+              className={`${styles.badgeDot} ${styles.badgeDotVisible}`}
               aria-hidden="true"
             />
           )}
         </span>
 
-        {/* Label + pill badge — in expanded: below icon; in collapsed: hidden (iconLabel replaces it) */}
-        <span className={`${styles.labelRow} ${isCollapsed ? styles.labelRowHidden : ''}`}>
-          <span className={styles.itemLabel}>{label}</span>
-          {badge !== undefined && (
-            <span className={styles.badge} aria-label={`${badge} unread`}>
-              {badge > 99 ? '99+' : badge}
-            </span>
-          )}
-        </span>
-
-        {/* Small label below icon — collapsed state only */}
-        {isCollapsed && (
-          <span className={styles.iconLabel}>{label}</span>
-        )}
+        {/* Small label below icon — always shown */}
+        <span className={styles.iconLabel}>{label}</span>
       </NavLink>
 
-      {/* Sub-page list — expanded state, active module with sub-pages only */}
-      {!isCollapsed && isModuleActive && item.pages && (
-        <ul className={styles.subPageList} role="list">
-          {item.pages.map(page => (
-            <li key={page}>
-              <NavLink
-                to={`${to}/${slugify(page)}`}
-                className={({ isActive }) =>
-                  `${styles.subPageItem} ${isActive ? styles.subPageItemActive : ''}`
-                }
-              >
-                {page}
-              </NavLink>
-            </li>
-          ))}
-        </ul>
-      )}
-
-      {/* More options button — expanded + hovered only */}
+      {/* More options button — hovered + not collapsed */}
       {isHovered && !isCollapsed && (
         <button
           className={styles.moreBtn}
@@ -295,70 +259,83 @@ function NavItem({ item, isCollapsed }: NavItemProps) {
   );
 }
 
-// ─── SectionGroup ─────────────────────────────────────────────────────────────
-
-interface SectionGroupProps {
-  section: Section;
-  isCollapsed: boolean;
-}
-
-function SectionGroup({ section, isCollapsed }: SectionGroupProps) {
-  return (
-    <div className={styles.section}>
-      {section.title && (
-        <div className={`${styles.sectionHeader} ${isCollapsed ? styles.sectionHeaderHidden : ''}`}>
-          <span className={styles.sectionTitle}>{section.title}</span>
-        </div>
-      )}
-      <ul role="list" className={styles.sectionItems}>
-        {section.items.map(item => (
-          <NavItem key={item.to} item={item} isCollapsed={isCollapsed} />
-        ))}
-      </ul>
-    </div>
-  );
-}
-
 // ─── Nav (exported) ───────────────────────────────────────────────────────────
 
 export function Nav() {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const { pathname } = useLocation();
+
+  // Flatten sections into a single item list (no section headers rendered)
+  const allItems = sections.flatMap(s => s.items);
+
+  // Active item with sub-pages drives the right panel
+  const activeItem = allItems.find(
+    item =>
+      item.pages &&
+      (item.to === '/' ? pathname === '/' : pathname.startsWith(item.to))
+  );
 
   return (
     <aside
       className={`${styles.sidebar} ${isCollapsed ? styles.sidebarCollapsed : ''}`}
       aria-label="Global navigation"
     >
-      {/* Hamburger */}
-      <div className={styles.sidebarHeader}>
-        <button
-          className={styles.hamburger}
-          onClick={() => setIsCollapsed(prev => !prev)}
-          aria-label={isCollapsed ? 'Expand navigation' : 'Collapse navigation'}
-          aria-expanded={!isCollapsed}
+      {/* Left Rail */}
+      <div className={styles.leftRail}>
+        {/* Hamburger */}
+        <div className={styles.sidebarHeader}>
+          <button
+            className={styles.hamburger}
+            onClick={() => setIsCollapsed(prev => !prev)}
+            aria-label={isCollapsed ? 'Expand navigation' : 'Collapse navigation'}
+            aria-expanded={!isCollapsed}
+          >
+            <MenuIcon style={{ fontSize: 20 }} aria-hidden="true" />
+          </button>
+        </div>
+
+        {/* New Job CTA */}
+        <div className={styles.composeArea}>
+          <button className={styles.composeBtn} aria-label="New Job">
+            <span className={styles.composeIcon}>
+              <EditIcon style={{ fontSize: 18 }} aria-hidden="true" />
+            </span>
+          </button>
+        </div>
+
+        {/* Flat nav list — no section headers */}
+        <nav aria-label="Primary navigation" className={styles.navBody}>
+          <ul role="list" className={styles.navList}>
+            {allItems.map(item => (
+              <NavItem key={item.to} item={item} isCollapsed={isCollapsed} />
+            ))}
+          </ul>
+        </nav>
+      </div>
+
+      {/* Right Panel — sub-pages for active module (expanded state only) */}
+      {!isCollapsed && activeItem?.pages && (
+        <div
+          className={styles.rightPanel}
+          aria-label={`${activeItem.label} sub-pages`}
         >
-          <MenuIcon style={{ fontSize: 20 }} aria-hidden="true" />
-        </button>
-      </div>
-
-      {/* New Job CTA */}
-      <div className={styles.composeArea}>
-        <button className={styles.composeBtn} aria-label="New Job">
-          <span className={styles.composeIcon}>
-            <EditIcon style={{ fontSize: 18 }} aria-hidden="true" />
-          </span>
-          <span className={`${styles.composeLabel} ${isCollapsed ? styles.composeLabelHidden : ''}`}>
-            New Job
-          </span>
-        </button>
-      </div>
-
-      {/* Sectioned nav */}
-      <nav aria-label="Primary navigation" className={styles.navBody}>
-        {sections.map((section, i) => (
-          <SectionGroup key={i} section={section} isCollapsed={isCollapsed} />
-        ))}
-      </nav>
+          <div className={styles.rightPanelHeader}>{activeItem.label}</div>
+          <ul className={styles.rightPanelList} role="list">
+            {activeItem.pages.map(page => (
+              <li key={page}>
+                <NavLink
+                  to={`${activeItem.to}/${slugify(page)}`}
+                  className={({ isActive }) =>
+                    `${styles.rightPanelItem} ${isActive ? styles.rightPanelItemActive : ''}`
+                  }
+                >
+                  {page}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </aside>
   );
 }

@@ -3,15 +3,25 @@
 /* ─── Sidebar shell ─────────────────────────────────────────────────────────── */
 
 .sidebar {
-  width: 256px;
   height: 100vh;
   background-color: var(--color-white);
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   flex-shrink: 0;
   overflow: hidden;
   /* Material motion curve — avoids abrupt snapping */
   transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ─── Left Rail ─────────────────────────────────────────────────────────────── */
+
+.leftRail {
+  width: 76px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
 }
 
 .sidebarCollapsed {
@@ -57,25 +67,17 @@
 .composeBtn {
   display: flex;
   align-items: center;
-  padding: 0 var(--space-5) 0 var(--space-4);
+  justify-content: center;
+  padding: 0;
+  width: 52px;
   height: 52px;
   background-color: var(--color-white);
   border: none;
-  border-radius: 16px;
-  font-family: inherit;
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
-  color: var(--color-gray-800);
+  border-radius: 50%;
   cursor: pointer;
-  width: 100%;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08);
-  transition:
-    box-shadow 0.2s,
-    background-color 0.15s,
-    width 0.25s cubic-bezier(0.4,0,0.2,1),
-    border-radius 0.25s cubic-bezier(0.4,0,0.2,1);
-  overflow: hidden;
-  white-space: nowrap;
+  transition: box-shadow 0.2s, background-color 0.15s;
+  color: var(--color-gray-800);
 }
 
 .composeBtn:hover {
@@ -171,9 +173,9 @@
   transform: rotate(180deg);
 }
 
-/* ─── Section items list ────────────────────────────────────────────────────── */
+/* ─── Flat nav list ─────────────────────────────────────────────────────────── */
 
-.sectionItems {
+.navList {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -436,6 +438,68 @@
 .hoverCardItem:hover {
   background-color: var(--color-gray-100);
   color: var(--color-gray-900);
+}
+
+/* ─── Right Panel (sub-pages for active module — expanded state) ─────────────── */
+
+.rightPanel {
+  width: 180px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid var(--color-gray-100);
+  padding-top: var(--space-3);
+  overflow-y: auto;
+  animation: rightPanelIn 0.18s ease;
+}
+
+.rightPanel::-webkit-scrollbar { width: 4px; }
+.rightPanel::-webkit-scrollbar-thumb { background-color: var(--color-gray-200); border-radius: 2px; }
+
+@keyframes rightPanelIn {
+  from { opacity: 0; transform: translateX(-6px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.rightPanelHeader {
+  padding: 4px var(--space-4) 8px var(--space-4);
+  font-size: 11px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.rightPanelList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.rightPanelItem {
+  display: block;
+  padding: 7px var(--space-4);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-normal);
+  color: var(--color-gray-700);
+  text-decoration: none;
+  border-radius: 0 14px 14px 0;
+  margin-right: var(--space-3);
+  transition: background-color 0.15s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rightPanelItem:hover {
+  background-color: var(--color-gray-100);
+  color: var(--color-gray-900);
+}
+
+.rightPanelItemActive {
+  background-color: #c2e7ff;
+  color: var(--color-gray-900);
+  font-weight: var(--font-weight-medium);
 }
 
 /* ─── Icon label (collapsed state — label below icon) ───────────────────────── */
