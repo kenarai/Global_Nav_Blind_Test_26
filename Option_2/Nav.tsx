@@ -12,7 +12,8 @@ import CorporateFareIcon from '@mui/icons-material/CorporateFare';
 import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
 import AppsIcon from '@mui/icons-material/Apps';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MenuIcon from '@mui/icons-material/Menu';
+import ExpandNavIcon from '@/icons/ExpandNavIcon';
+import CollapseNavIcon from '@/icons/CollapseNavIcon';
 import type { SvgIconComponent } from '@mui/icons-material';
 import styles from './nav.module.css';
 
@@ -214,14 +215,10 @@ export function Nav() {
         tabIndex={0}
         onKeyDown={e => e.key === 'Enter' && setPrimaryExpanded(prev => !prev)}
       >
-        <MenuIcon
-          style={{
-            fontSize: 24,
-            color: '#ffffff',
-            transform: isPrimaryExpanded ? 'rotate(0deg)' : 'rotate(180deg)',
-            transition: 'transform 0.3s ease',
-          }}
-        />
+        {isPrimaryExpanded
+          ? <CollapseNavIcon style={{ color: '#ffffff' }} aria-hidden="true" />
+          : <ExpandNavIcon   style={{ color: '#ffffff' }} aria-hidden="true" />
+        }
       </div>
     </aside>
   );

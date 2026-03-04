@@ -8,7 +8,8 @@ import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import SearchIcon from '@mui/icons-material/Search';
-import MenuIcon from '@mui/icons-material/Menu';
+import ExpandNavIcon from '@/icons/ExpandNavIcon';
+import CollapseNavIcon from '@/icons/CollapseNavIcon';
 import { NavCollapseContext } from '@/navCollapseContext';
 
 // __ACTIVE_OPTION__ is injected at build time by vite.config.ts
@@ -38,7 +39,10 @@ export default function App() {
             aria-label={navCollapsed ? 'Expand navigation' : 'Collapse navigation'}
             aria-expanded={!navCollapsed}
           >
-            <MenuIcon style={{ fontSize: 20, color: '#ffffff' }} aria-hidden="true" />
+            {navCollapsed
+              ? <ExpandNavIcon   style={{ fontSize: 20, color: '#ffffff' }} aria-hidden="true" />
+              : <CollapseNavIcon style={{ fontSize: 20, color: '#ffffff' }} aria-hidden="true" />
+            }
           </button>
         )}
         <span style={{ color: '#ffffff', fontWeight: 600, fontSize: '14px', whiteSpace: 'nowrap' }}>
