@@ -40,9 +40,6 @@ export function Nav() {
   return (
     <header className={styles.header} role="banner">
       <div className={styles.inner}>
-        {/* Wordmark — no logo, no branding color */}
-        <span className={styles.wordmark} aria-label="Application">Lorem App</span>
-
         <nav className={styles.nav} aria-label="Global navigation">
           <ul className={styles.navList} role="list">
             {navItems.map(({ icon: Icon, label, to }) => (
@@ -62,10 +59,7 @@ export function Nav() {
           </ul>
         </nav>
 
-        {/* Neutral user avatar */}
-        <div className={styles.avatar} aria-label="User account" role="img">
-          U
-        </div>
+
       </div>
     </header>
   );
