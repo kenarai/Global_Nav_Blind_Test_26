@@ -6,6 +6,7 @@ import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import SearchIcon from '@mui/icons-material/Search';
 
 // __ACTIVE_OPTION__ is injected at build time by vite.config.ts
 // '1' → top nav (column layout), '2' or '3' → side nav (row layout)
@@ -40,7 +41,17 @@ const globalBar = (
       height: '24px',
       backgroundColor: 'rgba(255,255,255,0.25)',
       borderRadius: '4px',
-    }} />
+      position: 'relative',
+    }}>
+      <SearchIcon style={{
+        fontSize: 16,
+        color: '#ffffff',
+        position: 'absolute',
+        left: '12px',
+        top: '50%',
+        transform: 'translateY(-50%)',
+      }} />
+    </div>
 
     {/* Icon group — right */}
     <div style={{
