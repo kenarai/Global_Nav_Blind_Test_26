@@ -83,6 +83,59 @@
   border-radius: 1px;
 }
 
+/* ─── Sub-page Sidebar ─────────────────────────────────────────────────────── */
+
+.submenuSidebar {
+  width: 240px;
+  flex-shrink: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-white);
+  border-right: 1px solid var(--color-border);
+  overflow-y: auto;
+}
+
+.submenuSidebar::-webkit-scrollbar { width: 4px; }
+.submenuSidebar::-webkit-scrollbar-thumb { background-color: var(--color-gray-200); border-radius: 2px; }
+
+.submenuHeader {
+  padding: var(--space-5) var(--space-5) var(--space-3);
+  font-size: 11px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-gray-900);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.submenuList {
+  list-style: none;
+  margin: 0;
+  padding: 0 var(--space-3);
+}
+
+.submenuItem {
+  display: block;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-normal);
+  color: var(--color-gray-700);
+  text-decoration: none;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.submenuItem:hover {
+  background-color: var(--color-gray-100);
+  color: var(--color-gray-900);
+}
+
+.submenuItemActive {
+  background-color: var(--color-gray-100);
+  color: var(--color-brand-primary);
+  font-weight: var(--font-weight-medium);
+}
+
 /* User avatar */
 .avatar {
   width: 32px;

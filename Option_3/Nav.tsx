@@ -261,6 +261,9 @@ function NavItem({ item, isCollapsed }: NavItemProps) {
 
 // ─── Nav (exported) ───────────────────────────────────────────────────────────
 
+// Dummy export — Sidebar is only used by Option 1
+export function Sidebar() { return null; }
+
 export function Nav() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const { pathname } = useLocation();

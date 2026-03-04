@@ -178,6 +178,9 @@ function NavItem({ icon: Icon, label, pages, isPrimaryExpanded }: NavItemProps) 
 
 // ─── Nav (exported) ───────────────────────────────────────────────────────────
 
+// Dummy export — Sidebar is only used by Option 1
+export function Sidebar() { return null; }
+
 export function Nav() {
   const [isPrimaryExpanded, setPrimaryExpanded] = useState(false);
 

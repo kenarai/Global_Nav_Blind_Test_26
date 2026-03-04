@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
-import { Nav } from '@nav/Nav';
+import { Nav, Sidebar } from '@nav/Nav';
 import GenericPage from './pages/GenericPage';
 import styles from './App.module.css';
 
@@ -8,20 +8,36 @@ import styles from './App.module.css';
 const isSideNav = __ACTIVE_OPTION__ !== '1';
 
 export default function App() {
+  if (isSideNav) {
+    return (
+      <div className={styles.layoutSide}>
+        <a href="#main-content" className="skip-link">
+          Skip to main content
+        </a>
+        <Nav />
+        <main id="main-content" className={styles.mainSide}>
+          <Routes>
+            <Route path="*" element={<GenericPage />} />
+          </Routes>
+        </main>
+      </div>
+    );
+  }
+
   return (
-    <div className={isSideNav ? styles.layoutSide : styles.layout}>
+    <div className={styles.layout}>
       <a href="#main-content" className="skip-link">
         Skip to main content
       </a>
       <Nav />
-      <main
-        id="main-content"
-        className={isSideNav ? styles.mainSide : styles.main}
-      >
-        <Routes>
-          <Route path="*" element={<GenericPage />} />
-        </Routes>
-      </main>
+      <div className={styles.layoutBody}>
+        <Sidebar />
+        <main id="main-content" className={styles.main}>
+          <Routes>
+            <Route path="*" element={<GenericPage />} />
+          </Routes>
+        </main>
+      </div>
     </div>
   );
 }
