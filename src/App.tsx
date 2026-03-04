@@ -1,18 +1,26 @@
+import { Route, Routes } from 'react-router-dom';
 import { Nav } from '@nav/Nav';
+import GenericPage from './pages/GenericPage';
 import styles from './App.module.css';
 
-// The active option is injected at build time via vite.config.ts
-// @nav always resolves to the correct Option_X folder — no runtime branching needed.
+// __ACTIVE_OPTION__ is injected at build time by vite.config.ts
+// '1' → top nav (column layout), '2' or '3' → side nav (row layout)
+const isSideNav = __ACTIVE_OPTION__ !== '1';
 
 export default function App() {
   return (
-    <div className={styles.layout}>
+    <div className={isSideNav ? styles.layoutSide : styles.layout}>
+      <a href="#main-content" className="skip-link">
+        Skip to main content
+      </a>
       <Nav />
-      <main className={styles.main}>
-        <h1>Global Nav Blind Test</h1>
-        <p>
-          You are viewing a navigation prototype. Use the nav above to explore the interface.
-        </p>
+      <main
+        id="main-content"
+        className={isSideNav ? styles.mainSide : styles.main}
+      >
+        <Routes>
+          <Route path="*" element={<GenericPage />} />
+        </Routes>
       </main>
     </div>
   );

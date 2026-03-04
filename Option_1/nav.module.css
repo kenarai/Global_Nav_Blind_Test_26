@@ -1,4 +1,4 @@
-/* Option 1 — Nav styles stub */
+/* Option 1 — Top Navigation */
 .header {
   position: sticky;
   top: 0;
@@ -6,36 +6,95 @@
   background-color: var(--color-white);
   border-bottom: 1px solid var(--color-border);
   box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
 }
 
-.nav {
+.inner {
   display: flex;
   align-items: center;
-  max-width: 1200px;
+  justify-content: space-between;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0 var(--space-8);
+  padding: 0 var(--space-6);
   height: 56px;
+  gap: var(--space-8);
+}
+
+/* Neutral wordmark — no logo, no brand color */
+.wordmark {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-gray-500);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Nav list */
+.nav {
+  flex: 1;
 }
 
 .navList {
   display: flex;
   align-items: center;
   gap: var(--space-1);
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
+/* Individual nav link */
 .navLink {
   display: inline-flex;
   align-items: center;
+  gap: var(--space-2);
   padding: var(--space-2) var(--space-3);
   border-radius: var(--radius-md);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
-  color: var(--color-text);
+  color: var(--color-gray-600);
+  text-decoration: none;
+  white-space: nowrap;
   transition: background-color 0.15s, color 0.15s;
+  position: relative;
 }
 
 .navLink:hover {
   background-color: var(--color-gray-100);
   color: var(--color-gray-900);
   text-decoration: none;
+}
+
+/* Active state: blue text + underline accent */
+.navLinkActive {
+  color: var(--color-brand-primary);
+}
+
+.navLinkActive::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: var(--space-3);
+  right: var(--space-3);
+  height: 2px;
+  background-color: var(--color-brand-primary);
+  border-radius: 1px;
+}
+
+/* User avatar */
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--color-gray-300);
+  color: var(--color-white);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
 }

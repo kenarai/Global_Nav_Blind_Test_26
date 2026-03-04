@@ -65,4 +65,8 @@
   --z-nav: 100;
   --z-dropdown: 200;
   --z-modal: 300;
+
+  /* Side nav dimensions */
+  --nav-width-side: 204px;
+  --nav-width-collapsed: 64px;
 }
