@@ -169,6 +169,12 @@
   flex-shrink: 0;
 }
 
+/* Collapsed: center the hamburger icon horizontally */
+.primaryContainer.collapsed .toggleAffordance {
+  justify-content: center;
+  padding-left: 0;
+}
+
 /* Separator line above toggle */
 .toggleAffordance::before {
   content: '';
