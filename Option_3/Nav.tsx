@@ -1,7 +1,6 @@
 import { useState, useRef, useId } from 'react';
 import { createPortal } from 'react-dom';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
-import MenuIcon from '@mui/icons-material/Menu';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
@@ -15,6 +14,7 @@ import AppsIcon from '@mui/icons-material/Apps';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import type { SvgIconComponent } from '@mui/icons-material';
 import styles from './nav.module.css';
+import { useNavCollapse } from '@/navCollapseContext';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -259,7 +259,7 @@ function NavItem({ item, isCollapsed }: NavItemProps) {
 export function Sidebar() { return null; }
 
 export function Nav() {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const { isCollapsed } = useNavCollapse();
   const { pathname } = useLocation();
 
   // Flatten sections into a single item list (no section headers rendered)
@@ -279,18 +279,6 @@ export function Nav() {
     >
       {/* Left Rail */}
       <div className={styles.leftRail}>
-        {/* Hamburger */}
-        <div className={styles.sidebarHeader}>
-          <button
-            className={styles.hamburger}
-            onClick={() => setIsCollapsed(prev => !prev)}
-            aria-label={isCollapsed ? 'Expand navigation' : 'Collapse navigation'}
-            aria-expanded={!isCollapsed}
-          >
-            <MenuIcon style={{ fontSize: 20 }} aria-hidden="true" />
-          </button>
-        </div>
-
         {/* Flat nav list — no section headers */}
         <nav aria-label="Primary navigation" className={styles.navBody}>
           <ul role="list" className={styles.navList}>

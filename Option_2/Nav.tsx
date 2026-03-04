@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { useNavigate, useLocation } from 'react-router-dom';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
@@ -46,27 +47,40 @@ interface HoverCardChildren {
 
 interface HoverCardProps {
   children: HoverCardChildren;
-  position: { top: string; left: string };
   width: string;
 }
 
-function HoverCard({ children, position, width }: HoverCardProps) {
+function HoverCard({ children, width }: HoverCardProps) {
   const [visible, setVisible] = useState(false);
+  const [pos, setPos] = useState<{ top: number; left: number } | null>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseEnter = () => {
+    if (wrapperRef.current) {
+      const rect = wrapperRef.current.getBoundingClientRect();
+      setPos({ top: rect.top, left: rect.right + 8 });
+    }
+    setVisible(true);
+  };
 
   return (
     <div
+      ref={wrapperRef}
       className={styles.hoverCardWrapper}
-      onMouseEnter={() => setVisible(true)}
+      onMouseEnter={handleMouseEnter}
       onMouseLeave={() => setVisible(false)}
     >
       <div className={styles.hoverCardTrigger}>{children.trigger}</div>
-      {visible && width !== '0px' && (
+      {visible && width !== '0px' && pos && createPortal(
         <div
           className={styles.hoverCard}
-          style={{ top: position.top, left: position.left, width }}
+          style={{ position: 'fixed', top: pos.top, left: pos.left, width }}
+          onMouseEnter={() => setVisible(true)}
+          onMouseLeave={() => setVisible(false)}
         >
           {children.content}
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
@@ -97,13 +111,11 @@ function NavItem({ icon: Icon, label, pages, isPrimaryExpanded }: NavItemProps) 
     navigate(`${itemPath}/${slugify(page)}`);
   };
 
-  const hoverLeft = isPrimaryExpanded ? '196px' : '60px';
   const hoverWidth = isPrimaryExpanded ? '0px' : '280px';
 
   return (
     <div className={styles.navItemWrapper}>
       <HoverCard
-        position={{ top: '0px', left: hoverLeft }}
         width={hoverWidth}
       >
         {{
