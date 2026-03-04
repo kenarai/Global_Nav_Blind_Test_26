@@ -12,7 +12,6 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import CorporateFareIcon from '@mui/icons-material/CorporateFare';
 import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
 import AppsIcon from '@mui/icons-material/Apps';
-import EditIcon from '@mui/icons-material/Edit';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import type { SvgIconComponent } from '@mui/icons-material';
 import styles from './nav.module.css';
@@ -289,15 +288,6 @@ export function Nav() {
             aria-expanded={!isCollapsed}
           >
             <MenuIcon style={{ fontSize: 20 }} aria-hidden="true" />
-          </button>
-        </div>
-
-        {/* New Job CTA */}
-        <div className={styles.composeArea}>
-          <button className={styles.composeBtn} aria-label="New Job">
-            <span className={styles.composeIcon}>
-              <EditIcon style={{ fontSize: 18 }} aria-hidden="true" />
-            </span>
           </button>
         </div>
 
