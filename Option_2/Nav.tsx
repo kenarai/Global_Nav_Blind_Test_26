@@ -192,7 +192,7 @@ function NavItem({ icon: Icon, label, pages, isPrimaryExpanded }: NavItemProps) 
 export function Sidebar() { return null; }
 
 export function Nav() {
-  const [isPrimaryExpanded, setPrimaryExpanded] = useState(false);
+  const [isPrimaryExpanded, setPrimaryExpanded] = useState(true);
 
   return (
     <aside
