@@ -76,7 +76,8 @@
 }
 
 .navItem.widthExpanded::before {
-  top: 3px;
+  top: 50%;
+  transform: translateY(-50%);
   left: 13px;
   width: 38px;
   height: 38px;

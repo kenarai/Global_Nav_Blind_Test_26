@@ -42,7 +42,7 @@ export default function App() {
           </button>
         )}
         <span style={{ color: '#ffffff', fontWeight: 600, fontSize: '14px', whiteSpace: 'nowrap' }}>
-          Lorem App
+          Lorem App option {__ACTIVE_OPTION__}
         </span>
       </div>
 
