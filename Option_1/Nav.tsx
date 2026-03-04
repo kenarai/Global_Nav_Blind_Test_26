@@ -1,12 +1,14 @@
 import { NavLink, useLocation } from 'react-router-dom';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import HandymanIcon from '@mui/icons-material/Handyman';
-import GroupIcon from '@mui/icons-material/Group';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import DescriptionIcon from '@mui/icons-material/Description';
-import ReceiptIcon from '@mui/icons-material/Receipt';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
+import PaymentIcon from '@mui/icons-material/Payment';
+import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import BarChartIcon from '@mui/icons-material/BarChart';
-import SettingsIcon from '@mui/icons-material/Settings';
+import CorporateFareIcon from '@mui/icons-material/CorporateFare';
+import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
+import AppsIcon from '@mui/icons-material/Apps';
 import type { SvgIconComponent } from '@mui/icons-material';
 import styles from './nav.module.css';
 
@@ -21,19 +23,23 @@ const slugify = (str: string) =>
   str.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
 
 const navItems: NavItem[] = [
-  { icon: DashboardIcon,      label: 'Dashboard',  to: '/' },
-  { icon: HandymanIcon,       label: 'Jobs',        to: '/jobs',
-    pages: ['All Jobs', 'Active', 'Scheduled', 'Completed', 'Cancelled'] },
-  { icon: GroupIcon,          label: 'Customers',   to: '/customers',
-    pages: ['All Customers', 'Companies', 'Leads'] },
-  { icon: CalendarMonthIcon,  label: 'Scheduling',  to: '/scheduling',
-    pages: ['Calendar', 'Open Capacity', 'Technician Shifts'] },
-  { icon: DescriptionIcon,    label: 'Estimates',   to: '/estimates' },
-  { icon: ReceiptIcon,        label: 'Invoices',    to: '/invoices',
-    pages: ['All Invoices', 'Overdue', 'Draft'] },
-  { icon: BarChartIcon,       label: 'Reports',     to: '/reports',
-    pages: ['All Reports', 'Scheduled', 'Bookmarks'] },
-  { icon: SettingsIcon,       label: 'Settings',    to: '/settings' },
+  { icon: DashboardIcon,       label: 'Dashboard',    to: '/' },
+  { icon: PeopleAltIcon,       label: 'Accounts',     to: '/accounts',
+    pages: ['All Accounts', 'Organizations', 'Contacts'] },
+  { icon: TrendingUpIcon,      label: 'Sales',        to: '/sales',
+    pages: ['Pipeline', 'Opportunities', 'Quotes', 'Contracts'] },
+  { icon: AccountTreeIcon,     label: 'Projects',     to: '/projects',
+    pages: ['Active Projects', 'Portfolios', 'Resource Planning', 'Timesheets'] },
+  { icon: PaymentIcon,         label: 'Billing',      to: '/billing' },
+  { icon: FolderOpenIcon,      label: 'Documents',    to: '/documents',
+    pages: ['All Files', 'Templates', 'Shared with Me'] },
+  { icon: BarChartIcon,        label: 'Reports',      to: '/reports' },
+  { icon: CorporateFareIcon,   label: 'Organization', to: '/organization',
+    pages: ['Departments', 'Business Units', 'Facilities', 'Directory'] },
+  { icon: PlaylistAddCheckIcon,label: 'Actions',      to: '/actions',
+    pages: ['Approvals', 'Task Queue', 'Pending Reviews', 'Audit Logs'] },
+  { icon: AppsIcon,            label: 'Applications', to: '/applications',
+    pages: ['App Catalog', 'Installed Apps', 'Custom Builds', 'API Management'] },
 ];
 
 export function Nav() {

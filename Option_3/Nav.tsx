@@ -3,16 +3,15 @@ import { createPortal } from 'react-dom';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import HandymanIcon from '@mui/icons-material/Handyman';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import LocalShippingIcon from '@mui/icons-material/LocalShipping';
-import GroupIcon from '@mui/icons-material/Group';
-import ContactsIcon from '@mui/icons-material/Contacts';
-import DescriptionIcon from '@mui/icons-material/Description';
-import ReceiptIcon from '@mui/icons-material/Receipt';
-import CreditCardIcon from '@mui/icons-material/CreditCard';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
+import PaymentIcon from '@mui/icons-material/Payment';
+import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import BarChartIcon from '@mui/icons-material/BarChart';
-import SettingsIcon from '@mui/icons-material/Settings';
+import CorporateFareIcon from '@mui/icons-material/CorporateFare';
+import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
+import AppsIcon from '@mui/icons-material/Apps';
 import EditIcon from '@mui/icons-material/Edit';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import type { SvgIconComponent } from '@mui/icons-material';
@@ -42,42 +41,38 @@ const sections: Section[] = [
   {
     title: null,
     items: [
-      { icon: DashboardIcon, label: 'Dashboard', to: '/', badge: 4 },
+      { icon: DashboardIcon, label: 'Dashboard', to: '/' },
     ],
   },
   {
-    title: 'Work',
+    title: 'Business',
     items: [
-      { icon: HandymanIcon,      label: 'Jobs',       to: '/jobs',       badge: 12,
-        pages: ['All Jobs', 'Active', 'Scheduled', 'Completed', 'Cancelled'] },
-      { icon: CalendarMonthIcon, label: 'Scheduling', to: '/scheduling',
-        pages: ['Calendar', 'Open Capacity', 'Technician Shifts'] },
-      { icon: LocalShippingIcon, label: 'Dispatch',   to: '/dispatch' },
+      { icon: PeopleAltIcon,   label: 'Accounts', to: '/accounts',
+        pages: ['All Accounts', 'Organizations', 'Contacts'] },
+      { icon: TrendingUpIcon,  label: 'Sales',    to: '/sales',
+        pages: ['Pipeline', 'Opportunities', 'Quotes', 'Contracts'] },
+      { icon: AccountTreeIcon, label: 'Projects', to: '/projects',
+        pages: ['Active Projects', 'Portfolios', 'Resource Planning', 'Timesheets'] },
+      { icon: PaymentIcon,     label: 'Billing',  to: '/billing' },
     ],
   },
   {
-    title: 'People',
+    title: 'Content',
     items: [
-      { icon: GroupIcon,    label: 'Customers', to: '/customers',
-        pages: ['All Customers', 'Companies', 'Leads'] },
-      { icon: ContactsIcon, label: 'Contacts',  to: '/contacts' },
-    ],
-  },
-  {
-    title: 'Finance',
-    items: [
-      { icon: DescriptionIcon, label: 'Estimates', to: '/estimates' },
-      { icon: ReceiptIcon,     label: 'Invoices',  to: '/invoices', badge: 3,
-        pages: ['All Invoices', 'Overdue', 'Draft'] },
-      { icon: CreditCardIcon,  label: 'Payments',  to: '/payments' },
+      { icon: FolderOpenIcon, label: 'Documents', to: '/documents',
+        pages: ['All Files', 'Templates', 'Shared with Me'] },
+      { icon: BarChartIcon,   label: 'Reports',   to: '/reports' },
     ],
   },
   {
     title: 'Admin',
     items: [
-      { icon: BarChartIcon,  label: 'Reports',  to: '/reports',
-        pages: ['All Reports', 'Scheduled', 'Bookmarks'] },
-      { icon: SettingsIcon,  label: 'Settings', to: '/settings' },
+      { icon: CorporateFareIcon,    label: 'Organization', to: '/organization',
+        pages: ['Departments', 'Business Units', 'Facilities', 'Directory'] },
+      { icon: PlaylistAddCheckIcon, label: 'Actions',      to: '/actions',
+        pages: ['Approvals', 'Task Queue', 'Pending Reviews', 'Audit Logs'] },
+      { icon: AppsIcon,             label: 'Applications', to: '/applications',
+        pages: ['App Catalog', 'Installed Apps', 'Custom Builds', 'API Management'] },
     ],
   },
 ];

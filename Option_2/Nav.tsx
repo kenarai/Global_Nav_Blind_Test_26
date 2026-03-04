@@ -1,16 +1,15 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import SpeedIcon from '@mui/icons-material/Speed';
-import PhoneIcon from '@mui/icons-material/Phone';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import LocalShippingIcon from '@mui/icons-material/LocalShipping';
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import LayersIcon from '@mui/icons-material/Layers';
-import FlagIcon from '@mui/icons-material/Flag';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import CampaignIcon from '@mui/icons-material/Campaign';
-import MenuBookIcon from '@mui/icons-material/MenuBook';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
+import PaymentIcon from '@mui/icons-material/Payment';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import CorporateFareIcon from '@mui/icons-material/CorporateFare';
+import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
+import AppsIcon from '@mui/icons-material/Apps';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MenuIcon from '@mui/icons-material/Menu';
 import type { SvgIconComponent } from '@mui/icons-material';
@@ -23,17 +22,16 @@ interface NavItemDef {
 }
 
 const navItems: NavItemDef[] = [
-  { icon: SpeedIcon,        label: 'Dashboard',  pages: null },
-  { icon: PhoneIcon,        label: 'Calls',      pages: ['Calls', 'Bookings', 'Second Chance Leads'] },
-  { icon: CalendarMonthIcon,label: 'Schedule',   pages: ['Calendar', 'Open Capacity', 'Technician Shifts', 'Capacity Planning', 'Capacity Reporting'] },
-  { icon: LocalShippingIcon,label: 'Dispatch',   pages: null },
-  { icon: AssignmentIcon,   label: 'Accounting', pages: ['Batch Export Transactions', 'AR Management', 'Invoices', 'Customer Payments', 'Bank Deposits', 'Bills', 'Accounting Audit Trail'] },
-  { icon: LayersIcon,       label: 'Inventory',  pages: ['Install', 'Replenishment', 'Purchase Orders', 'Receipts', 'Returns'] },
-  { icon: FlagIcon,         label: 'Follow Up',  pages: ['Unsold Estimates', 'Sold Estimates', 'Surveys', 'Recurring Service Events', 'Expiring Memberships', 'Expiring Credit Cards', 'Leads'] },
-  { icon: BarChartIcon,     label: 'Reports',    pages: ['All Reports', 'Scheduled', 'Bookmarks', 'Recommended'] },
-  { icon: CampaignIcon,     label: 'Marketing',  pages: ['Marketing Overview', 'SMS', 'Ads', 'Attributed Leads', 'Email', 'Direct Mail', 'Ads Optimizer', 'Pro Campaigns', 'Email Templates', 'Audience', 'Reputation'] },
-  { icon: MenuBookIcon,     label: 'Pricebook',  pages: ['Services', 'Products'] },
-  { icon: FolderOpenIcon,   label: 'Projects',   pages: ['Active Projects', 'Archived Projects'] },
+  { icon: DashboardIcon,        label: 'Dashboard',    pages: null },
+  { icon: PeopleAltIcon,        label: 'Accounts',     pages: ['All Accounts', 'Organizations', 'Contacts'] },
+  { icon: TrendingUpIcon,       label: 'Sales',        pages: ['Pipeline', 'Opportunities', 'Quotes', 'Contracts'] },
+  { icon: AccountTreeIcon,      label: 'Projects',     pages: ['Active Projects', 'Portfolios', 'Resource Planning', 'Timesheets'] },
+  { icon: PaymentIcon,          label: 'Billing',      pages: null },
+  { icon: FolderOpenIcon,       label: 'Documents',    pages: ['All Files', 'Templates', 'Shared with Me'] },
+  { icon: BarChartIcon,         label: 'Reports',      pages: null },
+  { icon: CorporateFareIcon,    label: 'Organization', pages: ['Departments', 'Business Units', 'Facilities', 'Directory'] },
+  { icon: PlaylistAddCheckIcon, label: 'Actions',      pages: ['Approvals', 'Task Queue', 'Pending Reviews', 'Audit Logs'] },
+  { icon: AppsIcon,             label: 'Applications', pages: ['App Catalog', 'Installed Apps', 'Custom Builds', 'API Management'] },
 ];
 
 const slugify = (str: string) =>
