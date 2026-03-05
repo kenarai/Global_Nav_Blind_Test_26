@@ -34,6 +34,8 @@
 /* Nav list */
 .nav {
   flex: 1;
+  display: flex;
+  justify-content: center;
 }
 
 .navList {
@@ -50,7 +52,7 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  padding: var(--space-2) var(--space-3);
+  padding: var(--space-2) var(--space-2);
   border-radius: 4px;
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
