@@ -14,6 +14,7 @@ import AppsIcon from '@mui/icons-material/Apps';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandNavIcon from '@/icons/ExpandNavIcon';
 import CollapseNavIcon from '@/icons/CollapseNavIcon';
+import Tooltip from '@/components/Tooltip';
 import type { SvgIconComponent } from '@mui/icons-material';
 import styles from './nav.module.css';
 
@@ -224,16 +225,17 @@ export function Nav() {
       <div
         className={styles.toggleAffordance}
         onClick={() => setPrimaryExpanded(prev => !prev)}
-        title={isPrimaryExpanded ? 'Collapse' : 'Expand'}
         role="button"
         aria-expanded={isPrimaryExpanded}
         tabIndex={0}
         onKeyDown={e => e.key === 'Enter' && setPrimaryExpanded(prev => !prev)}
       >
-        {isPrimaryExpanded
-          ? <CollapseNavIcon style={{ color: '#000000' }} aria-hidden="true" />
-          : <ExpandNavIcon   style={{ color: '#000000' }} aria-hidden="true" />
-        }
+        <Tooltip label={isPrimaryExpanded ? 'Collapse the menu' : 'Expand the menu'} placement="right">
+          {isPrimaryExpanded
+            ? <CollapseNavIcon style={{ color: '#000000' }} aria-hidden="true" />
+            : <ExpandNavIcon   style={{ color: '#000000' }} aria-hidden="true" />
+          }
+        </Tooltip>
       </div>
     </aside>
   );

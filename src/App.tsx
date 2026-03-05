@@ -10,6 +10,7 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 import SearchIcon from '@mui/icons-material/Search';
 import ExpandNavIcon from '@/icons/ExpandNavIcon';
 import CollapseNavIcon from '@/icons/CollapseNavIcon';
+import Tooltip from '@/components/Tooltip';
 import { NavCollapseContext } from '@/navCollapseContext';
 
 // __ACTIVE_OPTION__ is injected at build time by vite.config.ts
@@ -34,17 +35,19 @@ export default function App() {
       <div style={{ position: 'absolute', left: 0, display: 'flex', alignItems: 'center' }}>
         {isOption3 && (
           <div style={{ width: '64px', display: 'flex', justifyContent: 'center', alignItems: 'center', flexShrink: 0 }}>
-            <button
-              onClick={() => setNavCollapsed(p => !p)}
-              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center' }}
-              aria-label={navCollapsed ? 'Expand navigation' : 'Collapse navigation'}
-              aria-expanded={!navCollapsed}
-            >
-              {navCollapsed
-                ? <ExpandNavIcon   style={{ color: '#000000' }} aria-hidden="true" />
-                : <CollapseNavIcon style={{ color: '#000000' }} aria-hidden="true" />
-              }
-            </button>
+            <Tooltip label={navCollapsed ? 'Expand the menu' : 'Collapse the menu'} placement="bottom">
+              <button
+                onClick={() => setNavCollapsed(p => !p)}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center' }}
+                aria-label={navCollapsed ? 'Expand navigation' : 'Collapse navigation'}
+                aria-expanded={!navCollapsed}
+              >
+                {navCollapsed
+                  ? <ExpandNavIcon   style={{ color: '#000000' }} aria-hidden="true" />
+                  : <CollapseNavIcon style={{ color: '#000000' }} aria-hidden="true" />
+                }
+              </button>
+            </Tooltip>
           </div>
         )}
         <span style={{ color: '#000000', fontWeight: 600, fontSize: '14px', whiteSpace: 'nowrap', paddingLeft: '16px' }}>
