@@ -11,7 +11,7 @@ export default function GenericPage() {
   const { pathname } = useLocation();
   const segments = pathname.split('/').filter(Boolean);
 
-  const title = segments.length === 0 ? 'Dashboard' : segments.map(fmt).join(' › ');
+  const pageTitle = segments.length === 0 ? 'Dashboard' : fmt(segments[segments.length - 1]);
 
   return (
     <div className={styles.page}>
@@ -25,12 +25,8 @@ export default function GenericPage() {
               </span>
             ))}
       </p>
-      <h1 className={styles.title}>{title}</h1>
+      <h1 className={styles.title}>{pageTitle}</h1>
       <div className={styles.body}>
-        <p>This is the <strong>{title}</strong> section.</p>
-        <p className={styles.hint}>
-          Navigate using the {__ACTIVE_OPTION__ === '1' ? 'top bar' : 'sidebar'} to explore the interface.
-        </p>
         <div className={styles.placeholder} aria-hidden="true">
           <div className={styles.card} />
           <div className={styles.card} />
