@@ -80,7 +80,7 @@ export default function App() {
         right: '16px',
         display: 'flex',
         alignItems: 'center',
-        gap: '8px',
+        gap: '12px',
       }}>
         <NotificationsOutlinedIcon style={{ fontSize: 20, color: '#000000' }} />
         <HelpOutlineIcon style={{ fontSize: 20, color: '#000000' }} />
