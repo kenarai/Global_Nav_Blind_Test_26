@@ -10,6 +10,7 @@
     "build:1": "VITE_OPTION=1 vite build --outDir dist/option-1",
     "build:2": "VITE_OPTION=2 vite build --outDir dist/option-2",
     "build:3": "VITE_OPTION=3 vite build --outDir dist/option-3",
+    "build:vercel": "VITE_OPTION=1 vite build --outDir dist && VITE_OPTION=2 vite build --outDir dist/opt2 --base /opt2/ && VITE_OPTION=3 vite build --outDir dist/opt3 --base /opt3/",
     "preview:1": "vite preview --outDir dist/option-1",
     "preview:2": "vite preview --outDir dist/option-2",
     "preview:3": "vite preview --outDir dist/option-3",
