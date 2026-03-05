@@ -41,8 +41,8 @@ export default function App() {
               aria-expanded={!navCollapsed}
             >
               {navCollapsed
-                ? <ExpandNavIcon   style={{ fontSize: 20, color: '#000000' }} aria-hidden="true" />
-                : <CollapseNavIcon style={{ fontSize: 20, color: '#000000' }} aria-hidden="true" />
+                ? <ExpandNavIcon   style={{ color: '#000000' }} aria-hidden="true" />
+                : <CollapseNavIcon style={{ color: '#000000' }} aria-hidden="true" />
               }
             </button>
           </div>

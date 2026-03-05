@@ -269,7 +269,7 @@
 }
 
 .navItemCollapsed:hover .iconWrap {
-  background-color: var(--color-gray-100);
+  background-color: rgba(0,0,0,0.08);
 }
 
 .navItemCollapsed.navItemActive .iconWrap {
