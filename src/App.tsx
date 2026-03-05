@@ -51,7 +51,7 @@ export default function App() {
           </div>
         )}
         <span style={{ color: '#000000', fontWeight: 600, fontSize: '14px', whiteSpace: 'nowrap', paddingLeft: '16px' }}>
-          Lorem App option {__ACTIVE_OPTION__}
+          Design Option #{__ACTIVE_OPTION__}
         </span>
       </div>
 
