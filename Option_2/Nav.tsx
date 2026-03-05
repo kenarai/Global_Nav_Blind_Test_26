@@ -192,7 +192,7 @@ function NavItem({ icon: Icon, label, pages, isPrimaryExpanded, expandedLabels, 
           content: (
             <div>
               {!isPrimaryExpanded && (
-                <p className={styles.hoverLabel} onClick={handleNavItemClick}>
+                <p className={styles.hoverLabel}>
                   {label}
                 </p>
               )}

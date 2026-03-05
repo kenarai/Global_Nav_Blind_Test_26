@@ -240,15 +240,10 @@
 
 .hoverLabel {
   font-weight: bold;
-  cursor: pointer;
   padding: 16px;
   margin: 0;
   font-size: 14px;
   color: #0f1d26;
-}
-
-.hoverLabel:hover {
-  background-color: #f5f5f5;
 }
 
 .pagesList {
