@@ -105,7 +105,7 @@ function NavItem({ icon: Icon, label, pages, isPrimaryExpanded }: NavItemProps) 
 
   const handleNavItemClick = () => {
     setShowPages(prev => !prev);
-    navigate(itemPath);
+    navigate(pages && pages.length > 0 ? `${itemPath}/${slugify(pages[0])}` : itemPath);
   };
 
   const handlePageClick = (page: string) => {

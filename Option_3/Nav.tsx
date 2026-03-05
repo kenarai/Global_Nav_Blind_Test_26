@@ -96,7 +96,7 @@ function HoverCard({ item, pos, onNavigate, onMouseEnter, onMouseLeave }: HoverC
     >
       <button
         className={styles.hoverCardTitle}
-        onClick={() => onNavigate(item.to)}
+        onClick={() => onNavigate(item.pages?.length ? `${item.to}/${slugify(item.pages[0])}` : item.to)}
         role="menuitem"
       >
         {item.label}
@@ -195,6 +195,10 @@ function NavItem({ item, isCollapsed, isActive }: NavItemProps) {
       <NavLink
         to={to}
         end={to === '/'}
+        onClick={item.pages?.length ? (e) => {
+          e.preventDefault();
+          navigate(`${to}/${slugify(item.pages![0])}`);
+        } : undefined}
         aria-describedby={isCollapsed && !item.pages && showTooltip ? tooltipId : undefined}
         className={({ isActive }) =>
           [
