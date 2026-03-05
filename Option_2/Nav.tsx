@@ -100,7 +100,8 @@ function HoverCard({ children, width, label, activeHoverLabel, onActivate, onSch
 interface NavItemProps extends NavItemDef {
   isPrimaryExpanded: boolean;
   expandedLabels: Set<string>;
-  toggleExpandedLabel: (label: string) => void;
+  collapsedLabels: Set<string>;
+  setSubmenuOpen: (label: string, open: boolean) => void;
   collapseAllLabels: () => void;
   activeHoverLabel: string | null;
   onHoverActivate: (label: string) => void;
@@ -108,7 +109,7 @@ interface NavItemProps extends NavItemDef {
   onHoverCancelHide: () => void;
 }
 
-function NavItem({ icon: Icon, label, pages, isPrimaryExpanded, expandedLabels, toggleExpandedLabel, collapseAllLabels, activeHoverLabel, onHoverActivate, onHoverScheduleHide, onHoverCancelHide }: NavItemProps) {
+function NavItem({ icon: Icon, label, pages, isPrimaryExpanded, expandedLabels, collapsedLabels, setSubmenuOpen, collapseAllLabels, activeHoverLabel, onHoverActivate, onHoverScheduleHide, onHoverCancelHide }: NavItemProps) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
@@ -120,10 +121,9 @@ function NavItem({ icon: Icon, label, pages, isPrimaryExpanded, expandedLabels, 
   // In expanded mode with sub-pages, don't highlight the module — highlight the sub-page item instead
   const isActive = isPrimaryExpanded && pages ? false : isActiveModule;
 
-  const showPages = expandedLabels.has(label);
-
-  // Auto-expand sub-pages when currently on this module's path (in addition to manual toggle)
-  const showSubPages = isPrimaryExpanded && pages != null && (showPages || isActiveModule);
+  // Show sub-pages if manually expanded, OR active module that hasn't been explicitly collapsed
+  const showSubPages = isPrimaryExpanded && pages != null &&
+    (expandedLabels.has(label) || (isActiveModule && !collapsedLabels.has(label)));
 
   const handleNavItemClick = () => {
     collapseAllLabels(); // collapse all manual expansions on navigate
@@ -132,7 +132,7 @@ function NavItem({ icon: Icon, label, pages, isPrimaryExpanded, expandedLabels, 
 
   const handleCaretClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    toggleExpandedLabel(label);
+    setSubmenuOpen(label, !showSubPages);
   };
 
   const handlePageClick = (page: string) => {
@@ -233,17 +233,25 @@ export function Sidebar() { return null; }
 export function Nav() {
   const [isPrimaryExpanded, setPrimaryExpanded] = useState(true);
   const [expandedLabels, setExpandedLabels] = useState<Set<string>>(new Set());
+  const [collapsedLabels, setCollapsedLabels] = useState<Set<string>>(new Set());
   const [activeHoverLabel, setActiveHoverLabel] = useState<string | null>(null);
   const hoverHideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const toggleExpandedLabel = (label: string) =>
-    setExpandedLabels(prev => {
-      const next = new Set(prev);
-      next.has(label) ? next.delete(label) : next.add(label);
-      return next;
-    });
+  const setSubmenuOpen = (label: string, open: boolean) => {
+    if (open) {
+      setExpandedLabels(prev => { const n = new Set(prev); n.add(label); return n; });
+      setCollapsedLabels(prev => { const n = new Set(prev); n.delete(label); return n; });
+    } else {
+      setExpandedLabels(prev => { const n = new Set(prev); n.delete(label); return n; });
+      setCollapsedLabels(prev => { const n = new Set(prev); n.add(label); return n; });
+    }
+  };
 
-  const collapseAllLabels = () => setExpandedLabels(new Set());
+  // On navigate: clear both sets so the new active module auto-expands cleanly
+  const collapseAllLabels = () => {
+    setExpandedLabels(new Set());
+    setCollapsedLabels(new Set());
+  };
 
   const onHoverCancelHide = () => {
     if (hoverHideTimer.current) {
@@ -274,7 +282,8 @@ export function Nav() {
             {...item}
             isPrimaryExpanded={isPrimaryExpanded}
             expandedLabels={expandedLabels}
-            toggleExpandedLabel={toggleExpandedLabel}
+            collapsedLabels={collapsedLabels}
+            setSubmenuOpen={setSubmenuOpen}
             collapseAllLabels={collapseAllLabels}
             activeHoverLabel={activeHoverLabel}
             onHoverActivate={onHoverActivate}
