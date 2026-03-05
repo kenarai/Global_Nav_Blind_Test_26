@@ -110,8 +110,12 @@ function NavItem({ icon: Icon, label, pages, isPrimaryExpanded }: NavItemProps) 
   const showSubPages = isPrimaryExpanded && pages != null && (showPages || isActiveModule);
 
   const handleNavItemClick = () => {
-    setShowPages(prev => !prev);
     navigate(pages && pages.length > 0 ? `${itemPath}/${slugify(pages[0])}` : itemPath);
+  };
+
+  const handleCaretClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setShowPages(prev => !prev);
   };
 
   const handlePageClick = (page: string) => {
@@ -137,17 +141,19 @@ function NavItem({ icon: Icon, label, pages, isPrimaryExpanded }: NavItemProps) 
               <span className={isPrimaryExpanded ? styles.label : styles.el}>
                 {label}
               </span>
-              {pages && (
-                <span
-                  className={styles.rightIcon}
+              {pages && isPrimaryExpanded && (
+                <button
+                  className={styles.caretBtn}
+                  onClick={handleCaretClick}
+                  aria-label={showSubPages ? 'Collapse sub-pages' : 'Expand sub-pages'}
+                  aria-expanded={showSubPages}
                   style={{
-                    opacity: isPrimaryExpanded ? 1 : 0,
                     transform: showSubPages ? 'rotate(180deg)' : 'rotate(0deg)',
                     transition: 'transform 0.3s ease',
                   }}
                 >
                   <ExpandMoreIcon style={{ fontSize: 16, color: '#000000' }} />
-                </span>
+                </button>
               )}
             </li>
           ),

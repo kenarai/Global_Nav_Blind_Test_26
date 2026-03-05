@@ -153,6 +153,30 @@
   margin-top: -8px;
 }
 
+/* ── Caret toggle button (expanded mode only) ── */
+.caretBtn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  margin-top: -14px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: rgba(0,0,0,0.06);
+  border-radius: 4px;
+  cursor: pointer;
+  color: #000000;
+  z-index: 1;
+  transition: background-color 0.15s;
+}
+
+.caretBtn:hover {
+  background-color: rgba(0,0,0,0.12);
+}
+
 /* ── Toggle affordance ── */
 .toggleAffordance {
   position: sticky;
