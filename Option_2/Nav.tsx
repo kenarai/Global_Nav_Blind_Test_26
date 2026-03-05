@@ -148,7 +148,7 @@ function NavItem({ icon: Icon, label, pages, isPrimaryExpanded, expandedLabels, 
     navigate(`${itemPath}/${slugify(page)}`);
   };
 
-  const hoverWidth = isPrimaryExpanded ? '0px' : '280px';
+  const hoverWidth = isPrimaryExpanded ? '0px' : '240px';
 
   return (
     <div className={styles.navItemWrapper}>
