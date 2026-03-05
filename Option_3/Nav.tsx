@@ -11,7 +11,6 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import CorporateFareIcon from '@mui/icons-material/CorporateFare';
 import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
 import AppsIcon from '@mui/icons-material/Apps';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import type { SvgIconComponent } from '@mui/icons-material';
 import styles from './nav.module.css';
 import { useNavCollapse } from '@/navCollapseContext';
@@ -223,18 +222,7 @@ function NavItem({ item, isCollapsed }: NavItemProps) {
         <span className={styles.iconLabel}>{label}</span>
       </NavLink>
 
-      {/* More options button — hovered + not collapsed */}
-      {isHovered && !isCollapsed && (
-        <button
-          className={styles.moreBtn}
-          aria-label={`More options for ${label}`}
-          onClick={e => e.preventDefault()}
-        >
-          <MoreVertIcon style={{ fontSize: 16 }} aria-hidden="true" />
-        </button>
-      )}
-
-      {/* Hover card — collapsed + hovered + has sub-pages (portal) */}
+{/* Hover card — collapsed + hovered + has sub-pages (portal) */}
       {isCollapsed && isHovered && item.pages && hoverPos && (
         <HoverCard
           item={item}
