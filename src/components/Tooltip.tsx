@@ -18,7 +18,7 @@ export default function Tooltip({ label, placement = 'right', children }: Toolti
     if (placement === 'right') {
       setPos({ top: rect.top + rect.height / 2, left: rect.right + 8 });
     } else {
-      setPos({ top: rect.bottom + 8, left: rect.left + rect.width / 2 });
+      setPos({ top: rect.bottom + 8, left: rect.left });
     }
   };
 

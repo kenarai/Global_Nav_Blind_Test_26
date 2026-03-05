@@ -23,5 +23,5 @@
 }
 
 .bottom {
-  transform: translateX(-50%);
+  /* left-aligned: no horizontal offset */
 }
