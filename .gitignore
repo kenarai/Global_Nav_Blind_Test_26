@@ -10,8 +10,11 @@ coverage
 playwright-report
 test-results
 
-# Editor
+# Editor — ignore the full .vscode directory except shared config files
 .vscode
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
 .idea
 *.suo
 *.ntvs*

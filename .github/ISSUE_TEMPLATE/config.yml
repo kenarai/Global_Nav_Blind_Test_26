@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Contributing Guide
+    url: https://github.com/your-org/global-nav-blind-test/blob/main/CONTRIBUTING.md
+    about: Read the contribution guide before opening an issue.
+  - name: QA Skill Documentation
+    url: https://github.com/your-org/global-nav-blind-test/blob/main/.claude/skills/qa-tester.md
+    about: Learn how to run the automated QA skill before filing a bug.
