@@ -217,15 +217,15 @@
   color: var(--color-gray-900);
 }
 
-/* Active pill — Gmail's light blue */
+/* Active pill */
 .navItemActive {
-  background-color: #c2e7ff;
+  background-color: rgba(0,0,0,0.12);
   color: var(--color-gray-900);
   font-weight: var(--font-weight-bold);
 }
 
 .navItemActive:hover {
-  background-color: #b4dff7;
+  background-color: rgba(0,0,0,0.15);
 }
 
 /* Collapsed: narrow icon-rail pill */
@@ -497,7 +497,7 @@
 }
 
 .rightPanelItemActive {
-  background-color: #c2e7ff;
+  background-color: rgba(0,0,0,0.12);
   color: var(--color-gray-900);
   font-weight: var(--font-weight-medium);
 }
@@ -544,7 +544,7 @@
 }
 
 .subPageItemActive {
-  background-color: #c2e7ff;
+  background-color: rgba(0,0,0,0.12);
   color: var(--color-gray-900);
   font-weight: var(--font-weight-medium);
 }
