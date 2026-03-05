@@ -5,7 +5,6 @@
   z-index: var(--z-nav);
   background-color: rgb(243, 243, 243);
   border-bottom: 1px solid var(--color-border);
-  box-shadow: var(--shadow-sm);
   flex-shrink: 0;
 }
 
@@ -52,7 +51,7 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  padding: var(--space-2) var(--space-2);
+  padding: var(--space-1) var(--space-2);
   border-radius: 4px;
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
@@ -64,25 +63,19 @@
 }
 
 .navLink:hover {
-  background-color: var(--color-gray-100);
-  color: var(--color-gray-900);
+  background-color: rgba(0,0,0,0.08);
+  color: #000000;
   text-decoration: none;
 }
 
-/* Active state: blue text + underline accent */
+/* Active state: subtle dark background, no brand color */
 .navLinkActive {
-  color: var(--color-brand-primary);
+  background-color: rgba(0,0,0,0.12);
+  color: #000000;
 }
 
-.navLinkActive::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: var(--space-3);
-  right: var(--space-3);
-  height: 2px;
-  background-color: var(--color-brand-primary);
-  border-radius: 4px;
+.navLinkActive:hover {
+  background-color: rgba(0,0,0,0.15);
 }
 
 /* ─── Sub-page Sidebar ─────────────────────────────────────────────────────── */
@@ -133,8 +126,8 @@
 }
 
 .submenuItemActive {
-  background-color: var(--color-gray-100);
-  color: var(--color-brand-primary);
+  background-color: rgba(0,0,0,0.12);
+  color: #000000;
   font-weight: var(--font-weight-medium);
 }
 
