@@ -3,8 +3,8 @@
 /* ─── Sidebar shell ─────────────────────────────────────────────────────────── */
 
 .sidebar {
-  height: calc(100vh - 40px);
-  background-color: var(--color-white);
+  height: calc(100vh - 48px);
+  background-color: #F3F3F3;
   display: flex;
   flex-direction: row;
   flex-shrink: 0;
@@ -16,7 +16,7 @@
 /* ─── Left Rail ─────────────────────────────────────────────────────────────── */
 
 .leftRail {
-  width: 76px;
+  width: 64px;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -25,7 +25,7 @@
 }
 
 .sidebarCollapsed {
-  width: 76px;
+  width: 64px;
 }
 
 /* ─── Header ────────────────────────────────────────────────────────────────── */
@@ -204,7 +204,7 @@
   margin-right: var(--space-3);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-normal);
-  color: var(--color-gray-700);
+  color: #000000;
   text-decoration: none;
   transition: background-color 0.15s;
   position: relative;
@@ -232,7 +232,7 @@
 .navItemCollapsed {
   padding: 4px 2px;
   margin: 2px 4px;
-  width: 68px;
+  width: 56px;
   border-radius: 14px;
 }
 
@@ -246,7 +246,7 @@
   justify-content: center;
   width: 24px;
   height: 24px;
-  color: var(--color-gray-600);
+  color: #000000;
 }
 
 .navItemActive .iconWrap {

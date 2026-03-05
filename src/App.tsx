@@ -24,8 +24,8 @@ export default function App() {
     <div style={{
       position: 'relative',
       width: '100vw',
-      height: '40px',
-      backgroundColor: '#d14233',
+      height: '48px',
+      backgroundColor: '#F3F3F3',
       display: 'flex',
       alignItems: 'center',
       flexShrink: 0,
@@ -40,12 +40,12 @@ export default function App() {
             aria-expanded={!navCollapsed}
           >
             {navCollapsed
-              ? <ExpandNavIcon   style={{ fontSize: 20, color: '#ffffff' }} aria-hidden="true" />
-              : <CollapseNavIcon style={{ fontSize: 20, color: '#ffffff' }} aria-hidden="true" />
+              ? <ExpandNavIcon   style={{ fontSize: 20, color: '#000000' }} aria-hidden="true" />
+              : <CollapseNavIcon style={{ fontSize: 20, color: '#000000' }} aria-hidden="true" />
             }
           </button>
         )}
-        <span style={{ color: '#ffffff', fontWeight: 600, fontSize: '14px', whiteSpace: 'nowrap' }}>
+        <span style={{ color: '#000000', fontWeight: 600, fontSize: '14px', whiteSpace: 'nowrap' }}>
           Lorem App option {__ACTIVE_OPTION__}
         </span>
       </div>
@@ -55,13 +55,13 @@ export default function App() {
         margin: '0 auto',
         width: '25vw',
         height: '24px',
-        backgroundColor: 'rgba(255,255,255,0.25)',
+        backgroundColor: 'rgba(0,0,0,0.08)',
         borderRadius: '4px',
         position: 'relative',
       }}>
         <SearchIcon style={{
           fontSize: 16,
-          color: '#ffffff',
+          color: '#000000',
           position: 'absolute',
           left: '12px',
           top: '50%',
@@ -77,10 +77,10 @@ export default function App() {
         alignItems: 'center',
         gap: '8px',
       }}>
-        <NotificationsOutlinedIcon style={{ fontSize: 20, color: '#ffffff' }} />
-        <HelpOutlineIcon style={{ fontSize: 20, color: '#ffffff' }} />
-        <SettingsOutlinedIcon style={{ fontSize: 20, color: '#ffffff' }} />
-        <AccountCircleOutlinedIcon style={{ fontSize: 20, color: '#ffffff' }} />
+        <NotificationsOutlinedIcon style={{ fontSize: 20, color: '#000000' }} />
+        <HelpOutlineIcon style={{ fontSize: 20, color: '#000000' }} />
+        <SettingsOutlinedIcon style={{ fontSize: 20, color: '#000000' }} />
+        <AccountCircleOutlinedIcon style={{ fontSize: 20, color: '#000000' }} />
       </div>
     </div>
   );

@@ -126,7 +126,7 @@ function NavItem({ icon: Icon, label, pages, isPrimaryExpanded }: NavItemProps) 
               onClick={handleNavItemClick}
             >
               <span className={styles.icon}>
-                <Icon style={{ fontSize: 20, color: '#ffffff' }} aria-hidden="true" />
+                <Icon style={{ fontSize: 20, color: '#000000' }} aria-hidden="true" />
               </span>
               <span className={isPrimaryExpanded ? styles.label : styles.el}>
                 {label}
@@ -140,7 +140,7 @@ function NavItem({ icon: Icon, label, pages, isPrimaryExpanded }: NavItemProps) 
                     transition: 'transform 0.3s ease',
                   }}
                 >
-                  <ExpandMoreIcon style={{ fontSize: 16, color: '#ffffff' }} />
+                  <ExpandMoreIcon style={{ fontSize: 16, color: '#000000' }} />
                 </span>
               )}
             </li>
@@ -216,8 +216,8 @@ export function Nav() {
         onKeyDown={e => e.key === 'Enter' && setPrimaryExpanded(prev => !prev)}
       >
         {isPrimaryExpanded
-          ? <CollapseNavIcon style={{ color: '#ffffff' }} aria-hidden="true" />
-          : <ExpandNavIcon   style={{ color: '#ffffff' }} aria-hidden="true" />
+          ? <CollapseNavIcon style={{ color: '#000000' }} aria-hidden="true" />
+          : <ExpandNavIcon   style={{ color: '#000000' }} aria-hidden="true" />
         }
       </div>
     </aside>
