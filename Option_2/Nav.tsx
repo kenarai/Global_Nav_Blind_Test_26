@@ -50,19 +50,26 @@ interface HoverCardChildren {
 interface HoverCardProps {
   children: HoverCardChildren;
   width: string;
+  label: string;
+  activeHoverLabel: string | null;
+  onActivate: (label: string) => void;
+  onScheduleHide: () => void;
+  onCancelHide: () => void;
 }
 
-function HoverCard({ children, width }: HoverCardProps) {
-  const [visible, setVisible] = useState(false);
+function HoverCard({ children, width, label, activeHoverLabel, onActivate, onScheduleHide, onCancelHide }: HoverCardProps) {
   const [pos, setPos] = useState<{ top: number; left: number } | null>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
+  const visible = activeHoverLabel === label;
+
   const handleMouseEnter = () => {
+    onCancelHide();
     if (wrapperRef.current) {
       const rect = wrapperRef.current.getBoundingClientRect();
       setPos({ top: rect.top, left: rect.right + 8 });
     }
-    setVisible(true);
+    onActivate(label);
   };
 
   return (
@@ -70,15 +77,15 @@ function HoverCard({ children, width }: HoverCardProps) {
       ref={wrapperRef}
       className={styles.hoverCardWrapper}
       onMouseEnter={handleMouseEnter}
-      onMouseLeave={() => setVisible(false)}
+      onMouseLeave={onScheduleHide}
     >
       <div className={styles.hoverCardTrigger}>{children.trigger}</div>
       {visible && width !== '0px' && pos && createPortal(
         <div
           className={styles.hoverCard}
           style={{ position: 'fixed', top: pos.top, left: pos.left, width }}
-          onMouseEnter={() => setVisible(true)}
-          onMouseLeave={() => setVisible(false)}
+          onMouseEnter={onCancelHide}
+          onMouseLeave={onScheduleHide}
         >
           {children.content}
         </div>,
@@ -92,10 +99,16 @@ function HoverCard({ children, width }: HoverCardProps) {
 
 interface NavItemProps extends NavItemDef {
   isPrimaryExpanded: boolean;
+  expandedLabels: Set<string>;
+  toggleExpandedLabel: (label: string) => void;
+  collapseAllLabels: () => void;
+  activeHoverLabel: string | null;
+  onHoverActivate: (label: string) => void;
+  onHoverScheduleHide: () => void;
+  onHoverCancelHide: () => void;
 }
 
-function NavItem({ icon: Icon, label, pages, isPrimaryExpanded }: NavItemProps) {
-  const [showPages, setShowPages] = useState(false);
+function NavItem({ icon: Icon, label, pages, isPrimaryExpanded, expandedLabels, toggleExpandedLabel, collapseAllLabels, activeHoverLabel, onHoverActivate, onHoverScheduleHide, onHoverCancelHide }: NavItemProps) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
@@ -107,19 +120,23 @@ function NavItem({ icon: Icon, label, pages, isPrimaryExpanded }: NavItemProps) 
   // In expanded mode with sub-pages, don't highlight the module — highlight the sub-page item instead
   const isActive = isPrimaryExpanded && pages ? false : isActiveModule;
 
+  const showPages = expandedLabels.has(label);
+
   // Auto-expand sub-pages when currently on this module's path (in addition to manual toggle)
   const showSubPages = isPrimaryExpanded && pages != null && (showPages || isActiveModule);
 
   const handleNavItemClick = () => {
+    collapseAllLabels(); // collapse all manual expansions on navigate
     navigate(pages && pages.length > 0 ? `${itemPath}/${slugify(pages[0])}` : itemPath);
   };
 
   const handleCaretClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setShowPages(prev => !prev);
+    toggleExpandedLabel(label);
   };
 
   const handlePageClick = (page: string) => {
+    collapseAllLabels(); // collapse all manual expansions on navigate
     navigate(`${itemPath}/${slugify(page)}`);
   };
 
@@ -129,6 +146,11 @@ function NavItem({ icon: Icon, label, pages, isPrimaryExpanded }: NavItemProps) 
     <div className={styles.navItemWrapper}>
       <HoverCard
         width={hoverWidth}
+        label={label}
+        activeHoverLabel={activeHoverLabel}
+        onActivate={onHoverActivate}
+        onScheduleHide={onHoverScheduleHide}
+        onCancelHide={onHoverCancelHide}
       >
         {{
           trigger: (
@@ -210,6 +232,35 @@ export function Sidebar() { return null; }
 
 export function Nav() {
   const [isPrimaryExpanded, setPrimaryExpanded] = useState(true);
+  const [expandedLabels, setExpandedLabels] = useState<Set<string>>(new Set());
+  const [activeHoverLabel, setActiveHoverLabel] = useState<string | null>(null);
+  const hoverHideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const toggleExpandedLabel = (label: string) =>
+    setExpandedLabels(prev => {
+      const next = new Set(prev);
+      next.has(label) ? next.delete(label) : next.add(label);
+      return next;
+    });
+
+  const collapseAllLabels = () => setExpandedLabels(new Set());
+
+  const onHoverCancelHide = () => {
+    if (hoverHideTimer.current) {
+      clearTimeout(hoverHideTimer.current);
+      hoverHideTimer.current = null;
+    }
+  };
+
+  const onHoverScheduleHide = () => {
+    onHoverCancelHide();
+    hoverHideTimer.current = setTimeout(() => setActiveHoverLabel(null), 120);
+  };
+
+  const onHoverActivate = (label: string) => {
+    onHoverCancelHide();
+    setActiveHoverLabel(label);
+  };
 
   return (
     <aside
@@ -218,7 +269,18 @@ export function Nav() {
     >
       <ul className={styles.primaryNav} role="list">
         {navItems.map(item => (
-          <NavItem key={item.label} {...item} isPrimaryExpanded={isPrimaryExpanded} />
+          <NavItem
+            key={item.label}
+            {...item}
+            isPrimaryExpanded={isPrimaryExpanded}
+            expandedLabels={expandedLabels}
+            toggleExpandedLabel={toggleExpandedLabel}
+            collapseAllLabels={collapseAllLabels}
+            activeHoverLabel={activeHoverLabel}
+            onHoverActivate={onHoverActivate}
+            onHoverScheduleHide={onHoverScheduleHide}
+            onHoverCancelHide={onHoverCancelHide}
+          />
         ))}
       </ul>
 
