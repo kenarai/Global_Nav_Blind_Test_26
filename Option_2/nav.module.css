@@ -85,7 +85,7 @@
 }
 
 .navItem.widthExpanded:hover::before {
-  width: 174px;
+  width: calc(100% - 25px);
   opacity: 1;
 }
 
@@ -96,7 +96,7 @@
 }
 
 .navItem.widthExpanded.navItemActive::before {
-  width: 174px;
+  width: calc(100% - 25px);
 }
 
 /* ── Icon ── */
@@ -165,7 +165,7 @@
   align-items: center;
   justify-content: center;
   border: none;
-  background: rgba(0,0,0,0.06);
+  background: rgba(0,0,0,0.04);
   border-radius: 4px;
   cursor: pointer;
   color: #000000;
@@ -275,6 +275,7 @@
   padding-left: 36px !important;
   padding-bottom: 8px !important;
   margin: 0;
+  padding-right: 12px;
 }
 
 .subPageItem {
