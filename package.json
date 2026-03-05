@@ -3,10 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "engines": {
-    "node": ">=20.0.0",
-    "npm": ">=10.0.0"
-  },
   "scripts": {
     "dev:1": "VITE_OPTION=1 vite",
     "dev:2": "VITE_OPTION=2 vite",
@@ -19,7 +15,6 @@
     "preview:3": "vite preview --outDir dist/option-3",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src Option_1 Option_2 Option_3 --ext .ts,.tsx",
@@ -45,14 +40,12 @@
     "@typescript-eslint/eslint-plugin": "^7.11.0",
     "@typescript-eslint/parser": "^7.11.0",
     "@vitejs/plugin-react": "^4.3.0",
-    "@vitest/coverage-v8": "^4.0.18",
     "eslint": "^8.57.0",
     "eslint-plugin-react": "^7.34.2",
     "eslint-plugin-react-hooks": "^4.6.2",
-    "eslint-plugin-react-refresh": "^0.5.2",
     "prettier": "^3.3.0",
     "typescript": "^5.4.5",
     "vite": "^5.2.12",
-    "vitest": "^4.0.18"
+    "vitest": "^1.6.0"
   }
 }
