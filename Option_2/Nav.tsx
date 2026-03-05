@@ -99,9 +99,15 @@ function NavItem({ icon: Icon, label, pages, isPrimaryExpanded }: NavItemProps) 
   const { pathname } = useLocation();
 
   const itemPath = label === 'Dashboard' ? '/' : `/${slugify(label)}`;
-  const isActive = label === 'Dashboard'
+  const isActiveModule = label === 'Dashboard'
     ? pathname === '/'
     : pathname.startsWith(`/${slugify(label)}`);
+
+  // In expanded mode with sub-pages, don't highlight the module — highlight the sub-page item instead
+  const isActive = isPrimaryExpanded && pages ? false : isActiveModule;
+
+  // Auto-expand sub-pages when currently on this module's path (in addition to manual toggle)
+  const showSubPages = isPrimaryExpanded && pages != null && (showPages || isActiveModule);
 
   const handleNavItemClick = () => {
     setShowPages(prev => !prev);
@@ -136,7 +142,7 @@ function NavItem({ icon: Icon, label, pages, isPrimaryExpanded }: NavItemProps) 
                   className={styles.rightIcon}
                   style={{
                     opacity: isPrimaryExpanded ? 1 : 0,
-                    transform: showPages ? 'rotate(180deg)' : 'rotate(0deg)',
+                    transform: showSubPages ? 'rotate(180deg)' : 'rotate(0deg)',
                     transition: 'transform 0.3s ease',
                   }}
                 >
@@ -170,12 +176,15 @@ function NavItem({ icon: Icon, label, pages, isPrimaryExpanded }: NavItemProps) 
         }}
       </HoverCard>
 
-      {isPrimaryExpanded && showPages && pages && (
+      {showSubPages && (
         <ul className={styles.subPages}>
-          {pages.map(page => (
+          {pages!.map(page => (
             <li
               key={page}
-              className={styles.subPageItem}
+              className={[
+                styles.subPageItem,
+                pathname === `${itemPath}/${slugify(page)}` ? styles.subPageItemActive : '',
+              ].filter(Boolean).join(' ')}
               onClick={() => handlePageClick(page)}
             >
               {page}
