@@ -31,21 +31,23 @@ export default function App() {
       flexShrink: 0,
     }}>
       {/* Left side: hamburger (Option 3 only) + app name */}
-      <div style={{ position: 'absolute', left: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+      <div style={{ position: 'absolute', left: 0, display: 'flex', alignItems: 'center' }}>
         {isOption3 && (
-          <button
-            onClick={() => setNavCollapsed(p => !p)}
-            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center' }}
-            aria-label={navCollapsed ? 'Expand navigation' : 'Collapse navigation'}
-            aria-expanded={!navCollapsed}
-          >
-            {navCollapsed
-              ? <ExpandNavIcon   style={{ fontSize: 20, color: '#000000' }} aria-hidden="true" />
-              : <CollapseNavIcon style={{ fontSize: 20, color: '#000000' }} aria-hidden="true" />
-            }
-          </button>
+          <div style={{ width: '64px', display: 'flex', justifyContent: 'center', alignItems: 'center', flexShrink: 0 }}>
+            <button
+              onClick={() => setNavCollapsed(p => !p)}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center' }}
+              aria-label={navCollapsed ? 'Expand navigation' : 'Collapse navigation'}
+              aria-expanded={!navCollapsed}
+            >
+              {navCollapsed
+                ? <ExpandNavIcon   style={{ fontSize: 20, color: '#000000' }} aria-hidden="true" />
+                : <CollapseNavIcon style={{ fontSize: 20, color: '#000000' }} aria-hidden="true" />
+              }
+            </button>
+          </div>
         )}
-        <span style={{ color: '#000000', fontWeight: 600, fontSize: '14px', whiteSpace: 'nowrap' }}>
+        <span style={{ color: '#000000', fontWeight: 600, fontSize: '14px', whiteSpace: 'nowrap', paddingLeft: '16px' }}>
           Lorem App option {__ACTIVE_OPTION__}
         </span>
       </div>

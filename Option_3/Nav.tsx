@@ -145,9 +145,10 @@ function Tooltip({ id, label, visible }: TooltipProps) {
 interface NavItemProps {
   item: NavItemDef;
   isCollapsed: boolean;
+  isActive: boolean;
 }
 
-function NavItem({ item, isCollapsed }: NavItemProps) {
+function NavItem({ item, isCollapsed, isActive }: NavItemProps) {
   const { icon: Icon, label, to, badge } = item;
 
   const [isHovered, setIsHovered] = useState(false);
@@ -162,13 +163,11 @@ function NavItem({ item, isCollapsed }: NavItemProps) {
   const handleMouseEnter = () => {
     clearTimeout(leaveTimerRef.current);
     setIsHovered(true);
-    if (isCollapsed) {
-      if (item.pages && wrapperRef.current) {
-        const rect = wrapperRef.current.getBoundingClientRect();
-        setHoverPos({ top: rect.top, left: rect.right + 8 });
-      } else {
-        timerRef.current = setTimeout(() => setShowTooltip(true), 350);
-      }
+    if (item.pages && wrapperRef.current && (isCollapsed || !isActive)) {
+      const rect = wrapperRef.current.getBoundingClientRect();
+      setHoverPos({ top: rect.top, left: rect.right + 8 });
+    } else if (isCollapsed && !item.pages) {
+      timerRef.current = setTimeout(() => setShowTooltip(true), 350);
     }
   };
 
@@ -222,8 +221,8 @@ function NavItem({ item, isCollapsed }: NavItemProps) {
         <span className={styles.iconLabel}>{label}</span>
       </NavLink>
 
-{/* Hover card — collapsed + hovered + has sub-pages (portal) */}
-      {isCollapsed && isHovered && item.pages && hoverPos && (
+{/* Hover card — hovered + has sub-pages + (collapsed OR not the active module) */}
+      {(isCollapsed || !isActive) && isHovered && item.pages && hoverPos && (
         <HoverCard
           item={item}
           pos={hoverPos}
@@ -271,7 +270,7 @@ export function Nav() {
         <nav aria-label="Primary navigation" className={styles.navBody}>
           <ul role="list" className={styles.navList}>
             {allItems.map(item => (
-              <NavItem key={item.to} item={item} isCollapsed={isCollapsed} />
+              <NavItem key={item.to} item={item} isCollapsed={isCollapsed} isActive={item.to === activeItem?.to} />
             ))}
           </ul>
         </nav>
