@@ -34,7 +34,7 @@ const navItems: NavItemDef[] = [
   { icon: BarChartIcon,         label: 'Reports',      pages: null },
   { icon: CorporateFareIcon,    label: 'Organization', pages: ['Departments', 'Business Units', 'Facilities', 'Directory'] },
   { icon: PlaylistAddCheckIcon, label: 'Actions',      pages: ['Approvals', 'Task Queue', 'Pending Reviews', 'Audit Logs'] },
-  { icon: AppsIcon,             label: 'Applications', pages: ['App Catalog', 'Installed Apps', 'Custom Builds', 'API Management'] },
+  { icon: AppsIcon,             label: 'Apps',         pages: ['App Catalog', 'Installed Apps', 'Custom Builds', 'API Management'] },
 ];
 
 const slugify = (str: string) =>
@@ -51,19 +51,26 @@ interface HoverCardProps {
   children: HoverCardChildren;
   width: string;
   label: string;
+  hasContent: boolean;
   activeHoverLabel: string | null;
   onActivate: (label: string) => void;
   onScheduleHide: () => void;
   onCancelHide: () => void;
+  onHideNow: () => void;
 }
 
-function HoverCard({ children, width, label, activeHoverLabel, onActivate, onScheduleHide, onCancelHide }: HoverCardProps) {
+function HoverCard({ children, width, label, hasContent, activeHoverLabel, onActivate, onScheduleHide, onCancelHide, onHideNow }: HoverCardProps) {
   const [pos, setPos] = useState<{ top: number; left: number } | null>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const visible = activeHoverLabel === label;
 
   const handleMouseEnter = () => {
+    if (!hasContent) {
+      // No submenu — close any currently open hover card immediately
+      onHideNow();
+      return;
+    }
     onCancelHide();
     if (wrapperRef.current) {
       const rect = wrapperRef.current.getBoundingClientRect();
@@ -107,9 +114,10 @@ interface NavItemProps extends NavItemDef {
   onHoverActivate: (label: string) => void;
   onHoverScheduleHide: () => void;
   onHoverCancelHide: () => void;
+  onHoverHideNow: () => void;
 }
 
-function NavItem({ icon: Icon, label, pages, isPrimaryExpanded, expandedLabels, collapsedLabels, setSubmenuOpen, collapseAllLabels, activeHoverLabel, onHoverActivate, onHoverScheduleHide, onHoverCancelHide }: NavItemProps) {
+function NavItem({ icon: Icon, label, pages, isPrimaryExpanded, expandedLabels, collapsedLabels, setSubmenuOpen, collapseAllLabels, activeHoverLabel, onHoverActivate, onHoverScheduleHide, onHoverCancelHide, onHoverHideNow }: NavItemProps) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
@@ -147,10 +155,12 @@ function NavItem({ icon: Icon, label, pages, isPrimaryExpanded, expandedLabels, 
       <HoverCard
         width={hoverWidth}
         label={label}
+        hasContent={pages != null}
         activeHoverLabel={activeHoverLabel}
         onActivate={onHoverActivate}
         onScheduleHide={onHoverScheduleHide}
         onCancelHide={onHoverCancelHide}
+        onHideNow={onHoverHideNow}
       >
         {{
           trigger: (
@@ -259,6 +269,11 @@ export function Nav() {
     }
   };
 
+  const onHoverHideNow = () => {
+    onHoverCancelHide();
+    setActiveHoverLabel(null);
+  };
+
   const onHoverScheduleHide = () => {
     onHoverCancelHide();
     hoverHideTimer.current = setTimeout(() => setActiveHoverLabel(null), 120);
@@ -288,6 +303,7 @@ export function Nav() {
             onHoverActivate={onHoverActivate}
             onHoverScheduleHide={onHoverScheduleHide}
             onHoverCancelHide={onHoverCancelHide}
+            onHoverHideNow={onHoverHideNow}
           />
         ))}
       </ul>

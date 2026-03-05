@@ -69,7 +69,7 @@ const sections: Section[] = [
         pages: ['Departments', 'Business Units', 'Facilities', 'Directory'] },
       { icon: PlaylistAddCheckIcon, label: 'Actions',      to: '/actions',
         pages: ['Approvals', 'Task Queue', 'Pending Reviews', 'Audit Logs'] },
-      { icon: AppsIcon,             label: 'Applications', to: '/applications',
+      { icon: AppsIcon,             label: 'Apps',         to: '/applications',
         pages: ['App Catalog', 'Installed Apps', 'Custom Builds', 'API Management'] },
     ],
   },
@@ -79,21 +79,37 @@ const sections: Section[] = [
 
 interface HoverCardProps {
   item: NavItemDef;
-  pos: { top: number; left: number };
+  pos: { top: number; left: number; height: number };
   onNavigate: (path: string) => void;
   onMouseEnter: () => void;
-  onMouseLeave: () => void;
+  onMouseLeave: (e: React.MouseEvent) => void;
 }
 
 function HoverCard({ item, pos, onNavigate, onMouseEnter, onMouseLeave }: HoverCardProps) {
   return createPortal(
-    <div
-      className={styles.hoverCard}
-      style={{ position: 'fixed', top: pos.top, left: pos.left }}
-      role="menu"
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-    >
+    <>
+      {/* Invisible bridge — fills the 8px gap between the nav rail and this card so
+          the cursor can travel across without triggering a close */}
+      <div
+        data-hovercard="true"
+        style={{
+          position: 'fixed',
+          top: pos.top,
+          left: pos.left - 8,
+          width: 8,
+          height: pos.height,
+        }}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+      />
+      <div
+        className={styles.hoverCard}
+        data-hovercard="true"
+        style={{ position: 'fixed', top: pos.top, left: pos.left }}
+        role="menu"
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+      >
       <button
         className={styles.hoverCardTitle}
         onClick={() => onNavigate(item.pages?.length ? `${item.to}/${slugify(item.pages[0])}` : item.to)}
@@ -114,7 +130,8 @@ function HoverCard({ item, pos, onNavigate, onMouseEnter, onMouseLeave }: HoverC
           </li>
         ))}
       </ul>
-    </div>,
+      </div>
+    </>,
     document.body
   );
 }
@@ -146,43 +163,35 @@ interface NavItemProps {
   item: NavItemDef;
   isCollapsed: boolean;
   isActive: boolean;
+  onOpenPopover: (pos: { top: number; left: number; height: number }) => void;
+  onClosePopover: () => void;
 }
 
-function NavItem({ item, isCollapsed, isActive }: NavItemProps) {
+function NavItem({ item, isCollapsed, isActive, onOpenPopover, onClosePopover }: NavItemProps) {
   const { icon: Icon, label, to, badge } = item;
 
-  const [isHovered, setIsHovered] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
-  const [hoverPos, setHoverPos] = useState<{ top: number; left: number } | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout>>();
-  const leaveTimerRef = useRef<ReturnType<typeof setTimeout>>();
   const wrapperRef = useRef<HTMLLIElement>(null);
   const tooltipId = useId();
   const navigate = useNavigate();
 
   const handleMouseEnter = () => {
-    clearTimeout(leaveTimerRef.current);
-    setIsHovered(true);
     if (item.pages && wrapperRef.current && (isCollapsed || !isActive)) {
       const rect = wrapperRef.current.getBoundingClientRect();
-      setHoverPos({ top: rect.top, left: rect.right + 8 });
-    } else if (isCollapsed && !item.pages) {
-      timerRef.current = setTimeout(() => setShowTooltip(true), 350);
+      onOpenPopover({ top: rect.top, left: rect.right + 8, height: rect.height });
+    } else {
+      // No submenu — close any open hover card immediately
+      onClosePopover();
+      if (isCollapsed && !item.pages) {
+        timerRef.current = setTimeout(() => setShowTooltip(true), 350);
+      }
     }
   };
 
   const handleMouseLeave = () => {
-    leaveTimerRef.current = setTimeout(() => {
-      setIsHovered(false);
-      setHoverPos(null);
-      clearTimeout(timerRef.current);
-      setShowTooltip(false);
-    }, 80);
-  };
-
-  const handleCardEnter = () => {
-    clearTimeout(leaveTimerRef.current);
-    setIsHovered(true);
+    clearTimeout(timerRef.current);
+    setShowTooltip(false);
   };
 
   return (
@@ -225,17 +234,6 @@ function NavItem({ item, isCollapsed, isActive }: NavItemProps) {
         <span className={styles.iconLabel}>{label}</span>
       </NavLink>
 
-{/* Hover card — hovered + has sub-pages + (collapsed OR not the active module) */}
-      {(isCollapsed || !isActive) && isHovered && item.pages && hoverPos && (
-        <HoverCard
-          item={item}
-          pos={hoverPos}
-          onNavigate={navigate}
-          onMouseEnter={handleCardEnter}
-          onMouseLeave={handleMouseLeave}
-        />
-      )}
-
       {/* Tooltip — collapsed + hovered + no sub-pages (with delay) */}
       {isCollapsed && !item.pages && (
         <Tooltip id={tooltipId} label={label} visible={showTooltip} />
@@ -252,6 +250,7 @@ export function Sidebar() { return null; }
 export function Nav() {
   const { isCollapsed } = useNavCollapse();
   const { pathname } = useLocation();
+  const navigate = useNavigate();
 
   // Flatten sections into a single item list (no section headers rendered)
   const allItems = sections.flatMap(s => s.items);
@@ -263,10 +262,49 @@ export function Nav() {
       (item.to === '/' ? pathname === '/' : pathname.startsWith(item.to))
   );
 
+  // ── Popover state (lifted from NavItem) ──────────────────────────────────
+  const navRef = useRef<HTMLElement>(null);
+  const [popoverItem, setPopoverItem] = useState<NavItemDef | null>(null);
+  const [popoverPos, setPopoverPos] = useState<{ top: number; left: number; height: number } | null>(null);
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout>>();
+
+  const openPopover = (item: NavItemDef, pos: { top: number; left: number; height: number }) => {
+    clearTimeout(closeTimerRef.current);
+    setPopoverItem(item);
+    setPopoverPos(pos);
+  };
+
+  const closePopover = () => {
+    setPopoverItem(null);
+    setPopoverPos(null);
+  };
+
+  // Clears any pending close — called when cursor enters the bridge or HoverCard
+  const keepPopoverOpen = () => clearTimeout(closeTimerRef.current);
+
+  // Close popover when cursor leaves <aside>, unless it moved into the bridge/HoverCard.
+  // Uses a short debounce so the cursor has time to cross the 8px gap into the bridge.
+  const handleNavAreaLeave = (e: React.MouseEvent<HTMLElement>) => {
+    const related = e.relatedTarget as Element | null;
+    if (related?.closest('[data-hovercard="true"]')) return;
+    closeTimerRef.current = setTimeout(closePopover, 150);
+  };
+
+  // Close popover when cursor leaves the bridge or HoverCard, unless it went back
+  // into the nav sidebar or into the other hovercard element (bridge ↔ card transitions).
+  const handleHoverCardLeave = (e: React.MouseEvent) => {
+    const related = e.relatedTarget as Element | null;
+    if (navRef.current?.contains(related)) return;
+    if (related?.closest('[data-hovercard="true"]')) return;
+    closePopover();
+  };
+
   return (
     <aside
+      ref={navRef}
       className={`${styles.sidebar} ${isCollapsed ? styles.sidebarCollapsed : ''}`}
       aria-label="Global navigation"
+      onMouseLeave={handleNavAreaLeave}
     >
       {/* Left Rail */}
       <div className={styles.leftRail}>
@@ -274,7 +312,14 @@ export function Nav() {
         <nav aria-label="Primary navigation" className={styles.navBody}>
           <ul role="list" className={styles.navList}>
             {allItems.map(item => (
-              <NavItem key={item.to} item={item} isCollapsed={isCollapsed} isActive={item.to === activeItem?.to} />
+              <NavItem
+                key={item.to}
+                item={item}
+                isCollapsed={isCollapsed}
+                isActive={item.to === activeItem?.to}
+                onOpenPopover={(pos) => openPopover(item, pos)}
+                onClosePopover={closePopover}
+              />
             ))}
           </ul>
         </nav>
@@ -302,6 +347,17 @@ export function Nav() {
             ))}
           </ul>
         </div>
+      )}
+
+      {/* HoverCard — rendered once at Nav level, driven by popoverItem/popoverPos */}
+      {popoverItem && popoverPos && (
+        <HoverCard
+          item={popoverItem}
+          pos={popoverPos}
+          onNavigate={navigate}
+          onMouseEnter={keepPopoverOpen}
+          onMouseLeave={handleHoverCardLeave}
+        />
       )}
     </aside>
   );

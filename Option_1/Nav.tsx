@@ -38,7 +38,7 @@ const navItems: NavItem[] = [
     pages: ['Departments', 'Business Units', 'Facilities', 'Directory'] },
   { icon: PlaylistAddCheckIcon,label: 'Actions',      to: '/actions',
     pages: ['Approvals', 'Task Queue', 'Pending Reviews', 'Audit Logs'] },
-  { icon: AppsIcon,            label: 'Applications', to: '/applications',
+  { icon: AppsIcon,            label: 'Apps',         to: '/applications',
     pages: ['App Catalog', 'Installed Apps', 'Custom Builds', 'API Management'] },
 ];
 
