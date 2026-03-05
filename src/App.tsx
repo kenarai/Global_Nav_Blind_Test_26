@@ -38,7 +38,7 @@ export default function App() {
             <Tooltip label={navCollapsed ? 'Expand the menu' : 'Collapse the menu'} placement="bottom">
               <button
                 onClick={() => setNavCollapsed(p => !p)}
-                style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center' }}
+                className={`${styles.hamburgerBtn} ${navCollapsed ? styles.hamburgerBtnCollapsed : ''}`}
                 aria-label={navCollapsed ? 'Expand navigation' : 'Collapse navigation'}
                 aria-expanded={!navCollapsed}
               >

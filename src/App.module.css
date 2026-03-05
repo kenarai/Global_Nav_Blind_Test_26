@@ -37,3 +37,30 @@
   padding: 3rem;
   background-color: var(--color-bg);
 }
+
+/* Option 3 hamburger toggle */
+.hamburgerBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s;
+}
+
+.hamburgerBtn:hover {
+  background-color: rgba(0,0,0,0.08);
+}
+
+.hamburgerBtnCollapsed {
+  background-color: rgba(0,0,0,0.08);
+}
+
+.hamburgerBtnCollapsed:hover {
+  background-color: rgba(0,0,0,0.12);
+}
