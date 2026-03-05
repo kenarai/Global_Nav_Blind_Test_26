@@ -41,7 +41,7 @@
 .hamburger {
   width: 40px;
   height: 40px;
-  border-radius: 50%;
+  border-radius: 4px;
   border: none;
   background: transparent;
   display: flex;
@@ -73,7 +73,7 @@
   height: 52px;
   background-color: var(--color-white);
   border: none;
-  border-radius: 50%;
+  border-radius: 4px;
   cursor: pointer;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08);
   transition: box-shadow 0.2s, background-color 0.15s;
@@ -91,7 +91,7 @@
   height: 52px;
   padding: 0;
   justify-content: center;
-  border-radius: 50%;
+  border-radius: 4px;
 }
 
 .composeIcon {
@@ -199,8 +199,7 @@
   height: auto;
   min-height: 52px;
   padding: 6px var(--space-3);
-  /* Gmail rounded-right pill */
-  border-radius: 0 18px 18px 0;
+  border-radius: 4px;
   margin-right: var(--space-3);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-normal);
@@ -233,7 +232,7 @@
   padding: 4px 2px;
   margin: 2px 4px;
   width: 56px;
-  border-radius: 14px;
+  border-radius: 4px;
 }
 
 /* ─── Icon wrapper (position: relative for dot badge) ───────────────────────── */
@@ -290,7 +289,7 @@
   font-weight: var(--font-weight-bold);
   line-height: 1;
   padding: 2px 6px;
-  border-radius: 10px;
+  border-radius: 4px;
   min-width: 18px;
   text-align: center;
   margin-left: auto;
@@ -308,7 +307,7 @@
   right: 0px;
   width: 8px;
   height: 8px;
-  border-radius: 50%;
+  border-radius: 4px;
   background-color: var(--color-gray-700);
   border: 2px solid var(--color-white);
   opacity: 0;
@@ -330,7 +329,7 @@
   transform: translateY(-50%);
   width: 28px;
   height: 28px;
-  border-radius: 50%;
+  border-radius: 4px;
   border: none;
   background: transparent;
   display: flex;
@@ -359,7 +358,7 @@
   font-size: 12px;
   font-weight: var(--font-weight-medium);
   padding: 6px 10px;
-  border-radius: 6px;
+  border-radius: 4px;
   white-space: nowrap;
   pointer-events: none;
   z-index: var(--z-dropdown);
@@ -381,7 +380,7 @@
   min-width: 200px;
   background: var(--color-white);
   border: 1px solid var(--color-gray-200);
-  border-radius: 12px;
+  border-radius: 4px;
   box-shadow:
     0 2px 6px rgba(0,0,0,0.08),
     0 8px 24px rgba(0,0,0,0.12);
@@ -483,7 +482,7 @@
   font-weight: var(--font-weight-normal);
   color: var(--color-gray-700);
   text-decoration: none;
-  border-radius: 0 14px 14px 0;
+  border-radius: 4px;
   margin-right: var(--space-3);
   transition: background-color 0.15s;
   white-space: nowrap;
@@ -533,7 +532,7 @@
   font-weight: var(--font-weight-normal);
   color: var(--color-gray-600);
   text-decoration: none;
-  border-radius: 0 14px 14px 0;
+  border-radius: 4px;
   margin-right: var(--space-3);
   transition: background-color 0.15s;
 }
