@@ -1,4 +1,4 @@
-import { NavLink, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
@@ -43,25 +43,28 @@ const navItems: NavItem[] = [
 ];
 
 export function Nav() {
+  const { pathname } = useLocation();
+
   return (
     <header className={styles.header} role="banner">
       <div className={styles.inner}>
         <nav className={styles.nav} aria-label="Global navigation">
           <ul className={styles.navList} role="list">
-            {navItems.map(({ icon: Icon, label, to }) => (
-              <li key={to}>
-                <NavLink
-                  to={to}
-                  end={to === '/'}
-                  className={({ isActive }) =>
-                    `${styles.navLink} ${isActive ? styles.navLinkActive : ''}`
-                  }
-                >
-                  <Icon style={{ fontSize: 18 }} aria-hidden="true" />
-                  <span>{label}</span>
-                </NavLink>
-              </li>
-            ))}
+            {navItems.map(({ icon: Icon, label, to, pages }) => {
+              const href = pages && pages.length > 0 ? `${to}/${slugify(pages[0])}` : to;
+              const isActive = to === '/' ? pathname === '/' : pathname.startsWith(to);
+              return (
+                <li key={to}>
+                  <Link
+                    to={href}
+                    className={`${styles.navLink} ${isActive ? styles.navLinkActive : ''}`}
+                  >
+                    <Icon style={{ fontSize: 18 }} aria-hidden="true" />
+                    <span>{label}</span>
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </nav>
 
