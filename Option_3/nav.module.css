@@ -229,10 +229,23 @@
 
 /* Collapsed: narrow icon-rail pill */
 .navItemCollapsed {
-  padding: 4px 2px;
-  margin: 2px 4px;
-  width: 56px;
+  padding: 4px 0px;
+  margin: 2px 0px;
+  width: 100%;
   border-radius: 4px;
+}
+
+/* In collapsed rail, suppress full-item highlight — icon only */
+.navItemCollapsed:hover {
+  background-color: transparent;
+}
+
+.navItemCollapsed.navItemActive {
+  background-color: transparent;
+}
+
+.navItemCollapsed.navItemActive:hover {
+  background-color: transparent;
 }
 
 /* ─── Icon wrapper (position: relative for dot badge) ───────────────────────── */
@@ -246,6 +259,25 @@
   width: 24px;
   height: 24px;
   color: #000000;
+}
+
+.navItemCollapsed .iconWrap {
+  width: 40px;
+  height: 32px;
+  border-radius: 4px;
+  transition: background-color 0.15s;
+}
+
+.navItemCollapsed:hover .iconWrap {
+  background-color: var(--color-gray-100);
+}
+
+.navItemCollapsed.navItemActive .iconWrap {
+  background-color: rgba(0,0,0,0.12);
+}
+
+.navItemCollapsed.navItemActive:hover .iconWrap {
+  background-color: rgba(0,0,0,0.15);
 }
 
 .navItemActive .iconWrap {
@@ -477,7 +509,7 @@
 
 .rightPanelItem {
   display: block;
-  padding: 8px var(--space-3);
+  padding: 8px var(--space-2);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-normal);
   color: var(--color-gray-700);
@@ -509,9 +541,8 @@
   font-weight: var(--font-weight-medium);
   color: inherit;
   text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal;
+  word-break: break-word;
   max-width: 100%;
   padding: 0 2px 2px;
   line-height: 1.2;
