@@ -118,12 +118,12 @@ function NavItem({ icon: Icon, label, pages, isPrimaryExpanded, expandedLabels, 
     ? pathname === '/'
     : pathname.startsWith(`/${slugify(label)}`);
 
-  // In expanded mode with sub-pages, don't highlight the module — highlight the sub-page item instead
-  const isActive = isPrimaryExpanded && pages ? false : isActiveModule;
-
   // Show sub-pages if manually expanded, OR active module that hasn't been explicitly collapsed
   const showSubPages = isPrimaryExpanded && pages != null &&
     (expandedLabels.has(label) || (isActiveModule && !collapsedLabels.has(label)));
+
+  // Highlight module row when submenu is collapsed (sub-pages not visible); defer to sub-page highlight when open
+  const isActive = isPrimaryExpanded && pages ? (isActiveModule && !showSubPages) : isActiveModule;
 
   const handleNavItemClick = () => {
     collapseAllLabels(); // collapse all manual expansions on navigate
