@@ -172,7 +172,6 @@ function NavItem({ icon: Icon, label, pages, isPrimaryExpanded, expandedLabels, 
                   aria-expanded={showSubPages}
                   style={{
                     transform: showSubPages ? 'rotate(180deg)' : 'rotate(0deg)',
-                    transition: 'transform 0.3s ease',
                   }}
                 >
                   <ExpandMoreIcon style={{ fontSize: 16, color: '#000000' }} />
