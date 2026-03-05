@@ -54,7 +54,7 @@ export default function App() {
       <div style={{
         margin: '0 auto',
         width: '25vw',
-        height: '24px',
+        height: '28px',
         backgroundColor: 'rgba(0,0,0,0.08)',
         borderRadius: '4px',
         position: 'relative',
