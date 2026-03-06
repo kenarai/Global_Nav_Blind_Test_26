@@ -110,7 +110,7 @@ function HoverCard({ item, pos, onNavigate, onMouseEnter, onMouseLeave }: HoverC
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
       >
-      <div className={styles.hoverCardTitle} onClick={() => onNavigate(`${item.to}/${slugify(item.pages![0])}`)}>
+      <div className={styles.hoverCardTitle}>
         {item.label}
       </div>
       <ul className={styles.hoverCardList}>
