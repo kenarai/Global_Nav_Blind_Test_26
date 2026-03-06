@@ -210,6 +210,13 @@
   background: rgba(0,0,0,0.15);
 }
 
+/* Label beside collapse icon (expanded state only) */
+.toggleLabel {
+  margin-left: 8px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
 /* ── HoverCard (flyout sub-menu for collapsed mode) ── */
 .hoverCardWrapper {
   position: relative;

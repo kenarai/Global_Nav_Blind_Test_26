@@ -322,6 +322,9 @@ export function Nav() {
             : <ExpandNavIcon   style={{ color: '#000000' }} aria-hidden="true" />
           }
         </Tooltip>
+        {isPrimaryExpanded && (
+          <span className={styles.toggleLabel}>Collapse the menu</span>
+        )}
       </div>
     </aside>
   );
