@@ -1,4 +1,4 @@
-import { useState, useRef, useId } from 'react';
+import { useState, useRef, useId, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import DashboardIcon from '@mui/icons-material/Dashboard';
@@ -110,7 +110,7 @@ function HoverCard({ item, pos, onNavigate, onMouseEnter, onMouseLeave }: HoverC
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
       >
-      <div className={styles.hoverCardTitle}>
+      <div className={styles.hoverCardTitle} onClick={() => onNavigate(`${item.to}/${slugify(item.pages![0])}`)}>
         {item.label}
       </div>
       <ul className={styles.hoverCardList}>
@@ -271,9 +271,15 @@ export function Nav() {
   };
 
   const closePopover = () => {
+    clearTimeout(closeTimerRef.current);
     setPopoverItem(null);
     setPopoverPos(null);
   };
+
+  // Close hover card on any navigation (catches clicks on module name, sub-pages,
+  // browser back/forward, and any other route change)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => { closePopover(); }, [pathname]);
 
   // Clears any pending close — called when cursor enters the bridge or HoverCard
   const keepPopoverOpen = () => clearTimeout(closeTimerRef.current);
@@ -350,7 +356,7 @@ export function Nav() {
         <HoverCard
           item={popoverItem}
           pos={popoverPos}
-          onNavigate={navigate}
+          onNavigate={(path) => { closePopover(); navigate(path); }}
           onMouseEnter={keepPopoverOpen}
           onMouseLeave={handleHoverCardLeave}
         />
