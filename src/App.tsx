@@ -43,14 +43,14 @@ export default function App() {
                 aria-expanded={!navCollapsed}
               >
                 {navCollapsed
-                  ? <ExpandNavIcon   style={{ color: '#000000' }} aria-hidden="true" />
-                  : <CollapseNavIcon style={{ color: '#000000' }} aria-hidden="true" />
+                  ? <ExpandNavIcon   style={{ color: '#000000', opacity: 0.75 }} aria-hidden="true" />
+                  : <CollapseNavIcon style={{ color: '#000000', opacity: 0.75 }} aria-hidden="true" />
                 }
               </button>
             </Tooltip>
           </div>
         )}
-        <span style={{ color: '#000000', fontWeight: 600, fontSize: '14px', whiteSpace: 'nowrap', paddingLeft: '16px' }}>
+        <span style={{ color: '#000000', fontWeight: 600, fontSize: '14px', whiteSpace: 'nowrap', paddingLeft: isOption3 ? '12px' : '16px' }}>
           Design Option #{__ACTIVE_OPTION__}
         </span>
       </div>
