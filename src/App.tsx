@@ -35,11 +35,11 @@ export default function App() {
       <div style={{ position: 'absolute', left: 0, display: 'flex', alignItems: 'center' }}>
         {isOption3 && (
           <div style={{ width: '64px', display: 'flex', justifyContent: 'center', alignItems: 'center', flexShrink: 0 }}>
-            <Tooltip label={navCollapsed ? 'Expand the menu' : 'Collapse the menu'} placement="bottom">
+            <Tooltip label={navCollapsed ? 'Show Submenu' : 'Hide Submenu'} placement="bottom">
               <button
                 onClick={() => setNavCollapsed(p => !p)}
                 className={`${styles.hamburgerBtn} ${navCollapsed ? styles.hamburgerBtnCollapsed : ''}`}
-                aria-label={navCollapsed ? 'Expand navigation' : 'Collapse navigation'}
+                aria-label={navCollapsed ? 'Show Submenu' : 'Hide Submenu'}
                 aria-expanded={!navCollapsed}
               >
                 {navCollapsed
