@@ -15,7 +15,7 @@
 }
 
 .primaryContainer.expanded {
-  width: 204px;
+  width: 220px;
   overflow-y: auto;
   overflow-x: hidden;
 }
