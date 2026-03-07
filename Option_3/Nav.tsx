@@ -326,6 +326,21 @@ export function Nav() {
       aria-label="Global navigation"
       onMouseLeave={handleNavAreaLeave}
     >
+      {/* Decorative overlay */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '64px',
+          height: '100vh',
+          backgroundColor: '#000',
+          opacity: 0.02,
+          pointerEvents: 'none',
+          zIndex: 9999,
+        }}
+      />
       {/* Left Rail */}
       <div className={styles.leftRail}>
         {/* Flat nav list — no section headers */}
