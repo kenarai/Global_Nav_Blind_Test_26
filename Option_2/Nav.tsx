@@ -262,6 +262,7 @@ export function Nav() {
   const [collapsedLabels, setCollapsedLabels] = useState<Set<string>>(new Set());
   const [activeHoverLabel, setActiveHoverLabel] = useState<string | null>(null);
   const hoverHideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const hoverShowTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const setSubmenuOpen = (label: string, open: boolean) => {
     if (open) {
@@ -287,18 +288,40 @@ export function Nav() {
   };
 
   const onHoverHideNow = () => {
+    if (hoverShowTimer.current) {
+      clearTimeout(hoverShowTimer.current);
+      hoverShowTimer.current = null;
+    }
     onHoverCancelHide();
     setActiveHoverLabel(null);
   };
 
   const onHoverScheduleHide = () => {
+    if (hoverShowTimer.current) {
+      clearTimeout(hoverShowTimer.current);
+      hoverShowTimer.current = null;
+    }
     onHoverCancelHide();
     hoverHideTimer.current = setTimeout(() => setActiveHoverLabel(null), 120);
   };
 
   const onHoverActivate = (label: string) => {
     onHoverCancelHide();
-    setActiveHoverLabel(label);
+    if (activeHoverLabel !== null) {
+      // Card already visible — switch instantly
+      if (hoverShowTimer.current) {
+        clearTimeout(hoverShowTimer.current);
+        hoverShowTimer.current = null;
+      }
+      setActiveHoverLabel(label);
+    } else {
+      // No card visible — delay show by 300ms
+      if (hoverShowTimer.current) clearTimeout(hoverShowTimer.current);
+      hoverShowTimer.current = setTimeout(() => {
+        setActiveHoverLabel(label);
+        hoverShowTimer.current = null;
+      }, 300);
+    }
   };
 
   return (

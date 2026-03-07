@@ -267,15 +267,29 @@ export function Nav() {
   const [popoverItem, setPopoverItem] = useState<NavItemDef | null>(null);
   const [popoverPos, setPopoverPos] = useState<{ top: number; left: number; height: number } | null>(null);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout>>();
+  const showTimerRef = useRef<ReturnType<typeof setTimeout>>();
 
   const openPopover = (item: NavItemDef, pos: { top: number; left: number; height: number }) => {
     clearTimeout(closeTimerRef.current);
-    setPopoverItem(item);
-    setPopoverPos(pos);
+    const submenuSidebarVisible = !isCollapsed && !!activeItem;
+    if (popoverItem !== null || submenuSidebarVisible) {
+      // Card already visible, OR submenu sidebar shown — show instantly
+      clearTimeout(showTimerRef.current);
+      setPopoverItem(item);
+      setPopoverPos(pos);
+    } else {
+      // Submenu sidebar not shown — delay show by 300ms
+      clearTimeout(showTimerRef.current);
+      showTimerRef.current = setTimeout(() => {
+        setPopoverItem(item);
+        setPopoverPos(pos);
+      }, 300);
+    }
   };
 
   const closePopover = () => {
     clearTimeout(closeTimerRef.current);
+    clearTimeout(showTimerRef.current);
     setPopoverItem(null);
     setPopoverPos(null);
   };
