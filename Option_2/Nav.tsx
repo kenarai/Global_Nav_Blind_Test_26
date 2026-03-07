@@ -29,13 +29,13 @@ const navItems: NavItemDef[] = [
   { icon: DashboardIcon,        label: 'Dashboard',    pages: null },
   { icon: PeopleAltIcon,        label: 'Accounts',     pages: ['All Accounts', 'Organizations', 'Contacts'] },
   { icon: TrendingUpIcon,       label: 'Sales',        pages: ['Pipeline', 'Opportunities', 'Quotes', 'Contracts'] },
+  { icon: PlaylistAddCheckIcon, label: 'Actions',      pages: ['Approvals', 'Task Queue', 'Pending Reviews', 'Audit Logs'],
+    pageBadges: { 'Task Queue': 3, 'Pending Reviews': 1 } },
   { icon: AccountTreeIcon,      label: 'Projects',     pages: ['Active Projects', 'Portfolios', 'Resource Planning', 'Timesheets'] },
   { icon: PaymentIcon,          label: 'Billing',      pages: null },
   { icon: FolderOpenIcon,       label: 'Documents',    pages: ['All Files', 'Templates', 'Shared with Me'] },
   { icon: BarChartIcon,         label: 'Reports',      pages: null },
   { icon: CorporateFareIcon,    label: 'Organization', pages: ['Departments', 'Business Units', 'Facilities', 'Directory'] },
-  { icon: PlaylistAddCheckIcon, label: 'Actions',      pages: ['Approvals', 'Task Queue', 'Pending Reviews', 'Audit Logs'],
-    pageBadges: { 'Task Queue': 3, 'Pending Reviews': 1 } },
   { icon: AppsIcon,             label: 'Apps',         pages: ['App Catalog', 'Installed Apps', 'Custom Builds', 'API Management'] },
 ];
 

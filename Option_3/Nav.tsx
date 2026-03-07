@@ -48,11 +48,14 @@ const sections: Section[] = [
     items: [
       { icon: PeopleAltIcon,   label: 'Accounts', to: '/accounts',
         pages: ['All Accounts', 'Organizations', 'Contacts'] },
-      { icon: TrendingUpIcon,  label: 'Sales',    to: '/sales',
+      { icon: TrendingUpIcon,       label: 'Sales',    to: '/sales',
         pages: ['Pipeline', 'Opportunities', 'Quotes', 'Contracts'] },
-      { icon: AccountTreeIcon, label: 'Projects', to: '/projects',
+      { icon: PlaylistAddCheckIcon, label: 'Actions',  to: '/actions',
+        pages: ['Approvals', 'Task Queue', 'Pending Reviews', 'Audit Logs'],
+        pageBadges: { 'Task Queue': 3, 'Pending Reviews': 1 } },
+      { icon: AccountTreeIcon,      label: 'Projects', to: '/projects',
         pages: ['Active Projects', 'Portfolios', 'Resource Planning', 'Timesheets'] },
-      { icon: PaymentIcon,     label: 'Billing',  to: '/billing' },
+      { icon: PaymentIcon,          label: 'Billing',  to: '/billing' },
     ],
   },
   {
@@ -66,12 +69,9 @@ const sections: Section[] = [
   {
     title: 'Admin',
     items: [
-      { icon: CorporateFareIcon,    label: 'Organization', to: '/organization',
+      { icon: CorporateFareIcon, label: 'Organization', to: '/organization',
         pages: ['Departments', 'Business Units', 'Facilities', 'Directory'] },
-      { icon: PlaylistAddCheckIcon, label: 'Actions',      to: '/actions',
-        pages: ['Approvals', 'Task Queue', 'Pending Reviews', 'Audit Logs'],
-        pageBadges: { 'Task Queue': 3, 'Pending Reviews': 1 } },
-      { icon: AppsIcon,             label: 'Apps',         to: '/applications',
+      { icon: AppsIcon,          label: 'Apps',         to: '/applications',
         pages: ['App Catalog', 'Installed Apps', 'Custom Builds', 'API Management'] },
     ],
   },
