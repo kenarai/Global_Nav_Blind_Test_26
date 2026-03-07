@@ -271,6 +271,44 @@
   background-color: #f5f5f5;
 }
 
+/* ─── Icon-level badge (collapsed mode — number over icon) ──────────────────── */
+.iconBadge {
+  position: absolute;
+  top: -4px;
+  right: -6px;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  background-color: #db3221;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  padding: 0 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ─── Notification badge (circular) ─────────────────────────────────────────── */
+.notifBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  background-color: #db3221;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 0 4px;
+  flex-shrink: 0;
+}
+
 /* ── Sub-pages (expanded inline) ── */
 .subPages {
   list-style: none;

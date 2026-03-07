@@ -131,6 +131,23 @@
   font-weight: var(--font-weight-medium);
 }
 
+/* ─── Notification badge (circular) ─────────────────────────────────────────── */
+.notifBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  background-color: #db3221;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 0 4px;
+  flex-shrink: 0;
+}
+
 /* User avatar */
 .avatar {
   width: 32px;

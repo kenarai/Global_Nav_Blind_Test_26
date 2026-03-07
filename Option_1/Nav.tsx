@@ -17,6 +17,7 @@ interface NavItem {
   label: string;
   to: string;
   pages?: string[];
+  pageBadges?: Record<string, number>;
 }
 
 const slugify = (str: string) =>
@@ -37,7 +38,8 @@ const navItems: NavItem[] = [
   { icon: CorporateFareIcon,   label: 'Organization', to: '/organization',
     pages: ['Departments', 'Business Units', 'Facilities', 'Directory'] },
   { icon: PlaylistAddCheckIcon,label: 'Actions',      to: '/actions',
-    pages: ['Approvals', 'Task Queue', 'Pending Reviews', 'Audit Logs'] },
+    pages: ['Approvals', 'Task Queue', 'Pending Reviews', 'Audit Logs'],
+    pageBadges: { 'Task Queue': 3, 'Pending Reviews': 1 } },
   { icon: AppsIcon,            label: 'Apps',         to: '/applications',
     pages: ['App Catalog', 'Installed Apps', 'Custom Builds', 'API Management'] },
 ];
@@ -50,9 +52,10 @@ export function Nav() {
       <div className={styles.inner}>
         <nav className={styles.nav} aria-label="Global navigation">
           <ul className={styles.navList} role="list">
-            {navItems.map(({ icon: Icon, label, to, pages }) => {
+            {navItems.map(({ icon: Icon, label, to, pages, pageBadges }) => {
               const href = pages && pages.length > 0 ? `${to}/${slugify(pages[0])}` : to;
               const isActive = to === '/' ? pathname === '/' : pathname.startsWith(to);
+              const totalBadge = pageBadges ? Object.values(pageBadges).reduce((a, b) => a + b, 0) : 0;
               return (
                 <li key={to}>
                   <Link
@@ -61,6 +64,9 @@ export function Nav() {
                   >
                     <Icon style={{ fontSize: 18 }} aria-hidden="true" />
                     <span>{label}</span>
+                    {totalBadge > 0 && (
+                      <span className={styles.notifBadge}>{totalBadge}</span>
+                    )}
                   </Link>
                 </li>
               );
@@ -100,7 +106,12 @@ export function Sidebar() {
                 `${styles.submenuItem} ${isActive ? styles.submenuItemActive : ''}`
               }
             >
-              {page}
+              <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <span>{page}</span>
+                {activeItem.pageBadges?.[page] !== undefined && (
+                  <span className={styles.notifBadge}>{activeItem.pageBadges[page]}</span>
+                )}
+              </span>
             </NavLink>
           </li>
         ))}

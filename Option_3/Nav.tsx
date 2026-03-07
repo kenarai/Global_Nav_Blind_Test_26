@@ -23,6 +23,7 @@ interface NavItemDef {
   to: string;
   badge?: number;
   pages?: string[];
+  pageBadges?: Record<string, number>;
 }
 
 const slugify = (str: string) =>
@@ -68,7 +69,8 @@ const sections: Section[] = [
       { icon: CorporateFareIcon,    label: 'Organization', to: '/organization',
         pages: ['Departments', 'Business Units', 'Facilities', 'Directory'] },
       { icon: PlaylistAddCheckIcon, label: 'Actions',      to: '/actions',
-        pages: ['Approvals', 'Task Queue', 'Pending Reviews', 'Audit Logs'] },
+        pages: ['Approvals', 'Task Queue', 'Pending Reviews', 'Audit Logs'],
+        pageBadges: { 'Task Queue': 3, 'Pending Reviews': 1 } },
       { icon: AppsIcon,             label: 'Apps',         to: '/applications',
         pages: ['App Catalog', 'Installed Apps', 'Custom Builds', 'API Management'] },
     ],
@@ -120,8 +122,12 @@ function HoverCard({ item, pos, onNavigate, onMouseEnter, onMouseLeave }: HoverC
               className={styles.hoverCardItem}
               onClick={() => onNavigate(`${item.to}/${slugify(page)}`)}
               role="menuitem"
+              style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
             >
-              {page}
+              <span>{page}</span>
+              {item.pageBadges?.[page] !== undefined && (
+                <span className={styles.notifBadge}>{item.pageBadges[page]}</span>
+              )}
             </button>
           </li>
         ))}
@@ -164,7 +170,8 @@ interface NavItemProps {
 }
 
 function NavItem({ item, isCollapsed, isActive, onOpenPopover, onClosePopover }: NavItemProps) {
-  const { icon: Icon, label, to, badge } = item;
+  const { icon: Icon, label, to } = item;
+  const totalBadge = item.pageBadges ? Object.values(item.pageBadges).reduce((a, b) => a + b, 0) : 0;
 
   const [showTooltip, setShowTooltip] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout>>();
@@ -215,14 +222,11 @@ function NavItem({ item, isCollapsed, isActive, onOpenPopover, onClosePopover }:
             .join(' ')
         }
       >
-        {/* Icon + dot badge */}
+        {/* Icon + number badge */}
         <span className={styles.iconWrap}>
           <Icon style={{ fontSize: 20 }} aria-hidden="true" />
-          {badge !== undefined && (
-            <span
-              className={`${styles.badgeDot} ${styles.badgeDotVisible}`}
-              aria-hidden="true"
-            />
+          {totalBadge > 0 && (
+            <span className={styles.iconBadge} aria-hidden="true">{totalBadge}</span>
           )}
         </span>
 
@@ -343,7 +347,12 @@ export function Nav() {
                     `${styles.rightPanelItem} ${isActive ? styles.rightPanelItemActive : ''}`
                   }
                 >
-                  {page}
+                  <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <span>{page}</span>
+                    {activeItem.pageBadges?.[page] !== undefined && (
+                      <span className={styles.notifBadge}>{activeItem.pageBadges[page]}</span>
+                    )}
+                  </span>
                 </NavLink>
               </li>
             ))}

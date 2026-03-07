@@ -22,6 +22,7 @@ interface NavItemDef {
   icon: SvgIconComponent;
   label: string;
   pages: string[] | null;
+  pageBadges?: Record<string, number>;
 }
 
 const navItems: NavItemDef[] = [
@@ -33,7 +34,8 @@ const navItems: NavItemDef[] = [
   { icon: FolderOpenIcon,       label: 'Documents',    pages: ['All Files', 'Templates', 'Shared with Me'] },
   { icon: BarChartIcon,         label: 'Reports',      pages: null },
   { icon: CorporateFareIcon,    label: 'Organization', pages: ['Departments', 'Business Units', 'Facilities', 'Directory'] },
-  { icon: PlaylistAddCheckIcon, label: 'Actions',      pages: ['Approvals', 'Task Queue', 'Pending Reviews', 'Audit Logs'] },
+  { icon: PlaylistAddCheckIcon, label: 'Actions',      pages: ['Approvals', 'Task Queue', 'Pending Reviews', 'Audit Logs'],
+    pageBadges: { 'Task Queue': 3, 'Pending Reviews': 1 } },
   { icon: AppsIcon,             label: 'Apps',         pages: ['App Catalog', 'Installed Apps', 'Custom Builds', 'API Management'] },
 ];
 
@@ -117,9 +119,10 @@ interface NavItemProps extends NavItemDef {
   onHoverHideNow: () => void;
 }
 
-function NavItem({ icon: Icon, label, pages, isPrimaryExpanded, expandedLabels, collapsedLabels, setSubmenuOpen, collapseAllLabels, activeHoverLabel, onHoverActivate, onHoverScheduleHide, onHoverCancelHide, onHoverHideNow }: NavItemProps) {
+function NavItem({ icon: Icon, label, pages, pageBadges, isPrimaryExpanded, expandedLabels, collapsedLabels, setSubmenuOpen, collapseAllLabels, activeHoverLabel, onHoverActivate, onHoverScheduleHide, onHoverCancelHide, onHoverHideNow }: NavItemProps) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const totalBadge = pageBadges ? Object.values(pageBadges).reduce((a, b) => a + b, 0) : 0;
 
   const itemPath = label === 'Dashboard' ? '/' : `/${slugify(label)}`;
   const isActiveModule = label === 'Dashboard'
@@ -170,10 +173,16 @@ function NavItem({ icon: Icon, label, pages, isPrimaryExpanded, expandedLabels, 
             >
               <span className={styles.icon}>
                 <Icon style={{ fontSize: 20, color: '#000000' }} aria-hidden="true" />
+                {totalBadge > 0 && !isPrimaryExpanded && (
+                  <span className={styles.iconBadge}>{totalBadge}</span>
+                )}
               </span>
               <span className={isPrimaryExpanded ? styles.label : styles.el}>
                 {label}
               </span>
+              {totalBadge > 0 && isPrimaryExpanded && (
+                <span className={styles.notifBadge} style={{ marginLeft: 'auto', marginRight: pages ? 44 : 8 }}>{totalBadge}</span>
+              )}
               {pages && isPrimaryExpanded && (
                 <button
                   className={styles.caretBtn}
@@ -203,8 +212,12 @@ function NavItem({ icon: Icon, label, pages, isPrimaryExpanded, expandedLabels, 
                       key={page}
                       className={styles.pageItem}
                       onClick={() => handlePageClick(page)}
+                      style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
                     >
-                      {page}
+                      <span>{page}</span>
+                      {pageBadges?.[page] !== undefined && (
+                        <span className={styles.notifBadge}>{pageBadges[page]}</span>
+                      )}
                     </li>
                   ))}
                 </ul>
@@ -224,8 +237,12 @@ function NavItem({ icon: Icon, label, pages, isPrimaryExpanded, expandedLabels, 
                 pathname === `${itemPath}/${slugify(page)}` ? styles.subPageItemActive : '',
               ].filter(Boolean).join(' ')}
               onClick={() => handlePageClick(page)}
+              style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
             >
-              {page}
+              <span>{page}</span>
+              {pageBadges?.[page] !== undefined && (
+                <span className={styles.notifBadge}>{pageBadges[page]}</span>
+              )}
             </li>
           ))}
         </ul>
