@@ -264,6 +264,7 @@ export function Nav() {
 
   // ── Popover state (lifted from NavItem) ──────────────────────────────────
   const navRef = useRef<HTMLElement>(null);
+  const leftRailRef = useRef<HTMLDivElement>(null);
   const [popoverItem, setPopoverItem] = useState<NavItemDef | null>(null);
   const [popoverPos, setPopoverPos] = useState<{ top: number; left: number; height: number } | null>(null);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout>>();
@@ -306,7 +307,7 @@ export function Nav() {
     const handler = (e: MouseEvent) => {
       const t = e.target as Element | null;
       if (!t) return;
-      if (navRef.current?.contains(t)) return;
+      if (leftRailRef.current?.contains(t)) return;
       if (t.closest('[data-hovercard="true"]')) return;
       closePopover();
     };
@@ -329,7 +330,7 @@ export function Nav() {
   // into the nav sidebar or into the other hovercard element (bridge ↔ card transitions).
   const handleHoverCardLeave = (e: React.MouseEvent) => {
     const related = e.relatedTarget as Element | null;
-    if (navRef.current?.contains(related)) return;
+    if (leftRailRef.current?.contains(related)) return;
     if (related?.closest('[data-hovercard="true"]')) return;
     closePopover();
   };
@@ -357,7 +358,7 @@ export function Nav() {
         }}
       />
       {/* Left Rail */}
-      <div className={styles.leftRail}>
+      <div ref={leftRailRef} className={styles.leftRail}>
         {/* Flat nav list — no section headers */}
         <nav aria-label="Primary navigation" className={styles.navBody}>
           <ul role="list" className={styles.navList}>
