@@ -299,6 +299,21 @@ export function Nav() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { closePopover(); }, [pathname]);
 
+  // Close hover card the moment cursor enters anything outside the nav rail or card.
+  // Covers fast cursor moves where onMouseLeave on the portal div doesn't fire reliably.
+  useEffect(() => {
+    if (!popoverItem) return;
+    const handler = (e: MouseEvent) => {
+      const t = e.target as Element | null;
+      if (!t) return;
+      if (navRef.current?.contains(t)) return;
+      if (t.closest('[data-hovercard="true"]')) return;
+      closePopover();
+    };
+    document.addEventListener('mouseover', handler);
+    return () => document.removeEventListener('mouseover', handler);
+  }, [popoverItem]); // eslint-disable-line react-hooks/exhaustive-deps
+
   // Clears any pending close — called when cursor enters the bridge or HoverCard
   const keepPopoverOpen = () => clearTimeout(closeTimerRef.current);
 
