@@ -580,10 +580,10 @@
 /* ─── Icon-level badge (number over icon) ───────────────────────────────────── */
 .iconBadge {
   position: absolute;
-  top: -13px;
-  right: -17px;
-  min-width: 20px;
-  height: 20px;
+  top: -12px;
+  right: -15px;
+  min-width: 18px;
+  height: 18px;
   border-radius: 10px;
   background-color: #db3221;
   color: #ffffff;
@@ -603,8 +603,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 20px;
-  height: 20px;
+  min-width: 18px;
+  height: 18px;
   border-radius: 10px;
   background-color: #db3221;
   color: #ffffff;
