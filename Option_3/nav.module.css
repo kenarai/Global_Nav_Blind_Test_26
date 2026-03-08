@@ -507,6 +507,7 @@
   color: var(--color-gray-700);
   cursor: pointer;
   white-space: nowrap;
+  line-height: 1.6;
 }
 
 .hoverCardItem:hover {
