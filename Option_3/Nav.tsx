@@ -336,7 +336,7 @@ export function Nav() {
           width: '64px',
           height: '100vh',
           backgroundColor: '#000',
-          opacity: 0.02,
+          opacity: 0.022,
           pointerEvents: 'none',
           zIndex: 9999,
         }}
