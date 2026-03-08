@@ -8,8 +8,7 @@ import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import SearchIcon from '@mui/icons-material/Search';
-import ExpandNavIcon from '@/icons/ExpandNavIcon';
-import CollapseNavIcon from '@/icons/CollapseNavIcon';
+import MenuIcon from '@mui/icons-material/Menu';
 import Tooltip from '@/components/Tooltip';
 import { NavCollapseContext } from '@/navCollapseContext';
 
@@ -42,10 +41,7 @@ export default function App() {
                 aria-label={navCollapsed ? 'Show Submenu' : 'Hide Submenu'}
                 aria-expanded={!navCollapsed}
               >
-                {navCollapsed
-                  ? <ExpandNavIcon   style={{ color: '#000000', opacity: 0.75 }} aria-hidden="true" />
-                  : <CollapseNavIcon style={{ color: '#000000', opacity: 0.75 }} aria-hidden="true" />
-                }
+                <MenuIcon style={{ fontSize: 20, color: '#000000', opacity: 0.75 }} aria-hidden="true" />
               </button>
             </Tooltip>
           </div>
