@@ -356,12 +356,14 @@ export function Nav() {
         tabIndex={0}
         onKeyDown={e => e.key === 'Enter' && setPrimaryExpanded(prev => !prev)}
       >
-        <Tooltip label={isPrimaryExpanded ? 'Collapse the menu' : 'Expand the menu'} placement="right">
-          {isPrimaryExpanded
-            ? <CollapseNavIcon style={{ color: '#000000' }} aria-hidden="true" />
-            : <ExpandNavIcon   style={{ color: '#000000' }} aria-hidden="true" />
-          }
-        </Tooltip>
+        {isPrimaryExpanded
+          ? <CollapseNavIcon style={{ color: '#000000' }} aria-hidden="true" />
+          : (
+            <Tooltip label="Expand the menu" placement="right">
+              <ExpandNavIcon style={{ color: '#000000' }} aria-hidden="true" />
+            </Tooltip>
+          )
+        }
         {isPrimaryExpanded && (
           <span className={styles.toggleLabel}>Collapse the menu</span>
         )}
