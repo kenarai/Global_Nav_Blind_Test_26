@@ -47,7 +47,7 @@ export default function App() {
           </div>
         )}
         <span style={{ color: '#000000', fontWeight: 600, fontSize: '14px', whiteSpace: 'nowrap', paddingLeft: isOption3 ? '12px' : '16px' }}>
-          Design Option #{__ACTIVE_OPTION__}
+          Example App
         </span>
       </div>
 
