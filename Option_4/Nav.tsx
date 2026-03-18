@@ -236,6 +236,7 @@ function NavItem({ icon: Icon, label, pages, pageBadges, isPrimaryExpanded, expa
   const handleNavItemClick = () => {
     onHoverHideNow();
     if (!isPrimaryExpanded && label === 'Calls') onExpand();
+    if (isPrimaryExpanded) collapseAllLabels();
     navigate(flat.length > 0 ? `${itemPath}/${slugify(flat[0])}` : itemPath);
   };
 
