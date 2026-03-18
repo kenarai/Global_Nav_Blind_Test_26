@@ -118,14 +118,17 @@ function HoverCard({ children, width, label, hasContent, activeHoverLabel, onAct
 
   const visible = activeHoverLabel === label;
 
-  // After the portal mounts, measure the header label height and shift the card up
-  // so the first list item top aligns with the trigger top.
+  // After the portal mounts, find the first actual page item and measure how far it sits
+  // below the card top. Shift the card up by that exact distance so the first page item
+  // aligns with the trigger top — works correctly whether or not section headers are present.
   // useLayoutEffect runs synchronously before paint — no visible flicker.
   useLayoutEffect(() => {
     if (!visible || !cardRef.current || !rawPos) return;
-    const labelEl = cardRef.current.querySelector<HTMLElement>('[data-role="hover-label"]');
-    const labelH = labelEl ? labelEl.offsetHeight : 0;
-    setDisplayTop(rawPos.top - labelH);
+    const firstItem = cardRef.current.querySelector<HTMLElement>('[data-role="page-item"]');
+    if (!firstItem) return;
+    const offsetFromCardTop =
+      firstItem.getBoundingClientRect().top - cardRef.current.getBoundingClientRect().top;
+    setDisplayTop(rawPos.top - offsetFromCardTop);
   }, [visible, rawPos]);
 
   const handleMouseEnter = () => {
@@ -251,6 +254,7 @@ function NavItem({ icon: Icon, label, pages, pageBadges, isPrimaryExpanded, expa
       ].filter(Boolean).join(' ')}
       onClick={() => handlePageClick(page)}
       style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+      {...(inHoverCard ? { 'data-role': 'page-item' } : {})}
     >
       <span>{page}</span>
       {pageBadges?.[page] !== undefined && (
@@ -307,12 +311,12 @@ function NavItem({ icon: Icon, label, pages, pageBadges, isPrimaryExpanded, expa
           content: (
             <div>
               {!isPrimaryExpanded && (
-                <p className={styles.hoverLabel} data-role="hover-label">
+                <p className={styles.hoverLabel}>
                   {label}
                 </p>
               )}
               {!isPrimaryExpanded && pages && (
-                <ul className={styles.pagesList}>
+                <ul className={styles.pagesList} data-role="pages-list">
                   {renderSubPageList(pages, page => renderPageItem(page, true))}
                 </ul>
               )}
