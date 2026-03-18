@@ -46,7 +46,7 @@ interface NavItemDef {
 
 const navItems: NavItemDef[] = [
   { icon: DashboardIcon,       label: 'Dashboard',  pages: null },
-  { icon: PhoneIcon,           label: 'Calls',       pages: ['Calls', 'Bookings'] },
+  { icon: PhoneIcon,           label: 'Calls',       pages: ['Calls', 'Bookings', 'Chat'] },
   { icon: CalendarMonthIcon,   label: 'Schedule',    pages: null },
   { icon: LocalShippingIcon,   label: 'Dispatch',    pages: [
     { section: 'Boards', items: ['Weekly Dispatch Board', 'Classic Dispatch Board'] },
