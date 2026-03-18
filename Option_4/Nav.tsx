@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useLayoutEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate, useLocation } from 'react-router-dom';
 import DashboardIcon from '@mui/icons-material/Dashboard';
@@ -62,10 +62,24 @@ interface HoverCardProps {
 }
 
 function HoverCard({ children, width, label, hasContent, activeHoverLabel, onActivate, onScheduleHide, onCancelHide, onHideNow }: HoverCardProps) {
-  const [pos, setPos] = useState<{ top: number; left: number } | null>(null);
+  // rawPos: position captured at mouse-enter time (top = trigger's rect.top)
+  const [rawPos, setRawPos] = useState<{ top: number; left: number } | null>(null);
+  // displayTop: adjusted top so the submenu list aligns with the trigger top
+  const [displayTop, setDisplayTop] = useState<number | null>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
 
   const visible = activeHoverLabel === label;
+
+  // After the portal mounts, measure the header label height and shift the card up
+  // so the first list item top aligns with the trigger top.
+  // useLayoutEffect runs synchronously before paint — no visible flicker.
+  useLayoutEffect(() => {
+    if (!visible || !cardRef.current || !rawPos) return;
+    const labelEl = cardRef.current.querySelector<HTMLElement>('[data-role="hover-label"]');
+    const labelH = labelEl ? labelEl.offsetHeight : 0;
+    setDisplayTop(rawPos.top - labelH);
+  }, [visible, rawPos]);
 
   const handleMouseEnter = () => {
     if (!hasContent) {
@@ -76,10 +90,13 @@ function HoverCard({ children, width, label, hasContent, activeHoverLabel, onAct
     onCancelHide();
     if (wrapperRef.current) {
       const rect = wrapperRef.current.getBoundingClientRect();
-      setPos({ top: rect.top, left: rect.right + 4 });
+      setRawPos({ top: rect.top, left: rect.right + 4 });
+      setDisplayTop(null); // reset until measured
     }
     onActivate(label);
   };
+
+  const effectiveTop = displayTop ?? rawPos?.top;
 
   return (
     <div
@@ -89,10 +106,11 @@ function HoverCard({ children, width, label, hasContent, activeHoverLabel, onAct
       onMouseLeave={onScheduleHide}
     >
       <div className={styles.hoverCardTrigger}>{children.trigger}</div>
-      {visible && width !== '0px' && pos && createPortal(
+      {visible && width !== '0px' && rawPos != null && effectiveTop != null && createPortal(
         <div
+          ref={cardRef}
           className={styles.hoverCard}
-          style={{ position: 'fixed', top: pos.top, left: pos.left, width }}
+          style={{ position: 'fixed', top: effectiveTop, left: rawPos.left, width }}
           onMouseEnter={onCancelHide}
           onMouseLeave={onScheduleHide}
         >
@@ -201,7 +219,7 @@ function NavItem({ icon: Icon, label, pages, pageBadges, isPrimaryExpanded, expa
           content: (
             <div>
               {!isPrimaryExpanded && (
-                <p className={styles.hoverLabel}>
+                <p className={styles.hoverLabel} data-role="hover-label">
                   {label}
                 </p>
               )}
