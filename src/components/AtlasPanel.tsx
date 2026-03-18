@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
-import AtlasIcon from '@/icons/AtlasIcon';
 import styles from './AtlasPanel.module.css';
 
 interface Props {
@@ -34,8 +33,7 @@ export default function AtlasPanel({ open, onClose }: Props) {
       >
         <div className={styles.header}>
           <span className={styles.title}>
-            <AtlasIcon aria-hidden="true" />
-            AI Assistant
+            Atlas
           </span>
           <button
             ref={closeBtnRef}
