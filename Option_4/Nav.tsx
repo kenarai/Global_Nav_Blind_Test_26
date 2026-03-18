@@ -234,6 +234,7 @@ function NavItem({ icon: Icon, label, pages, pageBadges, isPrimaryExpanded, expa
 
   const handleNavItemClick = () => {
     collapseAllLabels();
+    onHoverHideNow();
     navigate(flat.length > 0 ? `${itemPath}/${slugify(flat[0])}` : itemPath);
   };
 
@@ -244,6 +245,7 @@ function NavItem({ icon: Icon, label, pages, pageBadges, isPrimaryExpanded, expa
 
   const handlePageClick = (page: string) => {
     collapseAllLabels();
+    onHoverHideNow();
     navigate(`${itemPath}/${slugify(page)}`);
   };
 
