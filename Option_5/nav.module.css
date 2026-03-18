@@ -1,0 +1,683 @@
+/* Option 5 — Gmail-Style Left Navigation (full micro-interactions) */
+
+/* ─── Sidebar shell ─────────────────────────────────────────────────────────── */
+
+.sidebar {
+  height: calc(100vh - 48px);
+  background-color: #F3F3F3;
+  display: flex;
+  flex-direction: row;
+  flex-shrink: 0;
+  overflow: hidden;
+  /* Material motion curve — avoids abrupt snapping */
+  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ─── Left Rail ─────────────────────────────────────────────────────────────── */
+
+.leftRail {
+  width: 64px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.sidebarCollapsed {
+  width: 64px;
+}
+
+/* ─── Header ────────────────────────────────────────────────────────────────── */
+
+.sidebarHeader {
+  display: flex;
+  align-items: center;
+  height: 64px;
+  padding: 0 var(--space-4);
+  flex-shrink: 0;
+}
+
+.hamburger {
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--color-gray-700);
+  transition: background-color 0.15s;
+  flex-shrink: 0;
+}
+
+.hamburger:hover {
+  background-color: var(--color-gray-100);
+}
+
+/* ─── Compose / New Job ─────────────────────────────────────────────────────── */
+
+.composeArea {
+  padding: 0 var(--space-3) var(--space-4);
+  flex-shrink: 0;
+}
+
+.composeBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  width: 52px;
+  height: 52px;
+  background-color: var(--color-white);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.2s, background-color 0.15s;
+  color: var(--color-gray-800);
+}
+
+.composeBtn:hover {
+  background-color: var(--color-gray-50);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Collapsed: morphs to a circle */
+.composeBtnCollapsed {
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+.composeIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Label fades out before width collapses */
+.composeLabel {
+  margin-left: var(--space-3);
+  opacity: 1;
+  transition: opacity 0.1s ease;
+}
+
+.composeLabelHidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ─── Scrollable nav body ───────────────────────────────────────────────────── */
+
+.navBody {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: var(--space-4);
+}
+
+.navBody::-webkit-scrollbar {
+  width: 4px;
+}
+
+.navBody::-webkit-scrollbar-thumb {
+  background-color: var(--color-gray-200);
+  border-radius: 2px;
+}
+
+.navBody::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-gray-300);
+}
+
+/* ─── Section ───────────────────────────────────────────────────────────────── */
+
+.section {
+  margin-bottom: 2px;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  /* Pill stops before right edge, matching nav items */
+  width: calc(100% - var(--space-3));
+  padding: 0 var(--space-3) 0 var(--space-5);
+  height: 28px;
+  font-size: 11px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  transition: opacity 0.15s, height 0.2s;
+  overflow: hidden;
+}
+
+/* Collapse section headers out of view when sidebar is collapsed */
+.sectionHeaderHidden {
+  opacity: 0;
+  pointer-events: none;
+  height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.sectionTitle {
+  flex: 1;
+  text-align: left;
+  overflow: hidden;
+}
+
+.sectionChevron {
+  flex-shrink: 0;
+  transition: transform 0.25s ease;
+  color: var(--color-gray-400);
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+/* ─── Flat nav list ─────────────────────────────────────────────────────────── */
+
+.navList {
+  list-style: none;
+  margin: 0;
+  padding: 12px 0 0 0;
+}
+
+/* ─── Nav item wrapper ──────────────────────────────────────────────────────── */
+
+.navItemWrapper {
+  position: relative;
+  list-style: none;
+}
+
+/* ─── Nav item (the NavLink) ────────────────────────────────────────────────── */
+
+.navItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  height: auto;
+  min-height: 52px;
+  padding: 6px var(--space-3);
+  border-radius: 4px;
+  margin-right: var(--space-3);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-normal);
+  color: #000000;
+  text-decoration: none;
+  transition: background-color 0.15s;
+  position: relative;
+  overflow: visible;
+}
+
+.navItem:hover {
+  background-color: var(--color-gray-100);
+  text-decoration: none;
+  color: var(--color-gray-900);
+}
+
+/* Active pill */
+.navItemActive {
+  background-color: rgba(0, 0, 0, 0.12);
+  color: var(--color-gray-900);
+}
+
+.navItemActive:hover {
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+/* Collapsed: narrow icon-rail pill — matches Option 2 item sizing exactly */
+.navItemCollapsed {
+  padding: 8px 0;
+  margin: 0;
+  width: 100%;
+  border-radius: 4px;
+  gap: 0;
+  /* override .navItem gap: 3px — matches Option 2 */
+}
+
+/* Pill highlight via ::before (absolutely positioned, doesn't affect layout flow)
+   — same technique and dimensions as Option 2's .navItem::before */
+.navItemCollapsed::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 16px;
+  background: rgba(0, 0, 0, 0.08);
+  width: 32px;
+  height: 32px;
+  z-index: 0;
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.navItemCollapsed:hover::before {
+  opacity: 1;
+}
+
+.navItemCollapsed.navItemActive::before {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.navItemCollapsed.navItemActive:hover::before {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.15);
+}
+
+/* In collapsed rail, suppress full-item highlight — icon only */
+.navItemCollapsed:hover {
+  background-color: transparent;
+}
+
+.navItemCollapsed.navItemActive {
+  background-color: transparent;
+}
+
+.navItemCollapsed.navItemActive:hover {
+  background-color: transparent;
+}
+
+/* ─── Icon wrapper (position: relative for dot badge) ───────────────────────── */
+
+.iconWrap {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  color: #000000;
+}
+
+/* Collapsed: iconWrap stays at natural 24px so it doesn't inflate item height.
+   Hover/active highlight is handled by .navItemCollapsed::before instead. */
+.navItemCollapsed .iconWrap {
+  width: 24px;
+  height: 24px;
+  position: relative;
+  z-index: 1;
+  /* sit above ::before pill */
+}
+
+.navItemCollapsed:hover .iconWrap {
+  background-color: transparent;
+}
+
+.navItemCollapsed.navItemActive .iconWrap {
+  background-color: transparent;
+}
+
+.navItemCollapsed.navItemActive:hover .iconWrap {
+  background-color: transparent;
+}
+
+.navItemActive .iconWrap {
+  color: var(--color-gray-900);
+}
+
+/* ─── Label row ─────────────────────────────────────────────────────────────── */
+
+.labelRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  opacity: 1;
+  /* Fade text out before the sidebar width starts collapsing */
+  transition: opacity 0.1s ease;
+}
+
+.labelRowHidden {
+  opacity: 0;
+  pointer-events: none;
+  /* Don't use display:none — keeps layout stable during transition */
+  width: 0;
+  overflow: hidden;
+}
+
+.itemLabel {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+/* ─── Pill badge (expanded) ─────────────────────────────────────────────────── */
+
+.badge {
+  flex-shrink: 0;
+  background-color: var(--color-gray-700);
+  color: var(--color-white);
+  font-size: 10px;
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+  padding: 2px 6px;
+  border-radius: 4px;
+  min-width: 18px;
+  text-align: center;
+  margin-left: auto;
+}
+
+.navItemActive .badge {
+  background-color: var(--color-gray-900);
+}
+
+/* ─── Dot badge (collapsed) ─────────────────────────────────────────────────── */
+
+.badgeDot {
+  position: absolute;
+  top: 1px;
+  right: 0px;
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background-color: var(--color-gray-700);
+  border: 2px solid var(--color-white);
+  opacity: 0;
+  transition: opacity 0.15s;
+  pointer-events: none;
+}
+
+.badgeDotVisible {
+  opacity: 1;
+}
+
+/* ─── More options button ───────────────────────────────────────────────────── */
+
+.moreBtn {
+  position: absolute;
+  /* Sits inside the pill area (margin-right: 12px = var(--space-3)) */
+  right: 20px;
+  top: 26px;
+  /* Half of min-height 52px */
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--color-gray-500);
+  transition: background-color 0.15s, color 0.15s;
+  z-index: 1;
+}
+
+.moreBtn:hover {
+  background-color: var(--color-gray-200);
+  color: var(--color-gray-800);
+}
+
+/* ─── Tooltip ───────────────────────────────────────────────────────────────── */
+
+.tooltip {
+  position: absolute;
+  left: calc(100% + 12px);
+  top: 50%;
+  transform: translateY(-50%) translateX(-6px);
+  background-color: #444746;
+  /* Gmail's tooltip dark gray */
+  color: var(--color-white);
+  font-size: 12px;
+  font-weight: var(--font-weight-medium);
+  padding: 6px 10px;
+  border-radius: 4px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: var(--z-dropdown);
+  opacity: 0;
+  /* Slide-in from left + fade */
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.tooltipVisible {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+/* ─── Hover Card (collapsed submenu flyout) ─────────────────────────────────── */
+
+.hoverCard {
+  /* position: fixed + coordinates set inline via React portal */
+  width: 240px;
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-200);
+  border-radius: 4px;
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.08),
+    0 8px 24px rgba(0, 0, 0, 0.12);
+  z-index: var(--z-dropdown);
+  overflow: hidden;
+  animation: hoverCardIn 0.12s ease;
+}
+
+@keyframes hoverCardIn {
+  from {
+    opacity: 0;
+    transform: translateX(-4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.hoverCardTitle {
+  display: block;
+  width: 100%;
+  padding: 12px 16px 8px;
+  border-bottom: 1px solid var(--color-gray-100);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-gray-900);
+}
+
+.hoverCardList {
+  list-style: none;
+  margin: 0;
+  padding: 6px 0;
+}
+
+.hoverCardItem {
+  display: block;
+  width: 100%;
+  padding: 7px 16px;
+  background: none;
+  border: none;
+  text-align: left;
+  font-family: inherit;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-normal);
+  color: var(--color-gray-700);
+  cursor: pointer;
+  white-space: nowrap;
+  line-height: 1.6;
+}
+
+.hoverCardItem:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+  color: var(--color-gray-900);
+}
+
+/* ─── Right Panel (sub-pages for active module — expanded state) ─────────────── */
+
+.rightPanel {
+  width: 184px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid var(--color-gray-100);
+  padding-top: var(--space-4);
+  overflow-y: auto;
+  animation: rightPanelIn 0.18s ease;
+}
+
+.rightPanel::-webkit-scrollbar {
+  width: 4px;
+}
+
+.rightPanel::-webkit-scrollbar-thumb {
+  background-color: var(--color-gray-200);
+  border-radius: 2px;
+}
+
+@keyframes rightPanelIn {
+  from {
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.rightPanelHeader {
+  padding: 4px var(--space-4) 8px var(--space-4);
+  font-size: 11px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.rightPanelList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.rightPanelItem {
+  display: block;
+  padding: 8px var(--space-2);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-normal);
+  color: var(--color-gray-700);
+  text-decoration: none;
+  border-radius: 4px;
+  margin-right: var(--space-2);
+  margin-left: var(--space-2);
+  transition: background-color 0.15s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rightPanelItem:hover {
+  background-color: rgba(0, 0, 0, 0.08);
+  color: var(--color-gray-900);
+}
+
+.rightPanelItemActive {
+  background-color: rgba(0, 0, 0, 0.12);
+  color: var(--color-gray-900);
+  font-weight: var(--font-weight-medium);
+}
+
+/* ─── Icon label (collapsed state — label below icon) ───────────────────────── */
+
+.iconLabel {
+  font-size: 10px;
+  color: inherit;
+  text-align: center;
+  padding-top: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  width: calc(100% - 2px);
+  margin: 0 auto;
+  word-break: break-word;
+  line-height: 1.2;
+  position: relative;
+  z-index: 1;
+  /* sit above ::before pill */
+}
+
+/* ─── Icon-level badge (number over icon) ───────────────────────────────────── */
+.iconBadge {
+  position: absolute;
+  top: -12px;
+  right: -15px;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 10px;
+  background-color: #db3221;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  padding: 0 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ─── Notification badge (circular) ─────────────────────────────────────────── */
+.notifBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 10px;
+  background-color: #db3221;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 0 4px;
+  flex-shrink: 0;
+}
+
+/* ─── Inline sub-page list (expanded, active module) ────────────────────────── */
+
+.subPageList {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+  width: 100%;
+}
+
+.subPageItem {
+  display: block;
+  padding: 6px var(--space-4) 6px 28px;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-normal);
+  color: var(--color-gray-600);
+  text-decoration: none;
+  border-radius: 4px;
+  margin-right: var(--space-3);
+  transition: background-color 0.15s;
+}
+
+.subPageItem:hover {
+  background-color: var(--color-gray-100);
+  color: var(--color-gray-900);
+}
+
+.subPageItemActive {
+  background-color: rgba(0, 0, 0, 0.12);
+  color: var(--color-gray-900);
+  font-weight: var(--font-weight-medium);
+}
