@@ -1,4 +1,4 @@
-import { useState, useRef, useLayoutEffect } from 'react';
+import { useState, useRef, useLayoutEffect, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate, useLocation } from 'react-router-dom';
 import DashboardIcon from '@mui/icons-material/Dashboard';
@@ -352,7 +352,10 @@ function NavItem({ icon: Icon, label, pages, pageBadges, isPrimaryExpanded, expa
 export function Sidebar() { return null; }
 
 export function Nav() {
+  const navigate = useNavigate();
   const [isPrimaryExpanded, setPrimaryExpanded] = useState(true);
+
+  useEffect(() => { navigate('/', { replace: true }); }, []);
   const [expandedLabels, setExpandedLabels] = useState<Set<string>>(new Set());
   const [collapsedLabels, setCollapsedLabels] = useState<Set<string>>(new Set());
   const [activeHoverLabel, setActiveHoverLabel] = useState<string | null>(null);
