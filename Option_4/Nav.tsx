@@ -234,7 +234,6 @@ function NavItem({ icon: Icon, label, pages, pageBadges, isPrimaryExpanded, expa
   const flat = pages ? flatPages(pages) : [];
 
   const handleNavItemClick = () => {
-    collapseAllLabels();
     onHoverHideNow();
     if (!isPrimaryExpanded && label === 'Calls') onExpand();
     navigate(flat.length > 0 ? `${itemPath}/${slugify(flat[0])}` : itemPath);
@@ -247,7 +246,10 @@ function NavItem({ icon: Icon, label, pages, pageBadges, isPrimaryExpanded, expa
 
   const handlePageClick = (page: string) => {
     onHoverHideNow();
-    if (!isPrimaryExpanded && label === 'Calls') onExpand();
+    if (!isPrimaryExpanded && label === 'Calls') {
+      onExpand();
+      setSubmenuOpen(label, true);
+    }
     navigate(`${itemPath}/${slugify(page)}`);
   };
 
