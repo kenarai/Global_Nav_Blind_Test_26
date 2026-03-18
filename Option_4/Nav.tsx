@@ -76,7 +76,7 @@ function HoverCard({ children, width, label, hasContent, activeHoverLabel, onAct
     onCancelHide();
     if (wrapperRef.current) {
       const rect = wrapperRef.current.getBoundingClientRect();
-      setPos({ top: rect.top, left: rect.right + 8 });
+      setPos({ top: rect.top, left: rect.right + 4 });
     }
     onActivate(label);
   };
@@ -172,7 +172,7 @@ function NavItem({ icon: Icon, label, pages, pageBadges, isPrimaryExpanded, expa
               onClick={handleNavItemClick}
             >
               <span className={styles.icon}>
-                <Icon style={{ fontSize: 20, color: '#000000' }} aria-hidden="true" />
+                <Icon style={{ fontSize: 20, color: '#ffffff' }} aria-hidden="true" />
                 {totalBadge > 0 && !isPrimaryExpanded && (
                   <span className={styles.iconBadge}>{totalBadge}</span>
                 )}
@@ -193,7 +193,7 @@ function NavItem({ icon: Icon, label, pages, pageBadges, isPrimaryExpanded, expa
                     transform: showSubPages ? 'rotate(180deg)' : 'rotate(0deg)',
                   }}
                 >
-                  <ExpandMoreIcon style={{ fontSize: 16, color: '#000000' }} />
+                  <ExpandMoreIcon style={{ fontSize: 16, color: '#ffffff' }} />
                 </button>
               )}
             </li>
@@ -357,10 +357,10 @@ export function Nav() {
         onKeyDown={e => e.key === 'Enter' && setPrimaryExpanded(prev => !prev)}
       >
         {isPrimaryExpanded
-          ? <CollapseNavIcon style={{ color: '#000000' }} aria-hidden="true" />
+          ? <CollapseNavIcon style={{ color: '#ffffff' }} aria-hidden="true" />
           : (
             <Tooltip label="Expand the menu" placement="right">
-              <ExpandNavIcon style={{ color: '#000000' }} aria-hidden="true" />
+              <ExpandNavIcon style={{ color: '#ffffff' }} aria-hidden="true" />
             </Tooltip>
           )
         }
