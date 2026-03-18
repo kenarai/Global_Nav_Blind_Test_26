@@ -133,8 +133,8 @@ function NavItem({ icon: Icon, label, pages, pageBadges, isPrimaryExpanded, expa
   const showSubPages = isPrimaryExpanded && pages != null &&
     (expandedLabels.has(label) || (isActiveModule && !collapsedLabels.has(label)));
 
-  // Highlight module row when submenu is collapsed (sub-pages not visible); defer to sub-page highlight when open
-  const isActive = isPrimaryExpanded && pages ? (isActiveModule && !showSubPages) : isActiveModule;
+  // Always highlight the parent module when it (or any of its sub-pages) is active
+  const isActive = isActiveModule;
 
   const handleNavItemClick = () => {
     collapseAllLabels(); // collapse all manual expansions on navigate
@@ -172,7 +172,7 @@ function NavItem({ icon: Icon, label, pages, pageBadges, isPrimaryExpanded, expa
               onClick={handleNavItemClick}
             >
               <span className={styles.icon}>
-                <Icon style={{ fontSize: 20, color: '#ffffff' }} aria-hidden="true" />
+                <Icon style={{ fontSize: 20, color: isActive ? '#78BBFA' : '#ffffff' }} aria-hidden="true" />
                 {totalBadge > 0 && !isPrimaryExpanded && (
                   <span className={styles.iconBadge}>{totalBadge}</span>
                 )}
