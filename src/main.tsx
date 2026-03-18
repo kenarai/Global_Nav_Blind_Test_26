@@ -8,7 +8,11 @@ document.title = `Option ${__ACTIVE_OPTION__}`;
 
 const basename = import.meta.env.DEV
   ? '/'
-  : __ACTIVE_OPTION__ === '2' ? '/opt2' : __ACTIVE_OPTION__ === '3' ? '/opt3' : '/';
+  : __ACTIVE_OPTION__ === '2' ? '/opt2'
+  : __ACTIVE_OPTION__ === '3' ? '/opt3'
+  : __ACTIVE_OPTION__ === '4' ? '/opt4'
+  : __ACTIVE_OPTION__ === '5' ? '/opt5'
+  : '/';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
