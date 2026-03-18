@@ -206,6 +206,7 @@ interface NavItemProps extends NavItemDef {
   collapsedLabels: Set<string>;
   setSubmenuOpen: (label: string, open: boolean) => void;
   collapseAllLabels: () => void;
+  onExpand: () => void;
   activeHoverLabel: string | null;
   onHoverActivate: (label: string) => void;
   onHoverScheduleHide: () => void;
@@ -213,7 +214,7 @@ interface NavItemProps extends NavItemDef {
   onHoverHideNow: () => void;
 }
 
-function NavItem({ icon: Icon, label, pages, pageBadges, isPrimaryExpanded, expandedLabels, collapsedLabels, setSubmenuOpen, collapseAllLabels, activeHoverLabel, onHoverActivate, onHoverScheduleHide, onHoverCancelHide, onHoverHideNow }: NavItemProps) {
+function NavItem({ icon: Icon, label, pages, pageBadges, isPrimaryExpanded, expandedLabels, collapsedLabels, setSubmenuOpen, collapseAllLabels, onExpand, activeHoverLabel, onHoverActivate, onHoverScheduleHide, onHoverCancelHide, onHoverHideNow }: NavItemProps) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const totalBadge = pageBadges ? Object.values(pageBadges).reduce((a, b) => a + b, 0) : 0;
@@ -235,6 +236,7 @@ function NavItem({ icon: Icon, label, pages, pageBadges, isPrimaryExpanded, expa
   const handleNavItemClick = () => {
     collapseAllLabels();
     onHoverHideNow();
+    if (!isPrimaryExpanded && label === 'Calls') onExpand();
     navigate(flat.length > 0 ? `${itemPath}/${slugify(flat[0])}` : itemPath);
   };
 
@@ -246,6 +248,7 @@ function NavItem({ icon: Icon, label, pages, pageBadges, isPrimaryExpanded, expa
   const handlePageClick = (page: string) => {
     collapseAllLabels();
     onHoverHideNow();
+    if (!isPrimaryExpanded && label === 'Calls') onExpand();
     navigate(`${itemPath}/${slugify(page)}`);
   };
 
@@ -429,6 +432,7 @@ export function Nav() {
             collapsedLabels={collapsedLabels}
             setSubmenuOpen={setSubmenuOpen}
             collapseAllLabels={collapseAllLabels}
+            onExpand={() => setPrimaryExpanded(true)}
             activeHoverLabel={activeHoverLabel}
             onHoverActivate={onHoverActivate}
             onHoverScheduleHide={onHoverScheduleHide}

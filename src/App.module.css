@@ -34,7 +34,7 @@
 .mainSide {
   flex: 1;
   overflow-y: auto;
-  padding: 3rem;
+  padding: 2.5rem;
   background-color: var(--color-bg);
 }
 
