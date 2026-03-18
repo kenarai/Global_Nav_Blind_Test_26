@@ -2,15 +2,16 @@ import { useState, useRef, useLayoutEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate, useLocation } from 'react-router-dom';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import AccountTreeIcon from '@mui/icons-material/AccountTree';
-import PaymentIcon from '@mui/icons-material/Payment';
-import FolderOpenIcon from '@mui/icons-material/FolderOpen';
+import PhoneIcon from '@mui/icons-material/Phone';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import AssignmentLateIcon from '@mui/icons-material/AssignmentLate';
 import BarChartIcon from '@mui/icons-material/BarChart';
-import CorporateFareIcon from '@mui/icons-material/CorporateFare';
+import CampaignIcon from '@mui/icons-material/Campaign';
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
-import AppsIcon from '@mui/icons-material/Apps';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandNavIcon from './ExpandNavIcon';
 import CollapseNavIcon from './CollapseNavIcon';
@@ -18,25 +19,71 @@ import Tooltip from '@/components/Tooltip';
 import type { SvgIconComponent } from '@mui/icons-material';
 import styles from './nav.module.css';
 
+// ─── Data types ───────────────────────────────────────────────────────────────
+
+interface NavSection {
+  section: string;
+  items: string[];
+}
+
+type PageEntry = string | NavSection;
+
+function isSection(entry: PageEntry): entry is NavSection {
+  return typeof entry === 'object';
+}
+
+/** Flatten all page strings out of a mixed pages/sections array. */
+function flatPages(pages: PageEntry[]): string[] {
+  return pages.flatMap(p => (isSection(p) ? p.items : [p]));
+}
+
 interface NavItemDef {
   icon: SvgIconComponent;
   label: string;
-  pages: string[] | null;
+  pages: PageEntry[] | null;
   pageBadges?: Record<string, number>;
 }
 
 const navItems: NavItemDef[] = [
-  { icon: DashboardIcon,        label: 'Dashboard',    pages: null },
-  { icon: PeopleAltIcon,        label: 'Accounts',     pages: ['All Accounts', 'Organizations', 'Contacts'] },
-  { icon: TrendingUpIcon,       label: 'Sales',        pages: ['Pipeline', 'Opportunities', 'Quotes', 'Contracts'] },
-  { icon: PlaylistAddCheckIcon, label: 'Actions',      pages: ['Approvals', 'Task Queue', 'Pending Reviews', 'Audit Logs'],
-    pageBadges: { 'Task Queue': 3, 'Pending Reviews': 1 } },
-  { icon: AccountTreeIcon,      label: 'Projects',     pages: ['Active Projects', 'Portfolios', 'Resource Planning', 'Timesheets'] },
-  { icon: PaymentIcon,          label: 'Billing',      pages: null },
-  { icon: FolderOpenIcon,       label: 'Documents',    pages: ['All Files', 'Templates', 'Shared with Me'] },
-  { icon: BarChartIcon,         label: 'Reports',      pages: null },
-  { icon: CorporateFareIcon,    label: 'Organization', pages: ['Departments', 'Business Units', 'Facilities', 'Directory'] },
-  { icon: AppsIcon,             label: 'Apps',         pages: ['App Catalog', 'Installed Apps', 'Custom Builds', 'API Management'] },
+  { icon: DashboardIcon,       label: 'Dashboard',  pages: null },
+  { icon: PhoneIcon,           label: 'Calls',       pages: ['Calls', 'Bookings'] },
+  { icon: CalendarMonthIcon,   label: 'Schedule',    pages: null },
+  { icon: LocalShippingIcon,   label: 'Dispatch',    pages: [
+    { section: 'Boards', items: ['Weekly Dispatch Board', 'Classic Dispatch Board'] },
+    { section: 'Tools',  items: ['Crew Scheduling', 'Map'] },
+  ]},
+  { icon: AccountBalanceIcon,  label: 'Accounting',  pages: [
+    { section: 'Accounts Receivable', items: ['Batch/Export Transactions', 'AR Management', 'Invoices', 'Customer Payments', 'Bank Deposits'] },
+    { section: 'Accounts Payable',    items: ['Bills'] },
+    { section: 'Others',              items: ['Accounting Audit Trail'] },
+  ]},
+  { icon: ShoppingCartIcon,    label: 'Purchasing',  pages: [
+    { section: 'Purchase', items: ['Replenishment', 'Purchase Orders', 'Receipts', 'Returns'] },
+  ]},
+  { icon: AssignmentLateIcon,  label: 'Follow Up',   pages: [
+    'Unsold Estimates',
+    'Sold Estimates',
+    'Surveys',
+    'Recurring Service Events',
+    'Expiring Memberships',
+  ]},
+  { icon: BarChartIcon,        label: 'Reports',     pages: [
+    { section: 'General',      items: ['All Reports', 'Scheduled Reports', 'Benchmark Reports'] },
+    { section: 'Personalized', items: ['Bookmarks', 'Recommended'] },
+    { section: 'Information',  items: ['Templates Dictionary', 'Legacy Reports'] },
+  ]},
+  { icon: CampaignIcon,        label: 'Marketing',   pages: null },
+  { icon: LocalOfferIcon,      label: 'Pricebook',   pages: [
+    'Services',
+    'Materials',
+    'Equipment',
+    'Categories',
+    'History',
+    'Pricing Builder',
+    'Templates',
+    'Import/Export',
+  ]},
+  { icon: PlaylistAddCheckIcon, label: 'Tasks',      pages: null },
 ];
 
 const slugify = (str: string) =>
@@ -122,6 +169,27 @@ function HoverCard({ children, width, label, hasContent, activeHoverLabel, onAct
   );
 }
 
+// ─── Helpers to render page entries (shared by expanded rail + hover card) ────
+
+function renderSubPageList(
+  pages: PageEntry[],
+  renderItem: (page: string) => React.ReactNode,
+) {
+  return pages.map((entry, i) => {
+    if (isSection(entry)) {
+      return (
+        <li key={entry.section + i} style={{ listStyle: 'none' }}>
+          <div className={styles.sectionHeader}>{entry.section}</div>
+          <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+            {entry.items.map(page => renderItem(page))}
+          </ul>
+        </li>
+      );
+    }
+    return renderItem(entry);
+  });
+}
+
 // ─── NavItem ──────────────────────────────────────────────────────────────────
 
 interface NavItemProps extends NavItemDef {
@@ -154,9 +222,11 @@ function NavItem({ icon: Icon, label, pages, pageBadges, isPrimaryExpanded, expa
   // Always highlight the parent module when it (or any of its sub-pages) is active
   const isActive = isActiveModule;
 
+  const flat = pages ? flatPages(pages) : [];
+
   const handleNavItemClick = () => {
-    collapseAllLabels(); // collapse all manual expansions on navigate
-    navigate(pages && pages.length > 0 ? `${itemPath}/${slugify(pages[0])}` : itemPath);
+    collapseAllLabels();
+    navigate(flat.length > 0 ? `${itemPath}/${slugify(flat[0])}` : itemPath);
   };
 
   const handleCaretClick = (e: React.MouseEvent) => {
@@ -165,11 +235,29 @@ function NavItem({ icon: Icon, label, pages, pageBadges, isPrimaryExpanded, expa
   };
 
   const handlePageClick = (page: string) => {
-    collapseAllLabels(); // collapse all manual expansions on navigate
+    collapseAllLabels();
     navigate(`${itemPath}/${slugify(page)}`);
   };
 
   const hoverWidth = isPrimaryExpanded ? '0px' : '240px';
+
+  // Render a single page row (used in both expanded rail and hover card)
+  const renderPageItem = (page: string, inHoverCard = false) => (
+    <li
+      key={page}
+      className={inHoverCard ? styles.pageItem : [
+        styles.subPageItem,
+        pathname === `${itemPath}/${slugify(page)}` ? styles.subPageItemActive : '',
+      ].filter(Boolean).join(' ')}
+      onClick={() => handlePageClick(page)}
+      style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+    >
+      <span>{page}</span>
+      {pageBadges?.[page] !== undefined && (
+        <span className={styles.notifBadge}>{pageBadges[page]}</span>
+      )}
+    </li>
+  );
 
   return (
     <div className={styles.navItemWrapper}>
@@ -225,19 +313,7 @@ function NavItem({ icon: Icon, label, pages, pageBadges, isPrimaryExpanded, expa
               )}
               {!isPrimaryExpanded && pages && (
                 <ul className={styles.pagesList}>
-                  {pages.map(page => (
-                    <li
-                      key={page}
-                      className={styles.pageItem}
-                      onClick={() => handlePageClick(page)}
-                      style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
-                    >
-                      <span>{page}</span>
-                      {pageBadges?.[page] !== undefined && (
-                        <span className={styles.notifBadge}>{pageBadges[page]}</span>
-                      )}
-                    </li>
-                  ))}
+                  {renderSubPageList(pages, page => renderPageItem(page, true))}
                 </ul>
               )}
             </div>
@@ -247,22 +323,7 @@ function NavItem({ icon: Icon, label, pages, pageBadges, isPrimaryExpanded, expa
 
       {showSubPages && (
         <ul className={styles.subPages}>
-          {pages!.map(page => (
-            <li
-              key={page}
-              className={[
-                styles.subPageItem,
-                pathname === `${itemPath}/${slugify(page)}` ? styles.subPageItemActive : '',
-              ].filter(Boolean).join(' ')}
-              onClick={() => handlePageClick(page)}
-              style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
-            >
-              <span>{page}</span>
-              {pageBadges?.[page] !== undefined && (
-                <span className={styles.notifBadge}>{pageBadges[page]}</span>
-              )}
-            </li>
-          ))}
+          {renderSubPageList(pages!, page => renderPageItem(page, false))}
         </ul>
       )}
     </div>
