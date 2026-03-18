@@ -87,7 +87,12 @@ const navItems: NavItemDef[] = [
 ];
 
 const slugify = (str: string) =>
-  str.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+  str.toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/\//g, '-')           // treat slash as word separator
+    .replace(/[^a-z0-9-]/g, '')
+    .replace(/-+/g, '-')           // collapse consecutive hyphens
+    .replace(/^-|-$/g, '');
 
 // ─── HoverCard ────────────────────────────────────────────────────────────────
 
