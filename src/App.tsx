@@ -29,7 +29,8 @@ export default function App() {
       position: 'relative',
       width: '100%',
       height: '48px',
-      backgroundColor: '#F3F3F3',
+      backgroundColor: '#ffffff',
+      borderBottom: '1px solid #DFE0E1',
       display: 'flex',
       alignItems: 'center',
       flexShrink: 0,
@@ -59,9 +60,10 @@ export default function App() {
       <div style={{
         margin: '0 auto',
         width: '25vw',
-        height: '28px',
-        backgroundColor: 'rgba(0,0,0,0.08)',
-        borderRadius: '4px',
+        height: '32px',
+        backgroundColor: '#ffffff',
+        borderRadius: '12px',
+        border: '1px solid #949596',
         position: 'relative',
       }}>
         <SearchIcon style={{

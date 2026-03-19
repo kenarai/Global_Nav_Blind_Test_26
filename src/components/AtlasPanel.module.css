@@ -26,7 +26,8 @@
   justify-content: space-between;
   padding: 0 8px;
   height: 48px;
-  background-color: #F3F3F3;
+  background-color: #ffffff;
+  border-bottom: 1px solid #DFE0E1;
   flex-shrink: 0;
 }
 
@@ -66,5 +67,5 @@
   flex: 1;
   overflow-y: auto;
   padding: 16px;
-  background: #fff;
+  background: #f7f7f7;
 }
