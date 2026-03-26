@@ -163,15 +163,10 @@ function HoverCard({ children, width, label, hasContent, activeHoverLabel, onAct
     let finalMaxHeight: number | null = null;
 
     if (naturalHeight > available) {
-      if (available >= vh * 0.65) {
-        // Plenty of space — no cap needed
-      } else {
-        // Shift card up so content fits; keep 24px from bottom
-        const idealTop = vh - naturalHeight - 16;
-        finalTop = Math.max(BOTTOM_MARGIN, idealTop);
-        const expanded = vh - finalTop - 16;
-        finalMaxHeight = naturalHeight > expanded ? expanded : null;
-      }
+      const idealTop = vh - naturalHeight - 16;
+      finalTop = Math.max(BOTTOM_MARGIN, idealTop);
+      const expanded = vh - finalTop - 16;
+      finalMaxHeight = naturalHeight > expanded ? expanded : null;
     }
 
     setDisplayTop(finalTop);
