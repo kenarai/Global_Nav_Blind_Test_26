@@ -136,6 +136,7 @@ function HoverCard({ children, width, label, hasContent, activeHoverLabel, onAct
   const [rawPos, setRawPos] = useState<{ top: number; left: number } | null>(null);
   // displayTop: adjusted top so the submenu list aligns with the trigger top
   const [displayTop, setDisplayTop] = useState<number | null>(null);
+  const [maxHeight, setMaxHeight] = useState<number | null>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -151,7 +152,30 @@ function HoverCard({ children, width, label, hasContent, activeHoverLabel, onAct
     if (!firstItem) return;
     const offsetFromCardTop =
       firstItem.getBoundingClientRect().top - cardRef.current.getBoundingClientRect().top;
-    setDisplayTop(rawPos.top - offsetFromCardTop);
+    const computedTop = rawPos.top - offsetFromCardTop;
+
+    const BOTTOM_MARGIN = 8;
+    const vh = window.innerHeight;
+    const naturalHeight = cardRef.current.getBoundingClientRect().height;
+    const available = vh - computedTop - BOTTOM_MARGIN;
+
+    let finalTop = computedTop;
+    let finalMaxHeight: number | null = null;
+
+    if (naturalHeight > available) {
+      if (available >= vh * 0.65) {
+        // Plenty of space — no cap needed
+      } else {
+        // Shift card up so content fits; keep 24px from bottom
+        const idealTop = vh - naturalHeight - 16;
+        finalTop = Math.max(BOTTOM_MARGIN, idealTop);
+        const expanded = vh - finalTop - 16;
+        finalMaxHeight = naturalHeight > expanded ? expanded : null;
+      }
+    }
+
+    setDisplayTop(finalTop);
+    setMaxHeight(finalMaxHeight);
   }, [visible, rawPos]);
 
   const handleMouseEnter = () => {
@@ -164,7 +188,8 @@ function HoverCard({ children, width, label, hasContent, activeHoverLabel, onAct
     if (wrapperRef.current) {
       const rect = wrapperRef.current.getBoundingClientRect();
       setRawPos({ top: rect.top, left: rect.right + 4 });
-      setDisplayTop(null); // reset until measured
+      setDisplayTop(null);   // reset until measured
+      setMaxHeight(null);    // reset until measured
     }
     onActivate(label);
   };
@@ -183,7 +208,7 @@ function HoverCard({ children, width, label, hasContent, activeHoverLabel, onAct
         <div
           ref={cardRef}
           className={styles.hoverCard}
-          style={{ position: 'fixed', top: effectiveTop, left: rawPos.left, width }}
+          style={{ position: 'fixed', top: effectiveTop, left: rawPos.left, width, ...(maxHeight != null ? { maxHeight } : {}) }}
           onMouseEnter={onCancelHide}
           onMouseLeave={onScheduleHide}
         >
@@ -339,7 +364,7 @@ function NavItem({ icon: Icon, label, pages, pageBadges, isPrimaryExpanded, expa
             </li>
           ),
           content: (
-            <div>
+            <div className={styles.hoverContent}>
               {!isPrimaryExpanded && (
                 <p className={styles.hoverLabel}>
                   {label}
