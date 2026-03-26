@@ -23,12 +23,32 @@
   overflow-x: hidden;
 }
 
+/* In expanded mode the container itself scrolls, so disable inner list scroll */
+.primaryContainer.expanded .primaryNav {
+  overflow-y: visible;
+  min-height: auto;
+}
+
 /* ── Primary nav list ── */
 .primaryNav {
   list-style: none;
   padding: 16px 0 0 0;
   margin: 0;
   flex: 1;
+  min-height: 0;          /* allow flex child to shrink below content size */
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Invisible scrollbar — scroll works but takes no space */
+.primaryNav {
+  scrollbar-width: none;           /* Firefox */
+  -ms-overflow-style: none;        /* IE/Edge */
+}
+
+.primaryNav::-webkit-scrollbar {
+  width: 0;                        /* Chrome/Safari — no space reserved */
+  display: none;
 }
 
 /* ── Nav item wrapper ── */
