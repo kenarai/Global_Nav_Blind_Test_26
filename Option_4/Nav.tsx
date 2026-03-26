@@ -87,6 +87,13 @@ const navItems: NavItemDef[] = [
     'Flat-Rate Books',
     'Vendor Catalog',
     'Price Adjustments',
+    'Markup Rules',
+    'Cost Codes',
+    'Rate Sheets',
+    'Tax Profiles',
+    'Unit Conversions',
+    'Approval Workflows',
+    'Price Sync',
   ]},
   { icon: PlaylistAddCheckIcon, label: 'Tasks',      pages: [
     'All Tasks',
