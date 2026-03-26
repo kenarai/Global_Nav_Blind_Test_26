@@ -82,8 +82,26 @@ const navItems: NavItemDef[] = [
     'Pricing Builder',
     'Templates',
     'Import/Export',
+    'Bundles',
+    'Discounts',
+    'Flat-Rate Books',
+    'Vendor Catalog',
+    'Price Adjustments',
   ]},
-  { icon: PlaylistAddCheckIcon, label: 'Tasks',      pages: null },
+  { icon: PlaylistAddCheckIcon, label: 'Tasks',      pages: [
+    'All Tasks',
+    'My Tasks',
+    'Team Tasks',
+    'Overdue',
+    'Due Today',
+    'Due This Week',
+    'Completed',
+    'Archived',
+    'Task Templates',
+    'Recurring Tasks',
+    'Priority Queue',
+    'Activity Log',
+  ]},
 ];
 
 const slugify = (str: string) =>
