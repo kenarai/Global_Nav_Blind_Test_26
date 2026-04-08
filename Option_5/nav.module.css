@@ -1,258 +1,82 @@
-/* Option 5 — Gmail-Style Left Navigation (full micro-interactions) */
+/* Option 4 — Left Navigation Rail (ported from CodeSandbox epic-pond-2hgdrd) */
+/* Anvil2 design system — Nunito Sans typeface */
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap');
 
-/* ─── Sidebar shell ─────────────────────────────────────────────────────────── */
-
-.sidebar {
+.primaryContainer {
+  position: relative;
+  font-family: 'Nunito Sans', sans-serif;
+  background-color: #0F1D26;
   height: calc(100vh - 48px);
-  background-color: #F3F3F3;
-  display: flex;
-  flex-direction: row;
   flex-shrink: 0;
   overflow: hidden;
-  /* Material motion curve — avoids abrupt snapping */
-  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* ─── Left Rail ─────────────────────────────────────────────────────────────── */
-
-.leftRail {
-  width: 64px;
-  flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  height: 100%;
-  overflow: hidden;
 }
 
-.sidebarCollapsed {
-  width: 64px;
+.primaryContainer.collapsed {
+  width: 60px;
 }
 
-/* ─── Header ────────────────────────────────────────────────────────────────── */
-
-.sidebarHeader {
-  display: flex;
-  align-items: center;
-  height: 64px;
-  padding: 0 var(--space-4);
-  flex-shrink: 0;
-}
-
-.hamburger {
-  width: 40px;
-  height: 40px;
-  border-radius: 4px;
-  border: none;
-  background: transparent;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: var(--color-gray-700);
-  transition: background-color 0.15s;
-  flex-shrink: 0;
-}
-
-.hamburger:hover {
-  background-color: var(--color-gray-100);
-}
-
-/* ─── Compose / New Job ─────────────────────────────────────────────────────── */
-
-.composeArea {
-  padding: 0 var(--space-3) var(--space-4);
-  flex-shrink: 0;
-}
-
-.composeBtn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  width: 52px;
-  height: 52px;
-  background-color: var(--color-white);
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08);
-  transition: box-shadow 0.2s, background-color 0.15s;
-  color: var(--color-gray-800);
-}
-
-.composeBtn:hover {
-  background-color: var(--color-gray-50);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-/* Collapsed: morphs to a circle */
-.composeBtnCollapsed {
-  width: 52px;
-  height: 52px;
-  padding: 0;
-  justify-content: center;
-  border-radius: 4px;
-}
-
-.composeIcon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-/* Label fades out before width collapses */
-.composeLabel {
-  margin-left: var(--space-3);
-  opacity: 1;
-  transition: opacity 0.1s ease;
-}
-
-.composeLabelHidden {
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* ─── Scrollable nav body ───────────────────────────────────────────────────── */
-
-.navBody {
-  flex: 1;
+.primaryContainer.expanded {
+  width: 220px;
   overflow-y: auto;
   overflow-x: hidden;
-  padding-bottom: var(--space-4);
 }
 
-.navBody::-webkit-scrollbar {
-  width: 4px;
+/* In expanded mode the container itself scrolls, so disable inner list scroll */
+.primaryContainer.expanded .primaryNav {
+  overflow-y: visible;
+  min-height: auto;
 }
 
-.navBody::-webkit-scrollbar-thumb {
-  background-color: var(--color-gray-200);
-  border-radius: 2px;
-}
-
-.navBody::-webkit-scrollbar-thumb:hover {
-  background-color: var(--color-gray-300);
-}
-
-/* ─── Section ───────────────────────────────────────────────────────────────── */
-
-.section {
-  margin-bottom: 2px;
-}
-
-.sectionHeader {
-  display: flex;
-  align-items: center;
-  /* Pill stops before right edge, matching nav items */
-  width: calc(100% - var(--space-3));
-  padding: 0 var(--space-3) 0 var(--space-5);
-  height: 28px;
-  font-size: 11px;
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-gray-500);
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
-  transition: opacity 0.15s, height 0.2s;
-  overflow: hidden;
-}
-
-/* Collapse section headers out of view when sidebar is collapsed */
-.sectionHeaderHidden {
-  opacity: 0;
-  pointer-events: none;
-  height: 0;
-  padding-top: 0;
-  padding-bottom: 0;
-}
-
-.sectionTitle {
-  flex: 1;
-  text-align: left;
-  overflow: hidden;
-}
-
-.sectionChevron {
-  flex-shrink: 0;
-  transition: transform 0.25s ease;
-  color: var(--color-gray-400);
-}
-
-.chevronOpen {
-  transform: rotate(180deg);
-}
-
-/* ─── Flat nav list ─────────────────────────────────────────────────────────── */
-
-.navList {
+/* ── Primary nav list ── */
+.primaryNav {
   list-style: none;
+  padding: 16px 0 0 0;
   margin: 0;
-  padding: 12px 0 0 0;
+  flex: 1;
+  min-height: 0;          /* allow flex child to shrink below content size */
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
-/* ─── Nav item wrapper ──────────────────────────────────────────────────────── */
+/* Invisible scrollbar — scroll works but takes no space */
+.primaryNav {
+  scrollbar-width: none;           /* Firefox */
+  -ms-overflow-style: none;        /* IE/Edge */
+}
 
+.primaryNav::-webkit-scrollbar {
+  width: 0;                        /* Chrome/Safari — no space reserved */
+  display: none;
+}
+
+/* ── Nav item wrapper ── */
 .navItemWrapper {
   position: relative;
-  list-style: none;
-}
-
-/* ─── Nav item (the NavLink) ────────────────────────────────────────────────── */
-
-.navItem {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
-  height: auto;
-  min-height: 52px;
-  padding: 6px var(--space-3);
-  border-radius: 4px;
-  margin-right: var(--space-3);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-normal);
-  color: #000000;
-  text-decoration: none;
-  transition: background-color 0.15s;
-  position: relative;
-  overflow: visible;
-}
-
-.navItem:hover {
-  background-color: var(--color-gray-100);
-  text-decoration: none;
-  color: var(--color-gray-900);
-}
-
-/* Active pill */
-.navItemActive {
-  background-color: rgba(0, 0, 0, 0.12);
-  color: var(--color-gray-900);
-}
-
-.navItemActive:hover {
-  background-color: rgba(0, 0, 0, 0.15);
-}
-
-/* Collapsed: narrow icon-rail pill — matches Option 2 item sizing exactly */
-.navItemCollapsed {
-  padding: 8px 0;
-  margin: 0;
   width: 100%;
-  border-radius: 4px;
-  gap: 0;
-  /* override .navItem gap: 3px — matches Option 2 */
 }
 
-/* Pill highlight via ::before (absolutely positioned, doesn't affect layout flow)
-   — same technique and dimensions as Option 2's .navItem::before */
-.navItemCollapsed::before {
+/* ── Nav item (the <li>) ── */
+.navItem {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: #ffffff;
+  position: relative;
+  text-align: center;
+  padding: 6px 0;
+  flex-direction: column;
+  user-select: none;
+}
+
+/* Hover highlight rectangle behind icon (collapsed mode) */
+.navItem::before {
   content: '';
   position: absolute;
-  top: 4px;
-  left: 16px;
-  background: rgba(0, 0, 0, 0.08);
+  top: 2px;
+  left: 14px;
+  background: rgba(255,255,255,0.08);
   width: 32px;
   height: 32px;
   z-index: 0;
@@ -261,342 +85,80 @@
   transition: opacity 0.15s;
 }
 
-.navItemCollapsed:hover::before {
+.navItem:hover::before {
   opacity: 1;
 }
 
-.navItemCollapsed.navItemActive::before {
-  opacity: 1;
-  background: rgba(0, 0, 0, 0.12);
-}
-
-.navItemCollapsed.navItemActive:hover::before {
-  opacity: 1;
-  background: rgba(0, 0, 0, 0.15);
-}
-
-/* In collapsed rail, suppress full-item highlight — icon only */
-.navItemCollapsed:hover {
-  background-color: transparent;
-}
-
-.navItemCollapsed.navItemActive {
-  background-color: transparent;
-}
-
-.navItemCollapsed.navItemActive:hover {
-  background-color: transparent;
-}
-
-/* ─── Icon wrapper (position: relative for dot badge) ───────────────────────── */
-
-.iconWrap {
-  position: relative;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  color: #000000;
-}
-
-/* Collapsed: iconWrap stays at natural 24px so it doesn't inflate item height.
-   Hover/active highlight is handled by .navItemCollapsed::before instead. */
-.navItemCollapsed .iconWrap {
-  width: 24px;
-  height: 24px;
-  position: relative;
-  z-index: 1;
-  /* sit above ::before pill */
-}
-
-.navItemCollapsed:hover .iconWrap {
-  background-color: transparent;
-}
-
-.navItemCollapsed.navItemActive .iconWrap {
-  background-color: transparent;
-}
-
-.navItemCollapsed.navItemActive:hover .iconWrap {
-  background-color: transparent;
-}
-
-.navItemActive .iconWrap {
-  color: var(--color-gray-900);
-}
-
-/* ─── Label row ─────────────────────────────────────────────────────────────── */
-
-.labelRow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-2);
-  opacity: 1;
-  /* Fade text out before the sidebar width starts collapsing */
-  transition: opacity 0.1s ease;
-}
-
-.labelRowHidden {
-  opacity: 0;
-  pointer-events: none;
-  /* Don't use display:none — keeps layout stable during transition */
-  width: 0;
-  overflow: hidden;
-}
-
-.itemLabel {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  flex: 1;
-}
-
-/* ─── Pill badge (expanded) ─────────────────────────────────────────────────── */
-
-.badge {
-  flex-shrink: 0;
-  background-color: var(--color-gray-700);
-  color: var(--color-white);
-  font-size: 10px;
-  font-weight: var(--font-weight-bold);
-  line-height: 1;
-  padding: 2px 6px;
-  border-radius: 4px;
-  min-width: 18px;
-  text-align: center;
-  margin-left: auto;
-}
-
-.navItemActive .badge {
-  background-color: var(--color-gray-900);
-}
-
-/* ─── Dot badge (collapsed) ─────────────────────────────────────────────────── */
-
-.badgeDot {
-  position: absolute;
-  top: 1px;
-  right: 0px;
-  width: 8px;
-  height: 8px;
-  border-radius: 4px;
-  background-color: var(--color-gray-700);
-  border: 2px solid var(--color-white);
-  opacity: 0;
-  transition: opacity 0.15s;
-  pointer-events: none;
-}
-
-.badgeDotVisible {
-  opacity: 1;
-}
-
-/* ─── More options button ───────────────────────────────────────────────────── */
-
-.moreBtn {
-  position: absolute;
-  /* Sits inside the pill area (margin-right: 12px = var(--space-3)) */
-  right: 20px;
-  top: 26px;
-  /* Half of min-height 52px */
-  transform: translateY(-50%);
-  width: 28px;
-  height: 28px;
-  border-radius: 4px;
-  border: none;
-  background: transparent;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: var(--color-gray-500);
-  transition: background-color 0.15s, color 0.15s;
-  z-index: 1;
-}
-
-.moreBtn:hover {
-  background-color: var(--color-gray-200);
-  color: var(--color-gray-800);
-}
-
-/* ─── Tooltip ───────────────────────────────────────────────────────────────── */
-
-.tooltip {
-  position: absolute;
-  left: calc(100% + 12px);
-  top: 50%;
-  transform: translateY(-50%) translateX(-6px);
-  background-color: #444746;
-  /* Gmail's tooltip dark gray */
-  color: var(--color-white);
-  font-size: 12px;
-  font-weight: var(--font-weight-medium);
-  padding: 6px 10px;
-  border-radius: 4px;
-  white-space: nowrap;
-  pointer-events: none;
-  z-index: var(--z-dropdown);
-  opacity: 0;
-  /* Slide-in from left + fade */
-  transition: opacity 0.15s ease, transform 0.15s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-.tooltipVisible {
-  opacity: 1;
-  transform: translateY(-50%) translateX(0);
-}
-
-/* ─── Hover Card (collapsed submenu flyout) ─────────────────────────────────── */
-
-.hoverCard {
-  /* position: fixed + coordinates set inline via React portal */
-  width: 240px;
-  background: var(--color-white);
-  border: 1px solid var(--color-gray-200);
-  border-radius: 4px;
-  box-shadow:
-    0 2px 6px rgba(0, 0, 0, 0.08),
-    0 8px 24px rgba(0, 0, 0, 0.12);
-  z-index: var(--z-dropdown);
-  overflow: hidden;
-  animation: hoverCardIn 0.12s ease;
-}
-
-@keyframes hoverCardIn {
-  from {
-    opacity: 0;
-    transform: translateX(-4px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-.hoverCardTitle {
-  display: block;
-  width: 100%;
-  padding: 12px 16px 8px;
-  border-bottom: 1px solid var(--color-gray-100);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-gray-900);
-}
-
-.hoverCardList {
-  list-style: none;
-  margin: 0;
-  padding: 6px 0;
-}
-
-.hoverCardItem {
-  display: block;
-  width: 100%;
-  padding: 7px 16px;
-  background: none;
-  border: none;
+/* Expanded mode: row layout + wider hover highlight */
+.navItem.widthExpanded {
+  flex-direction: row;
   text-align: left;
-  font-family: inherit;
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-normal);
-  color: var(--color-gray-700);
-  cursor: pointer;
-  white-space: nowrap;
-  line-height: 1.6;
+  padding-left: 16px;
+  padding-top: 4px;
+  padding-bottom: 4px;
 }
 
-.hoverCardItem:hover {
-  background-color: rgba(0, 0, 0, 0.04);
-  color: var(--color-gray-900);
-}
-
-/* ─── Right Panel (sub-pages for active module — expanded state) ─────────────── */
-
-.rightPanel {
-  width: 184px;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  border-left: 1px solid var(--color-gray-100);
-  padding-top: var(--space-4);
-  overflow-y: auto;
-  animation: rightPanelIn 0.18s ease;
-}
-
-.rightPanel::-webkit-scrollbar {
-  width: 4px;
-}
-
-.rightPanel::-webkit-scrollbar-thumb {
-  background-color: var(--color-gray-200);
-  border-radius: 2px;
-}
-
-@keyframes rightPanelIn {
-  from {
-    opacity: 0;
-    transform: translateX(-6px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-.rightPanelHeader {
-  padding: 4px var(--space-4) 8px var(--space-4);
-  font-size: 11px;
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-gray-500);
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
-}
-
-.rightPanelList {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.rightPanelItem {
-  display: block;
-  padding: 8px var(--space-2);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-normal);
-  color: var(--color-gray-700);
-  text-decoration: none;
+.navItem.widthExpanded::before {
+  top: 50%;
+  transform: translateY(-50%);
+  left: 13px;
+  width: 38px;
+  height: 32px;
   border-radius: 4px;
-  margin-right: var(--space-2);
-  margin-left: var(--space-2);
-  transition: background-color 0.15s;
+}
+
+.navItem.widthExpanded:hover::before {
+  width: calc(100% - 25px);
+  opacity: 1;
+}
+
+/* Active state */
+.navItem.navItemActive {
+  color: #78BBFA;
+  font-weight: 700;
+}
+
+.navItem.navItemActive::before {
+  opacity: 1;
+  background: rgba(120, 187, 250, 0.2);
+}
+
+.navItem.widthExpanded.navItemActive::before {
+  width: calc(100% - 25px);
+}
+
+/* ── Icon ── */
+.icon {
+  font-size: 24px;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+/* ── Labels ── */
+
+/* Expanded label: sits beside icon — Anvil Body/small (14px Regular) */
+.label {
+  margin-left: 12px;
+  z-index: 1;
+  position: relative;
+  font-size: 14px;
+  font-weight: 400;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.rightPanelItem:hover {
-  background-color: rgba(0, 0, 0, 0.08);
-  color: var(--color-gray-900);
-}
-
-.rightPanelItemActive {
-  background-color: rgba(0, 0, 0, 0.12);
-  color: var(--color-gray-900);
-  font-weight: var(--font-weight-medium);
-}
-
-/* ─── Icon label (collapsed state — label below icon) ───────────────────────── */
-
-.iconLabel {
+/* Collapsed label: 10px Semibold body text */
+.el {
   font-size: 10px;
-  color: inherit;
-  text-align: center;
+  font-weight: 600;
+  z-index: 1;
+  position: relative;
   padding-top: 4px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -607,12 +169,159 @@
   margin: 0 auto;
   word-break: break-word;
   line-height: 1.2;
-  position: relative;
-  z-index: 1;
-  /* sit above ::before pill */
 }
 
-/* ─── Icon-level badge (number over icon) ───────────────────────────────────── */
+/* ── Chevron (right icon) ── */
+.rightIcon {
+  position: absolute;
+  right: 16px;
+  z-index: 1;
+  top: 50%;
+  transform-origin: center;
+  display: flex;
+  align-items: center;
+  margin-top: -8px;
+}
+
+/* ── Caret toggle button (expanded mode only) ── */
+.caretBtn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  margin-top: -14px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: rgba(255,255,255,0.04);
+  border-radius: 4px;
+  cursor: pointer;
+  color: #ffffff;
+  z-index: 1;
+  transition: background-color 0.15s;
+}
+
+.caretBtn:hover {
+  background-color: rgba(255,255,255,0.12);
+}
+
+/* ── Toggle affordance ── */
+.toggleAffordance {
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  height: 52px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 16px;
+  cursor: pointer;
+  background-color: #0F1D26;
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+/* Collapsed: center the hamburger icon horizontally */
+.primaryContainer.collapsed .toggleAffordance {
+  justify-content: center;
+  padding-left: 0;
+}
+
+/* Separator line above toggle */
+.toggleAffordance::before {
+  content: '';
+  position: absolute;
+  width: calc(100% - 16px);
+  height: 1px;
+  top: 0;
+  left: 8px;
+  background: rgba(255,255,255,0.15);
+}
+
+/* Label beside collapse icon (expanded state only) */
+.toggleLabel {
+  margin-left: 8px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+/* ── HoverCard (flyout sub-menu for collapsed mode) ── */
+.hoverCardWrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.hoverCardTrigger {
+  width: 100%;
+}
+
+.hoverCard {
+  position: absolute;
+  padding: 0;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 6px;
+  background: #0F1D26;
+  z-index: 1000;
+  box-shadow:
+    0 2.8px 2.2px rgba(0,0,0,0.034),
+    0 6.7px 5.3px rgba(0,0,0,0.048),
+    0 12.5px 10px rgba(0,0,0,0.06),
+    0 22.3px 17.9px rgba(0,0,0,0.072),
+    0 41.8px 33.4px rgba(0,0,0,0.086),
+    0 100px 80px rgba(0,0,0,0.12);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.hoverContent {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.hoverLabel {
+  font-weight: bold;
+  padding: 16px;
+  margin: 0;
+  font-size: 14px;
+  color: #ffffff;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+  margin-bottom: 8px;
+  flex-shrink: 0;
+}
+
+.pagesList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  padding-bottom: 8px;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+}
+
+.pageItem {
+  color: #ffffff;
+  padding: 6px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  line-height: 1.6;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+.pageItem:hover {
+  background-color: rgba(255,255,255,0.08);
+}
+
+/* ─── Icon-level badge (collapsed mode — number over icon) ──────────────────── */
 .iconBadge {
   position: absolute;
   top: -12px;
@@ -620,7 +329,7 @@
   min-width: 18px;
   height: 18px;
   border-radius: 10px;
-  background-color: #db3221;
+  background-color: #E13212;
   color: #ffffff;
   font-size: 12px;
   font-weight: 700;
@@ -641,7 +350,7 @@
   min-width: 18px;
   height: 18px;
   border-radius: 10px;
-  background-color: #db3221;
+  background-color: #E13212;
   color: #ffffff;
   font-size: 12px;
   font-weight: 600;
@@ -650,34 +359,55 @@
   flex-shrink: 0;
 }
 
-/* ─── Inline sub-page list (expanded, active module) ────────────────────────── */
-
-.subPageList {
+/* ── Sub-pages (expanded inline) ── */
+.subPages {
   list-style: none;
-  margin: 4px 0 0;
-  padding: 0;
-  width: 100%;
+  padding-left: 36px !important;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  margin: 0;
+  margin-bottom: 8px;
+  padding-right: 12px;
 }
 
 .subPageItem {
-  display: block;
-  padding: 6px var(--space-4) 6px 28px;
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-normal);
-  color: var(--color-gray-600);
-  text-decoration: none;
-  border-radius: 4px;
-  margin-right: var(--space-3);
-  transition: background-color 0.15s;
+  position: relative;
+  padding: 6px 16px;
+  color: #ffffff;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: left;
+  opacity: 0.85;
 }
 
 .subPageItem:hover {
-  background-color: var(--color-gray-100);
-  color: var(--color-gray-900);
+  opacity: 1;
+  background-color: rgba(255,255,255,0.06);
+  border-radius: 4px;
 }
 
 .subPageItemActive {
-  background-color: rgba(0, 0, 0, 0.12);
-  color: var(--color-gray-900);
-  font-weight: var(--font-weight-medium);
+  opacity: 1;
+  color: #78BBFA;
+  font-weight: 700;
+}
+
+.subPageItemActive::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: #78BBFA;
+}
+
+/* ── Section header ── */
+.sectionHeader {
+  color: #8a8a8a;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 12px 16px 4px;
+  text-transform: none;
+  user-select: none;
 }
