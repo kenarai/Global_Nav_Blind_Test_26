@@ -147,7 +147,7 @@ function NavItem({ icon: Icon, label, pages, pageBadges, isPrimaryExpanded, expa
   };
 
   const handlePageClick = (page: string) => {
-    collapseAllLabels(); // collapse all manual expansions on navigate
+    onHoverHideNow();
     navigate(`${itemPath}/${slugify(page)}`);
   };
 
