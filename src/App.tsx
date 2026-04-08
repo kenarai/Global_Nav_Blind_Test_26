@@ -19,6 +19,7 @@ import { NavCollapseContext } from '@/navCollapseContext';
 const isSideNav = __ACTIVE_OPTION__ !== '1';
 const isOption3 = __ACTIVE_OPTION__ === '3';
 const isOption4 = __ACTIVE_OPTION__ === '4' || __ACTIVE_OPTION__ === '5';
+const isOption5 = __ACTIVE_OPTION__ === '5';
 
 export default function App() {
   const [navCollapsed, setNavCollapsed] = useState(false);
@@ -52,7 +53,7 @@ export default function App() {
           </div>
         )}
         <span style={{ color: '#000000', fontWeight: 600, fontSize: '14px', whiteSpace: 'nowrap', paddingLeft: isOption3 ? '12px' : '16px' }}>
-          Example App
+          {isOption5 ? 'ServiceTitan' : 'Example App'}
         </span>
       </div>
 
