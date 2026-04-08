@@ -503,13 +503,13 @@ export function Nav() {
         {isPrimaryExpanded
           ? <CollapseNavIcon style={{ color: '#ffffff' }} aria-hidden="true" />
           : (
-            <Tooltip label="Expand the menu" placement="right">
+            <Tooltip label="Expand Menu" placement="right">
               <ExpandNavIcon style={{ color: '#ffffff' }} aria-hidden="true" />
             </Tooltip>
           )
         }
         {isPrimaryExpanded && (
-          <span className={styles.toggleLabel}>Collapse the menu</span>
+          <span className={styles.toggleLabel}>Collapse Menu</span>
         )}
       </div>
     </aside>
